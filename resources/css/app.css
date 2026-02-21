@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================
+   Hide scrollbar — scroll still works
+   ========================================= */
+@layer base {
+    /* Chrome, Safari, Edge, Opera */
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Firefox */
+    html,
+    body {
+        scrollbar-width: none;
+        -ms-overflow-style: none; /* IE & Edge legacy */
+    }
+}

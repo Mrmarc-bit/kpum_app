@@ -1,0 +1,24 @@
+[Unit]
+Description=KPUM Laravel Queue Worker
+After=network.target
+
+[Service]
+Type=simple
+User=suntree
+Group=suntree
+Restart=always
+RestartSec=5
+WorkingDirectory=/home/suntree/Videos/kpum
+ExecStart=/usr/bin/php /home/suntree/Videos/kpum/artisan queue:work --queue=high,default --timeout=1800 --tries=3 --sleep=3 --max-jobs=1000
+
+# Logging
+StandardOutput=append:/home/suntree/Videos/kpum/storage/logs/queue-worker.log
+StandardError=append:/home/suntree/Videos/kpum/storage/logs/queue-worker-error.log
+
+# Performance & Security
+Environment="HOME=/home/suntree"
+Environment="USER=suntree"
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

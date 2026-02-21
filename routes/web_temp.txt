@@ -1,0 +1,1 @@
+Route::get('/scanner/usb', [\App\Http\Controllers\Admin\ScannerController::class, 'usb'])->name('scanner.usb');
