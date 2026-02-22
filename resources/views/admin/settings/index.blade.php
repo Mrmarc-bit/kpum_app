@@ -185,14 +185,14 @@
                         <span class="text-xs font-bold text-blue-200 uppercase tracking-wider mb-1 block">Mulai Simulasi</span>
                         <input type="datetime-local" name="simulation_start_time"
                             value="{{ $settings['simulation_start_time'] ?? '' }}"
-                            class="w-full px-4 py-3 bg-yellow-400/10 border border-yellow-400/30 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-yellow-400/50 focus:bg-white/20 transition-all font-mono text-sm scheme-dark">
+                            class="w-full px-4 py-3 bg-yellow-400/10 border border-yellow-400/30 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-yellow-400/50 focus:bg-white/20 transition-all font-mono text-sm [color-scheme:dark]">
                     </label>
 
                     <label class="block mb-4">
                         <span class="text-xs font-bold text-blue-200 uppercase tracking-wider mb-1 block">Selesai Simulasi</span>
                         <input type="datetime-local" name="simulation_end_time"
                             value="{{ $settings['simulation_end_time'] ?? '' }}"
-                            class="w-full px-4 py-3 bg-yellow-400/10 border border-yellow-400/30 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-yellow-400/50 focus:bg-white/20 transition-all font-mono text-sm scheme-dark">
+                            class="w-full px-4 py-3 bg-yellow-400/10 border border-yellow-400/30 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-yellow-400/50 focus:bg-white/20 transition-all font-mono text-sm [color-scheme:dark]">
                     </label>
                 </div>
 
@@ -202,14 +202,14 @@
                         <span class="text-xs font-bold text-blue-200 uppercase tracking-wider mb-1 block">Waktu Mulai</span>
                         <input type="datetime-local" name="voting_start_time"
                             value="{{ $settings['voting_start_time'] ?? '' }}"
-                            class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-white/50 focus:bg-white/20 transition-all font-mono text-sm scheme-dark">
+                            class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-white/50 focus:bg-white/20 transition-all font-mono text-sm [color-scheme:dark]">
                     </label>
 
                     <label class="block">
                         <span class="text-xs font-bold text-blue-200 uppercase tracking-wider mb-1 block">Waktu Selesai (Tutup Bilik)</span>
                         <input type="datetime-local" name="voting_end_time"
                             value="{{ $settings['voting_end_time'] ?? '' }}"
-                            class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-white/50 focus:bg-white/20 transition-all font-mono text-sm scheme-dark">
+                            class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-white/50 focus:bg-white/20 transition-all font-mono text-sm [color-scheme:dark]">
                     </label>
                 </div>
             </div>
