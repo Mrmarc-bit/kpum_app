@@ -22,8 +22,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions using the official extension installer for better reliability
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
+RUN curl -sSL https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions -o /usr/local/bin/install-php-extensions && \
+    chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions gd pdo_mysql mbstring exif pcntl bcmath intl zip sockets
 
 # Install Composer directly via script to avoid pulling another docker image (minimizes DNS issues)
