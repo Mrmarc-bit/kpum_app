@@ -372,10 +372,10 @@
                 </div>
 
                 <!-- Google Maps -->
-                <div class="bg-white p-2 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden h-[300px] sm:h-[400px] lg:h-auto w-full">
+                <div class="bg-white p-2 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden min-h-[350px] sm:min-h-[400px] lg:h-auto w-full flex flex-col">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3362.385848888454!2d109.11083547422076!3d-7.625303675399003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e656bebb486d297%3A0x9acd9d808c1dda09!2sUniversitas%20Nahdlatul%20Ulama%20Al%20Ghazali!5e1!3m2!1sid!2sid!4v1771676536438!5m2!1sid!2sid" 
-                        class="w-full h-full rounded-[1.5rem] sm:rounded-[2rem]" 
+                        class="w-full h-full flex-1 rounded-2xl" 
                         style="border:0;" 
                         allowfullscreen="" 
                         loading="lazy" 
