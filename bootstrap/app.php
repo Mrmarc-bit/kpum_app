@@ -11,6 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->validateCsrfTokens(except: [
+            '/logout',
+            '/logout-mahasiswa',
+        ]);
         $middleware->redirectGuestsTo(function ($request) {
             if ($request->is('bilik-suara') || $request->is('vote')) {
                 return route('login.mahasiswa');

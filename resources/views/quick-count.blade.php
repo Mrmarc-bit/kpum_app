@@ -103,7 +103,7 @@
             </div>
 
             <!-- Leaderboard Highlight (Winning Presma) -->
-            <div class="bg-linear-to-br from-indigo-600 to-violet-700 rounded-3xl shadow-lg border border-white/10 p-6 text-white relative overflow-hidden">
+            <div class="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl shadow-lg border border-white/10 p-6 text-white relative overflow-hidden">
                 <div class="absolute inset-0 bg-[url('/assets/images/noise.svg')] opacity-20 mix-blend-overlay"></div>
                 <h2 class="text-sm font-bold text-indigo-200 uppercase tracking-widest mb-4 relative z-10">Unggul Sementara</h2>
                 

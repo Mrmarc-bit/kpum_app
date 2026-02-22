@@ -42,27 +42,80 @@
     </script>
 
     <style>
-        .swal2-popup {
-            font-family: 'Inter', sans-serif !important;
-            border-radius: 1rem !important;
-        }
+        /* Prevent Alpine x-show flash on load */
+        [x-cloak] { display: none !important; }
 
-        .swal2-title {
-            font-size: 1.25rem !important;
-            font-weight: 700 !important;
+        /* ===== TOAST: hanya warna background & font, jangan ganggu layout internal SweetAlert ===== */
+        .swal2-popup.swal2-toast {
+            font-family: 'Inter', sans-serif !important;
+            border-radius: 0.875rem !important;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 4px 10px -3px rgba(0,0,0,0.06) !important;
+        }
+        .swal2-popup.swal2-toast.swal2-icon-success {
+            background: #f0fdf4 !important;
+            border: 1px solid #bbf7d0 !important;
+        }
+        .swal2-popup.swal2-toast.swal2-icon-error {
+            background: #fef2f2 !important;
+            border: 1px solid #fecaca !important;
+        }
+        .swal2-popup.swal2-toast.swal2-icon-warning {
+            background: #fffbeb !important;
+            border: 1px solid #fde68a !important;
+        }
+        .swal2-popup.swal2-toast.swal2-icon-info {
+            background: #eff6ff !important;
+            border: 1px solid #bfdbfe !important;
+        }
+        .swal2-popup.swal2-toast .swal2-title {
+            font-size: 0.85rem !important;
+            font-weight: 600 !important;
             color: #1e293b !important;
         }
+        .swal2-popup.swal2-toast.swal2-icon-success .swal2-timer-progress-bar { background: #10b981 !important; }
+        .swal2-popup.swal2-toast.swal2-icon-error   .swal2-timer-progress-bar { background: #ef4444 !important; }
+        .swal2-popup.swal2-toast.swal2-icon-warning .swal2-timer-progress-bar { background: #f59e0b !important; }
+        .swal2-popup.swal2-toast.swal2-icon-info    .swal2-timer-progress-bar { background: #3b82f6 !important; }
 
-        .swal2-html-container {
+        /* ===== CONFIRM DIALOG ===== */
+        .swal2-popup:not(.swal2-toast) {
+            font-family: 'Inter', sans-serif !important;
+            border-radius: 1.5rem !important;
+            border: 1px solid rgba(226, 232, 240, 0.8) !important;
+            box-shadow: 0 25px 60px -10px rgba(0,0,0,0.15), 0 10px 25px -5px rgba(0,0,0,0.07) !important;
+        }
+        .swal2-popup:not(.swal2-toast) .swal2-title {
+            font-size: 1.125rem !important;
+            font-weight: 700 !important;
+            color: #0f172a !important;
+        }
+        .swal2-popup:not(.swal2-toast) .swal2-html-container {
             font-size: 0.875rem !important;
             color: #64748b !important;
+            line-height: 1.6 !important;
         }
-        
-        /* Turbo Progress Bar - Modern & Sleek */
+        .swal2-popup:not(.swal2-toast) .swal2-confirm {
+            border-radius: 0.75rem !important;
+            font-weight: 700 !important;
+            font-size: 0.875rem !important;
+            padding: 0.55rem 1.5rem !important;
+        }
+        .swal2-popup:not(.swal2-toast) .swal2-cancel {
+            border-radius: 0.75rem !important;
+            font-weight: 600 !important;
+            font-size: 0.875rem !important;
+            padding: 0.55rem 1.5rem !important;
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+        }
+        .swal2-popup:not(.swal2-toast) .swal2-cancel:hover {
+            background: #e2e8f0 !important;
+            color: #475569 !important;
+        }
+
+        /* Turbo Progress Bar */
         .turbo-progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: fixed; top: 0; left: 0;
             height: 3px;
             background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
             background-size: 200% 100%;
@@ -70,10 +123,9 @@
             z-index: 9999;
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
-        
         @keyframes gradient-shift {
             0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            50%       { background-position: 100% 50%; }
         }
     </style>
 </head>
@@ -429,7 +481,7 @@
                                     </svg>
                                     Profil Saya
                                 </a>
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form method="POST" action="{{ route('logout') }}" data-turbo="false">
                                     @csrf
                                     <button type="submit"
                                         class="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-colors text-left">
@@ -453,40 +505,43 @@
         </main>
     </div>
     <script>
-        // Use window.Toast to prevent "Identifier has already been declared" error with Turbo
+        // ===== MODERN TOAST MIXIN =====
         window.Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 3000,
+            timer: 4000,
             timerProgressBar: true,
+            showCloseButton: false,
             didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
             }
         });
 
-        // Wrap session logic in IIFE to avoid global variable conflicts
+        // ===== SHOW SESSION FLASH TOASTS =====
         (function() {
             var sessionSuccess = <?php echo json_encode(session('success')); ?>;
-            var sessionError = <?php echo json_encode(session('error')); ?>;
+            var sessionError   = <?php echo json_encode(session('error'));   ?>;
+            var sessionInfo    = <?php echo json_encode(session('info'));    ?>;
+            var sessionWarning = <?php echo json_encode(session('warning')); ?>;
 
             if (sessionSuccess) {
-                window.Toast.fire({
-                    icon: 'success',
-                    title: sessionSuccess
-                });
+                window.Toast.fire({ icon: 'success', title: sessionSuccess });
             }
-
             if (sessionError) {
-                window.Toast.fire({
-                    icon: 'error',
-                    title: sessionError
-                });
+                window.Toast.fire({ icon: 'error', title: sessionError });
+            }
+            if (sessionInfo) {
+                window.Toast.fire({ icon: 'info', title: sessionInfo });
+            }
+            if (sessionWarning) {
+                window.Toast.fire({ icon: 'warning', title: sessionWarning });
             }
         })();
 
-        // Global Form Confirm Interceptor
+        // ===== GLOBAL FORM CONFIRM INTERCEPTOR =====
+        // Catches any form with data-confirm attribute and shows modern SweetAlert2 modal
         document.addEventListener('submit', function(e) {
             const form = e.target;
             const message = form.getAttribute('data-confirm');
@@ -495,26 +550,25 @@
                 e.preventDefault();
                 
                 Swal.fire({
-                    title: 'Apakah Anda yakin?',
+                    title: 'Konfirmasi Tindakan',
                     text: message,
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3b82f6',
-                    cancelButtonColor: '#ef4444',
-                    confirmButtonText: 'Ya, Lanjutkan!',
+                    confirmButtonColor: '#ef4444',
+                    cancelButtonColor: '#f1f5f9',
+                    confirmButtonText: '<svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4 mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg> Ya, Hapus!',
                     cancelButtonText: 'Batal',
                     reverseButtons: true,
-                    backdrop: `rgba(0,0,0,0.4)`,
-                    customClass: {
-                        popup: 'rounded-2xl shadow-xl border border-slate-100',
-                        title: 'text-lg font-bold text-slate-800',
-                        htmlContainer: 'text-sm text-slate-500',
-                        confirmButton: 'px-4 py-2 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/30',
-                        cancelButton: 'px-4 py-2 rounded-xl text-sm font-bold hover:bg-red-50 hover:text-red-600 border-none shadow-none text-slate-500 bg-transparent'
+                    backdrop: 'rgba(15, 23, 42, 0.5)',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown animate__faster'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp animate__faster'
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        form.removeAttribute('data-confirm'); // Prevent infinite loop
+                        form.removeAttribute('data-confirm');
                         form.submit();
                     }
                 });

@@ -211,7 +211,7 @@
                         <div class="h-64 bg-slate-100 relative overflow-hidden flex items-center justify-center group-hover:h-72 transition-all duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent z-10"></div>
                             @if($kandidat->foto)
-                                <img src="{{ asset($kandidat->foto) }}" alt="{{ $kandidat->nama_ketua }}"
+                                <img src="{{ asset('storage/' . $kandidat->foto) }}" alt="{{ $kandidat->nama_ketua }}"
                                     class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110">
                             @else
                                 <div class="text-slate-300 flex flex-col items-center">
@@ -241,6 +241,26 @@
                                         {{ $kandidat->visi ?: 'Visi dan misi pasangan calon ini sedang dalam penyempurnaan.' }}
                                     </div>
                                 </div>
+
+                                <!-- Partai Pengusung -->
+                                @if($kandidat->parties->count() > 0)
+                                <div class="mt-4">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Partai Pengusung</span>
+                                    <div class="flex flex-wrap gap-2">
+                                        @foreach($kandidat->parties as $party)
+                                            <div class="w-8 h-8 rounded-lg bg-white border border-slate-100 shadow-sm flex items-center justify-center overflow-hidden group/party transition-all hover:border-blue-300" title="{{ $party->name }}">
+                                                @if($party->logo_path)
+                                                    <img src="{{ asset('storage/' . $party->logo_path) }}" alt="{{ $party->name }}" class="w-full h-full object-contain p-1">
+                                                @else
+                                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-400 font-bold text-[8px]">
+                                                        {{ $party->short_name ?: substr($party->name, 0, 2) }}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
                             </div>
 
                             <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-3">
@@ -308,7 +328,7 @@
                         <div class="h-64 bg-slate-100 relative overflow-hidden flex items-center justify-center group-hover:h-72 transition-all duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent z-10"></div>
                             @if($dpm->foto)
-                                <img src="{{ asset($dpm->foto) }}" alt="{{ $dpm->nama }}"
+                                <img src="{{ asset('storage/' . $dpm->foto) }}" alt="{{ $dpm->nama }}"
                                     class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110">
                             @else
                                 <div class="text-slate-300 flex flex-col items-center">
@@ -340,6 +360,26 @@
                                         {{ $dpm->visi ?: 'Visi dan misi calon ini sedang dalam penyempurnaan.' }}
                                     </div>
                                 </div>
+
+                                <!-- Partai Pengusung -->
+                                @if($dpm->parties->count() > 0)
+                                <div class="mt-4">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Partai Pengusung</span>
+                                    <div class="flex flex-wrap gap-2">
+                                        @foreach($dpm->parties as $party)
+                                            <div class="w-8 h-8 rounded-lg bg-white border border-slate-100 shadow-sm flex items-center justify-center overflow-hidden group/party transition-all hover:border-purple-300" title="{{ $party->name }}">
+                                                @if($party->logo_path)
+                                                    <img src="{{ asset('storage/' . $party->logo_path) }}" alt="{{ $party->name }}" class="w-full h-full object-contain p-1">
+                                                @else
+                                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-400 font-bold text-[8px]">
+                                                        {{ $party->short_name ?: substr($party->name, 0, 2) }}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
                             </div>
 
                             <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-3">

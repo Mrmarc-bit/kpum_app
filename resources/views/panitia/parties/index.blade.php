@@ -112,7 +112,7 @@
                         </button>
                     </div>
 
-                    <form action="{{ route('panitia.parties.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('panitia.parties.store') }}" method="POST" enctype="multipart/form-data" data-turbo="false">
                         @csrf
                         <div class="space-y-4">
                             <div>
@@ -183,7 +183,7 @@
                         </button>
                     </div>
 
-                    <form :action="`{{ route('panitia.parties.index') }}/${editData.id}`" method="POST" enctype="multipart/form-data">
+                    <form :action="`{{ route('panitia.parties.index') }}/${editData.id}`" method="POST" enctype="multipart/form-data" data-turbo="false">
                         @csrf
                         @method('PUT')
                         <div class="space-y-4">

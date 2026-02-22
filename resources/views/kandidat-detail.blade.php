@@ -13,7 +13,7 @@
 
         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
             <!-- Header -->
-            <div class="bg-linear-to-br from-blue-600 to-indigo-700 p-8 lg:p-12 text-white">
+            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 lg:p-12 text-white">
                 <div class="flex flex-col md:flex-row gap-8 items-center">
                     <div class="w-48 h-64 bg-white/10 rounded-2xl overflow-hidden border-4 border-white/20 shrink-0">
                         @if($kandidat->foto)
@@ -53,6 +53,31 @@
 
             <!-- Content -->
             <div class="p-8 lg:p-12 space-y-12">
+                <!-- Partai Pengusung -->
+                @if($kandidat->parties->isNotEmpty())
+                    <section class="space-y-4">
+                        <h2 class="text-2xl font-bold text-slate-900 border-l-4 border-blue-600 pl-4">Partai Pengusung</h2>
+                        <div class="flex flex-wrap gap-4">
+                            @foreach($kandidat->parties as $party)
+                                <div class="group relative">
+                                    <div class="w-16 h-16 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex items-center justify-center transition-all hover:border-blue-400 relative">
+                                        @if($party->logo_path)
+                                            <img src="{{ asset('storage/' . $party->logo_path) }}" 
+                                                 alt="{{ $party->name }}" 
+                                                 class="w-full h-full object-contain p-2 relative z-10 bg-white"
+                                                 onerror="this.style.display='none'">
+                                        @endif
+                                        <span class="absolute inset-0 flex items-center justify-center text-xs font-black text-slate-400 uppercase bg-slate-50 z-0">
+                                            {{ $party->short_name ?? substr($party->name, 0, 2) }}
+                                        </span>
+                                    </div>
+                                    <p class="mt-2 text-[10px] font-bold text-slate-500 text-center uppercase tracking-tighter">{{ $party->short_name ?: $party->name }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+
                 <!-- Visi -->
                 <section class="space-y-4">
                     <h2 class="text-2xl font-bold text-slate-900 border-l-4 border-blue-600 pl-4">Visi</h2>

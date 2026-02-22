@@ -19,4 +19,13 @@ class Party extends Model
         if (\Illuminate\Support\Str::contains($value, '/')) return $value;
         return "images/medium/{$value}.webp";
     }
+
+    /**
+     * Kandidat yang didukung oleh partai ini
+     */
+    public function kandidats()
+    {
+        return $this->belongsToMany(Kandidat::class, 'kandidat_party')
+                    ->withTimestamps();
+    }
 }

@@ -30,7 +30,8 @@ class CalonDpmController extends Controller
     public function create()
     {
         return view('panitia.calon_dpm.create', [
-            'title' => 'Tambah Calon DPM'
+            'title' => 'Tambah Calon DPM',
+            'parties' => \App\Models\Party::orderBy('name')->get()
         ]);
     }
 
@@ -52,9 +53,20 @@ class CalonDpmController extends Controller
 
         $validated['status_aktif'] = $request->has('status_aktif');
 
+        // Validate party_ids
+        $request->validate([
+            'party_ids'   => 'nullable|array',
+            'party_ids.*' => 'integer|exists:parties,id',
+        ]);
+
         // Delegate execution to Service (Octane Safe via Redis Locks inside service)
         try {
-            $this->service->create($validated, $request->file('foto'));
+            $calon = $this->service->create($validated, $request->file('foto'));
+            
+            // Sync koalisi partai
+            $partyIds = $request->input('party_ids', []);
+            $calon->parties()->sync($partyIds);
+
             return redirect()->route('panitia.calon_dpm.index')->with('success', 'Calon DPM berhasil ditambahkan');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Gagal menambahkan calon: ' . $e->getMessage());
@@ -65,7 +77,9 @@ class CalonDpmController extends Controller
     {
         return view('panitia.calon_dpm.edit', [
             'title' => 'Edit Calon DPM',
-            'calon' => $calonDpm
+            'calon' => $calonDpm->load('parties'),
+            'parties' => \App\Models\Party::orderBy('name')->get(),
+            'selectedPartyIds' => $calonDpm->parties->pluck('id')->toArray()
         ]);
     }
 
@@ -87,6 +101,12 @@ class CalonDpmController extends Controller
         $validated['status_aktif'] = $request->has('status_aktif');
         $validated['urutan_tampil'] = $request->input('urutan_tampil', $calonDpm->urutan_tampil);
 
+        // Validate party_ids
+        $request->validate([
+            'party_ids'   => 'nullable|array',
+            'party_ids.*' => 'integer|exists:parties,id',
+        ]);
+
         // Allow clearing nomor_urut if explicitly empty in input? 
         // Logic handled in service, but we pass the raw intent here.
         if (!$request->filled('nomor_urut')) {
@@ -95,6 +115,11 @@ class CalonDpmController extends Controller
 
         try {
             $this->service->update($calonDpm, $validated, $request->file('foto'));
+            
+            // Sync koalisi partai
+            $partyIds = $request->input('party_ids', []);
+            $calonDpm->parties()->sync($partyIds);
+
             return redirect()->route('panitia.calon_dpm.index')->with('success', 'Calon DPM berhasil diperbarui');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Gagal update calon: ' . $e->getMessage());

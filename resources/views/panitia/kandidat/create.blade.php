@@ -16,18 +16,22 @@
             </a>
         </div>
 
+        {{-- data-turbo="false" wajib untuk form upload file --
+             Turbo Drive menggunakan fetch() yang tidak support redirect
+             setelah multipart/form-data (file upload). --}}
         <form action="{{ route('panitia.kandidat.store') }}" method="POST" enctype="multipart/form-data"
-            class="bg-white rounded-3xl p-8 border border-slate-100 shadow-xl shadow-slate-200/50">
+            data-turbo="false"
+            class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/50">
             @csrf
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Data No Urut -->
+                <!-- Data No Urut / Urutan Tampil -->
                 <div class="md:col-span-2">
                     <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-center justify-between">
                         <div>
                             <h3 class="font-bold text-blue-900">Nomor Urut Otomatis</h3>
-                            <p class="text-blue-600 text-sm">Nomor urut akan diberikan secara berurutan oleh sistem saat
-                                disimpan.</p>
+                            <p class="text-blue-600 text-sm">Nomor urut akan diberikan secara berurutan oleh sistem
+                                saat disimpan.</p>
                         </div>
                     </div>
                 </div>
@@ -77,7 +81,7 @@
                         @error('nama_ketua') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
-                    <!-- Modern Searchable Dropdown -->
+                    <!-- Modern Searchable Dropdown for Ketua -->
                     <div class="relative">
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Program
                             Studi</label>
@@ -141,6 +145,30 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Upload Foto Ketua -->
+                    <div class="space-y-4">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Foto
+                            Ketua</label>
+                        <div class="flex flex-col items-start gap-4">
+                            <div class="relative w-32 h-32 rounded-xl bg-slate-100 border-2 border-dashed border-slate-300 hover:bg-blue-50 hover:border-blue-400 group cursor-pointer transition-all flex items-center justify-center overflow-hidden"
+                                onclick="document.getElementById('file-upload-ketua').click()">
+                                <svg class="w-8 h-8 text-slate-300 group-hover:text-blue-400 transition-colors z-10"
+                                    id="placeholder-icon-ketua" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <img id="image-preview-ketua"
+                                    src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Preview"
+                                    class="w-full h-full object-cover hidden absolute inset-0">
+                            </div>
+                            <input type="file" id="file-upload-ketua" name="foto"
+                                onchange="previewImage(this, 'image-preview-ketua', 'placeholder-icon-ketua')"
+                                class="hidden" accept="image/jpeg,image/png">
+                            @error('foto') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Wakil -->
@@ -188,7 +216,7 @@
                         @error('nama_wakil') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
-                    <!-- Modern Searchable Dropdown -->
+                    <!-- Modern Searchable Dropdown for Wakil -->
                     <div class="relative">
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Program
                             Studi</label>
@@ -251,43 +279,28 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Foto Paslon -->
-                <div class="md:col-span-2 space-y-4">
-                    <label class="block text-sm font-bold text-slate-700">Foto Pasangan Calon</label>
-                    <div class="flex flex-col md:flex-row items-start gap-6">
-                        <!-- Clickable Upload Box -->
-                        <div class="relative w-40 h-40 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-300 hover:bg-blue-50 hover:border-blue-400 group cursor-pointer transition-all flex items-center justify-center overflow-hidden"
-                            onclick="document.getElementById('file-upload').click()">
-
-                            <svg class="w-10 h-10 text-slate-300 group-hover:text-blue-400 transition-colors z-10"
-                                id="placeholder-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                </path>
-                            </svg>
-
-                            <img id="image-preview" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-                                alt="Preview" class="w-full h-full object-cover hidden absolute inset-0">
-
-                            <!-- Hover Overlay Text -->
-                            <div
-                                class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                                <span class="text-white text-xs font-bold">Ganti Foto</span>
+                    <!-- Upload Foto Wakil -->
+                    <div class="space-y-4">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Foto
+                            Wakil</label>
+                        <div class="flex flex-col items-start gap-4">
+                            <div class="relative w-32 h-32 rounded-xl bg-slate-100 border-2 border-dashed border-slate-300 hover:bg-blue-50 hover:border-blue-400 group cursor-pointer transition-all flex items-center justify-center overflow-hidden"
+                                onclick="document.getElementById('file-upload-wakil').click()">
+                                <svg class="w-8 h-8 text-slate-300 group-hover:text-indigo-400 transition-colors z-10"
+                                    id="placeholder-icon-wakil" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <img id="image-preview-wakil"
+                                    src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Preview"
+                                    class="w-full h-full object-cover hidden absolute inset-0">
                             </div>
-                        </div>
-
-                        <div class="flex-1 pt-2">
-                            <h4 class="font-bold text-slate-800 mb-1">Upload Foto</h4>
-                            <p class="text-sm text-slate-500 mb-4">Klik kotak di samping untuk memilih foto. Format:
-                                JPG, PNG (Max 2MB).</p>
-
-                            <!-- Hidden File Input -->
-                            <input type="file" id="file-upload" name="foto" onchange="previewImage(this)" class="hidden"
-                                accept="image/jpeg,image/png">
-
-                            @error('foto') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            <input type="file" id="file-upload-wakil" name="foto_wakil"
+                                onchange="previewImage(this, 'image-preview-wakil', 'placeholder-icon-wakil')"
+                                class="hidden" accept="image/jpeg,image/png">
+                            @error('foto_wakil') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
                 </div>
@@ -306,8 +319,120 @@
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all"
                             placeholder="Tuliskan misi kandidat...">{{ old('misi') }}</textarea>
                     </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Deskripsi Singkat / Slogan</label>
+                        <textarea name="deskripsi_singkat" rows="2"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all"
+                            placeholder="Deskripsi singkat atau slogan...">{{ old('deskripsi_singkat') }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Status & Visibility -->
+                <div class="md:col-span-2 flex flex-col sm:flex-row gap-6">
+                    <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <input type="checkbox" name="status_aktif" id="status_aktif" value="1" checked
+                            class="w-5 h-5 rounded text-blue-600 focus:ring-blue-500 border-gray-300 transition-all">
+                        <label for="status_aktif" class="font-bold text-slate-700 select-none cursor-pointer">Status
+                            Aktif</label>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <input type="checkbox" name="tampilkan_di_landing" id="tampilkan_di_landing" value="1" checked
+                            class="w-5 h-5 rounded text-blue-600 focus:ring-blue-500 border-gray-300 transition-all">
+                        <label for="tampilkan_di_landing"
+                            class="font-bold text-slate-700 select-none cursor-pointer">Tampilkan di Landing
+                            Page</label>
+                    </div>
+                </div>
+
+            </div>
+
+            {{-- ===== KOALISI PARTAI PENGUSUNG ===== --}}
+            @if($parties->isNotEmpty())
+            <div class="mt-8 pt-8 border-t border-slate-100">
+                <div class="mb-5 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base">Koalisi Partai Pengusung</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Pilih partai yang mendukung paslon ini. Logo diambil dari data Manajemen Partai.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    @foreach($parties as $party)
+                        @php
+                            $isSelected = in_array($party->id, old('party_ids', []));
+                            $logoUrl = $party->logo_path ? asset('storage/' . $party->logo_path) : null;
+                            $abbr = strtoupper(substr($party->short_name ?? $party->name, 0, 2));
+                        @endphp
+
+                        <label for="party_c_{{ $party->id }}"
+                            x-data="{ checked: {{ $isSelected ? 'true' : 'false' }} }"
+                            :class="checked ? 'border-blue-500 bg-blue-50 shadow-md shadow-blue-100' : 'border-slate-200 bg-slate-50 hover:border-blue-300 hover:bg-blue-50/50'"
+                            class="relative flex flex-col items-center gap-2.5 p-3 rounded-2xl border-2 cursor-pointer transition-all duration-200">
+
+                            <input type="checkbox"
+                                id="party_c_{{ $party->id }}"
+                                name="party_ids[]"
+                                value="{{ $party->id }}"
+                                {{ $isSelected ? 'checked' : '' }}
+                                @change="checked = $event.target.checked"
+                                class="sr-only">
+
+                            {{-- Checkmark pill (top-right) --}}
+                            <div class="absolute top-2 right-2 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-150"
+                                :class="checked ? 'bg-blue-500 border-blue-500' : 'border-slate-300 bg-white'">
+                                <svg x-show="checked" x-cloak class="w-3 h-3 text-white"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+
+                            {{-- Logo --}}
+                            <div class="w-14 h-14 rounded-xl overflow-hidden flex items-center justify-center bg-white border border-slate-100 shadow-sm mt-1">
+                                @if($logoUrl)
+                                    <img src="{{ $logoUrl }}"
+                                        alt="{{ e($party->name) }}"
+                                        class="w-full h-full object-contain p-1"
+                                        onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+                                    <span style="display:none" class="text-xl font-black text-slate-300 w-full h-full items-center justify-center">{{ $abbr }}</span>
+                                @else
+                                    <span class="text-xl font-black text-slate-300">{{ $abbr }}</span>
+                                @endif
+                            </div>
+
+                            {{-- Nama Partai --}}
+                            <p class="text-xs font-bold text-slate-800 leading-tight text-center line-clamp-2">
+                                {{ $party->short_name ?? $party->name }}
+                            </p>
+                        </label>
+                    @endforeach
+                </div>
+                @error('party_ids')
+                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+            @else
+            <div class="mt-8 pt-8 border-t border-slate-100">
+                <div class="flex items-center gap-3 p-4 bg-amber-50 border border-amber-100 rounded-2xl">
+                    <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <div>
+                        <p class="text-sm font-bold text-amber-800">Belum ada data partai</p>
+                        <p class="text-xs text-amber-700 mt-0.5">
+                            Tambahkan partai terlebih dahulu di
+                            <a href="{{ route('admin.parties.index') }}" class="underline font-semibold hover:text-amber-900">Manajemen Partai</a>
+                            untuk mengatur koalisi.
+                        </p>
+                    </div>
                 </div>
             </div>
+            @endif
 
             <div class="mt-8 pt-8 border-t border-slate-100 flex justify-end">
                 <button type="submit"
@@ -318,12 +443,12 @@
         </form>
     </div>
 
-    <script>
-        function previewImage(input) {
-            const container = document.getElementById('preview-container');
-            const preview = document.getElementById('image-preview');
-            const placeholder = document.getElementById('placeholder-icon');
 
+    <script>
+        // previewImage: tetap di sini karena spesifik per halaman
+        function previewImage(input, previewId, placeholderId) {
+            const preview = document.getElementById(previewId);
+            const placeholder = document.getElementById(placeholderId);
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -334,32 +459,6 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('dropdownSearch', (config) => ({
-                selected: config.selected || '',
-                options: config.options,
-                open: false,
-                search: '',
-
-                get filteredOptions() {
-                    if (this.search === '') {
-                        return this.options;
-                    }
-
-                    return this.options.filter(option => {
-                        // Always show groups if their children match, or just filter items
-                        if (option.isGroup) return false; // Hide empty groups in search for simplicity, or implement complex logic
-                        return option.label.toLowerCase().includes(this.search.toLowerCase());
-                    }).reduce((acc, option, index, array) => {
-                        // Re-add groups if we want, but for now simple filter:
-                        // Let's just return matches. If you want matched groups, logic is harder.
-                        // Ideally: Filter items, then checks which groups they belong to.
-                        // Simplified approach: Just show matched items.
-                        return array;
-                    }, this.options.filter(opt => !opt.isGroup && opt.label.toLowerCase().includes(this.search.toLowerCase())));
-                }
-            }))
-        })
+        // dropdownSearch Alpine component sudah didaftarkan di resources/js/app.js
     </script>
-</x-layouts.panitia>
+</x-layouts.admin>

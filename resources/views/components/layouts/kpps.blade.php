@@ -156,7 +156,7 @@
                 <span class="whitespace-nowrap">Profil Saya</span>
             </a>
             
-             <form method="POST" action="{{ route('logout') }}" class="mt-8 px-3">
+             <form method="POST" action="{{ route('logout') }}" class="mt-8 px-3" data-turbo="false">
                 @csrf
                 <button type="submit"
                     class="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors group">

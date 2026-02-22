@@ -118,7 +118,7 @@ class VoteController extends Controller
             }
         }
 
-        $kandidats = Kandidat::orderBy('no_urut')->get();
+        $kandidats = Kandidat::with('parties')->orderBy('no_urut')->get();
         
         /** @var Mahasiswa|null $user */
         $user = Auth::guard('mahasiswa')->user();
@@ -126,7 +126,7 @@ class VoteController extends Controller
             $user = $user->fresh();
         } 
         
-        $calonDpms = CalonDpm::where('status_aktif', true)
+        $calonDpms = CalonDpm::with('parties')->where('status_aktif', true)
             ->orderBy('urutan_tampil')
             ->get();
 
@@ -199,6 +199,7 @@ class VoteController extends Controller
 
     public function showKandidat(Kandidat $kandidat)
     {
+        $kandidat->load('parties');
         return view('kandidat-detail', [
             'kandidat' => $kandidat,
             'title' => 'Visi & Misi Paslon #' . $kandidat->no_urut

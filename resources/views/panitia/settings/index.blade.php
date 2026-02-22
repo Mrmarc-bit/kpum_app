@@ -19,7 +19,7 @@
 
 
         <form id="settings-form" method="POST" action="{{ route('panitia.settings.update') }}"
-            enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            enctype="multipart/form-data" data-turbo="false" class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @csrf
 
             <!-- 1. Identitas Website (Span 2 Columns) -->

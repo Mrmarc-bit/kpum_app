@@ -130,7 +130,7 @@
                         </button>
                     </div>
 
-                    <form action="{{ route('admin.parties.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.parties.store') }}" method="POST" enctype="multipart/form-data" data-turbo="false">
                         @csrf
                         <div class="space-y-6">
                             <div>
@@ -205,7 +205,7 @@
                         </button>
                     </div>
 
-                    <form :action="`{{ route('admin.parties.index') }}/${editData.id}`" method="POST" enctype="multipart/form-data">
+                    <form :action="`{{ route('admin.parties.index') }}/${editData.id}`" method="POST" enctype="multipart/form-data" data-turbo="false">
                         @csrf
                         @method('PUT')
                         <div class="space-y-6">

@@ -65,11 +65,35 @@
                     </div>
 
                     <!-- Access Code -->
-                    <div class="space-y-2">
+                    <div class="space-y-2" x-data="{ 
+                        accessCode: '{{ old('access_code') }}',
+                        formatAccessCode(val) {
+                            let v = val.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                            if (v.length > 0 && v[0] !== 'K') {
+                                v = 'K' + v;
+                            }
+                            let formatted = '';
+                            if (v.length > 0) {
+                                formatted += v.substring(0, 1);
+                                if (v.length > 1) {
+                                    formatted += '-' + v.substring(1, 3);
+                                    if (v.length > 3) {
+                                        formatted += '-' + v.substring(3, 7);
+                                    }
+                                }
+                            }
+                            this.accessCode = formatted;
+                        }
+                    }">
                         <label for="access_code" class="sr-only">Kode Akses</label>
                         <input id="access_code" name="access_code" type="text" required
+                            x-model="accessCode"
+                            @input="formatAccessCode($event.target.value)"
+                            maxlength="9"
+                            autocomplete="off"
                             class="block w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 text-slate-900 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all text-sm placeholder:text-slate-400 font-semibold shadow-sm"
-                            placeholder="Kode Akses (Lihat di Surat Pemberitahuan)">
+                            placeholder="Kode Akses (Contoh: K-MU-5501)">
+                        <p class="text-[10px] text-slate-400 font-bold ml-2 uppercase tracking-wide">Lihat Kode Unik di Surat Anda</p>
                         @error('access_code')
                             <span class="text-red-500 text-xs ml-2 font-medium">{{ $message }}</span>
                         @enderror

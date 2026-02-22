@@ -3,7 +3,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         <!-- New Candidate Action -->
         <a href="{{ route('admin.kandidat.create') }}"
-            class="group relative flex flex-col items-center justify-center p-8 rounded-[2rem] border-3 border-dashed border-slate-200 hover:border-blue-400 bg-slate-50/50 hover:bg-blue-50/50 transition-all duration-300 h-full min-h-[420px]">
+            class="group relative flex flex-col items-center justify-center p-8 rounded-[2rem] border-2 border-dashed border-slate-200 hover:border-blue-400 bg-slate-50/50 hover:bg-blue-50/50 transition-all duration-300 h-full min-h-[420px]">
             <div class="w-20 h-20 rounded-full bg-slate-100 group-hover:bg-blue-100 group-hover:text-blue-600 text-slate-400 flex items-center justify-center transition-all duration-300 mb-6 group-hover:scale-110 shadow-sm group-hover:shadow-md">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -30,7 +30,6 @@
                         <img src="{{ asset('storage/' . $kandidat->foto) }}" alt="Foto Paslon {{ $kandidat->no_urut }}"
                             class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105">
                     @else
-                        <!-- Mock Image Placeholder -->
                         <div class="absolute inset-0 flex items-end justify-center bg-slate-200">
                             <svg class="w-32 h-32 text-slate-300 mb-8" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                         </div>
@@ -63,21 +62,26 @@
                     <div class="mt-auto pt-6 border-t border-slate-100 flex items-center justify-between">
                         <div class="flex items-center gap-2 text-sm font-semibold text-slate-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                            <span>0 Votes</span>
+                            <span>{{ $kandidat->votes->count() }} Votes</span>
                         </div>
                         
                         <div class="flex gap-2">
                             <a href="{{ route('admin.kandidat.edit', $kandidat->id) }}"
-                                class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 transition-all shadow-sm hover:shadow-blue-500/30">
+                                class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 transition-all shadow-sm hover:shadow-blue-500/30"
+                                title="Edit kandidat">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </a>
                             
-                            <form action="{{ route('admin.kandidat.destroy', $kandidat->id) }}" method="POST"
-                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus kandidat ini?');">
+                            {{-- ✅ FORM HAPUS — Menggunakan data-confirm agar ditangkap oleh SweetAlert2 interceptor --}}
+                            <form 
+                                action="{{ route('admin.kandidat.destroy', $kandidat->id) }}" 
+                                method="POST"
+                                data-confirm="Kandidat '{{ $kandidat->nama_ketua }} & {{ $kandidat->nama_wakil }}' akan dihapus secara permanen beserta semua foto. Tindakan ini tidak dapat dibatalkan.">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                    class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-red-600 transition-all shadow-sm hover:shadow-red-500/30">
+                                    class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-red-500 transition-all shadow-sm hover:shadow-red-500/30"
+                                    title="Hapus kandidat">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
                             </form>
@@ -98,4 +102,5 @@
             </div>
         @endforelse
     </div>
+
 </x-layouts.admin>

@@ -405,7 +405,7 @@
                                     </svg>
                                     Profil Saya
                                 </a>
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form method="POST" action="{{ route('logout') }}" data-turbo="false">
                                     @csrf
                                     <button type="submit"
                                         class="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-colors text-left">

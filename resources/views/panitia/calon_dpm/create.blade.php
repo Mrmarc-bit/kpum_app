@@ -16,7 +16,7 @@
             </a>
         </div>
 
-        <form action="{{ route('panitia.calon_dpm.store') }}" method="POST" enctype="multipart/form-data"
+        <form action="{{ route('panitia.calon_dpm.store') }}" method="POST" enctype="multipart/form-data" data-turbo="false"
             class="bg-white rounded-3xl p-8 border border-slate-100 shadow-xl shadow-slate-200/50">
             @csrf
 
@@ -189,6 +189,62 @@
                     </div>
                 </div>
 
+                <!-- Koalisi Partai Pengusung -->
+                <div class="md:col-span-2 space-y-4">
+                    <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-sm">02</span>
+                        Koalisi Partai Pengusung
+                    </h3>
+                    <p class="text-sm text-slate-500 ml-10">Pilih partai-partai yang mengusung calon ini.</p>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
+                        @foreach($parties as $party)
+                            @php $isSelected = is_array(old('party_ids')) && in_array($party->id, old('party_ids')); @endphp
+                            <label for="party_d_{{ $party->id }}" 
+                                x-data="{ checked: {{ $isSelected ? 'true' : 'false' }} }"
+                                :class="checked ? 'border-blue-500 bg-blue-50 shadow-md shadow-blue-100' : 'border-slate-200 bg-slate-50 hover:border-blue-300 hover:bg-blue-50/50'"
+                                class="relative flex flex-col items-center gap-2.5 p-3 rounded-2xl border-2 cursor-pointer transition-all duration-200 group">
+                                
+                                <input type="checkbox" 
+                                    id="party_d_{{ $party->id }}" 
+                                    name="party_ids[]" 
+                                    value="{{ $party->id }}"
+                                    {{ $isSelected ? 'checked' : '' }}
+                                    @change="checked = $event.target.checked"
+                                    class="sr-only">
+
+                                {{-- Checkmark pill (top-right) --}}
+                                <div class="absolute top-2 right-2 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-150"
+                                    :class="checked ? 'bg-blue-500 border-blue-500' : 'border-slate-300 bg-white'">
+                                    <svg x-show="checked" x-cloak class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+
+                                {{-- Logo Container --}}
+                                <div class="w-12 h-12 rounded-xl bg-white border border-slate-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
+                                    @if($party->logo_path)
+                                        <img src="{{ asset('storage/' . $party->logo_path) }}" alt="{{ $party->name }}" class="w-full h-full object-contain p-1">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-400 font-bold text-[10px]">
+                                            {{ $party->short_name ?: substr($party->name, 0, 2) }}
+                                        </div>
+                                    @endif
+                                </div>
+
+                                {{-- Party Info --}}
+                                <div class="text-center w-full">
+                                    <h4 class="text-[11px] font-black text-slate-900 leading-tight uppercase truncate" title="{{ $party->name }}">
+                                        {{ $party->short_name ?: $party->name }}
+                                    </h4>
+                                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-tight mt-0.5" x-text="checked ? 'Dipilih' : 'Dukung'"></p>
+                                </div>
+                            </label>
+                        @endforeach
+                    </div>
+                    @error('party_ids') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+
                 <!-- Status Aktif -->
                 <div class="md:col-span-2">
                     <div class="flex items-center gap-2">
@@ -213,7 +269,6 @@
         function previewImage(input, previewId, placeholderId) {
             const preview = document.getElementById(previewId);
             const placeholder = document.getElementById(placeholderId);
-
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -224,27 +279,6 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('dropdownSearch', (config) => ({
-                selected: config.selected || '',
-                options: config.options,
-                open: false,
-                search: '',
-
-                get filteredOptions() {
-                    if (this.search === '') {
-                        return this.options;
-                    }
-
-                    return this.options.filter(option => {
-                        if (option.isGroup) return false;
-                        return option.label.toLowerCase().includes(this.search.toLowerCase());
-                    }).reduce((acc, option, index, array) => {
-                        return array;
-                    }, this.options.filter(opt => !opt.isGroup && opt.label.toLowerCase().includes(this.search.toLowerCase())));
-                }
-            }))
-        })
+        // dropdownSearch Alpine component sudah didaftarkan di resources/js/app.js
     </script>
-</x-layouts.panitia>
+</x-layouts.admin>

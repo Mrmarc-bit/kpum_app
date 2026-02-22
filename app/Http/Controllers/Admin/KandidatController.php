@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\KandidatService;
+use App\Models\Party;
 
 class KandidatController extends Controller
 {
@@ -28,7 +29,8 @@ class KandidatController extends Controller
     public function create()
     {
         return view('admin.kandidat.create', [
-            'title' => 'Tambah Kandidat'
+            'title'   => 'Tambah Kandidat',
+            'parties' => Party::orderBy('name')->get(), // Untuk pilihan koalisi
         ]);
     }
 
@@ -52,18 +54,27 @@ class KandidatController extends Controller
             'urutan_tampil' => 'nullable|integer',
         ]);
 
-        // Handle boolean fields
+        // Validate also party_ids (array of party ids for koalisi)
+        $request->validate([
+            'party_ids'   => 'nullable|array',
+            'party_ids.*' => 'integer|exists:parties,id',
+        ]);
+
         $validated['status_aktif'] = $request->has('status_aktif');
         $validated['tampilkan_di_landing'] = $request->has('tampilkan_di_landing');
         $validated['urutan_tampil'] = $request->input('urutan_tampil', 0);
 
-        // Delegate to Service
         try {
-            $this->service->create(
-                $validated, 
-                $request->file('foto'), 
+            $kandidat = $this->service->create(
+                $validated,
+                $request->file('foto'),
                 $request->file('foto_wakil')
             );
+
+            // Sync koalisi partai (safe — table pivot sudah ada)
+            $partyIds = $request->input('party_ids', []);
+            $kandidat->parties()->sync($partyIds);
+
             return redirect()->route('admin.kandidat.index')->with('success', 'Kandidat berhasil ditambahkan!');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Gagal menambahkan kandidat: ' . $e->getMessage());
@@ -73,8 +84,10 @@ class KandidatController extends Controller
     public function edit(\App\Models\Kandidat $kandidat)
     {
         return view('admin.kandidat.edit', [
-            'title' => 'Edit Kandidat',
-            'kandidat' => $kandidat
+            'title'     => 'Edit Kandidat',
+            'kandidat'  => $kandidat->load('parties'), // load koalisi yang sudah ada
+            'parties'   => Party::orderBy('name')->get(),
+            'selectedPartyIds' => $kandidat->parties->pluck('id')->toArray(),
         ]);
     }
 
@@ -99,6 +112,12 @@ class KandidatController extends Controller
             'urutan_tampil' => 'nullable|integer',
         ]);
 
+        // Validate party_ids
+        $request->validate([
+            'party_ids'   => 'nullable|array',
+            'party_ids.*' => 'integer|exists:parties,id',
+        ]);
+
         $validated['status_aktif'] = $request->has('status_aktif');
         $validated['tampilkan_di_landing'] = $request->has('tampilkan_di_landing');
         $validated['urutan_tampil'] = $request->input('urutan_tampil', 0);
@@ -110,6 +129,11 @@ class KandidatController extends Controller
                 $request->file('foto'),
                 $request->file('foto_wakil')
             );
+
+            // Sync koalisi partai — sync() otomatis delete yg lama & insert yg baru
+            $partyIds = $request->input('party_ids', []);
+            $kandidat->parties()->sync($partyIds);
+
             return redirect()->route('admin.kandidat.index')->with('success', 'Kandidat berhasil diperbarui');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Gagal update kandidat: ' . $e->getMessage());

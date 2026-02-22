@@ -37,7 +37,7 @@
         @endif
 
         <form id="settings-form" method="POST" action="{{ route('panitia.settings.letters.proof.update') }}"
-                enctype="multipart/form-data" class="bg-white rounded-3xl p-8 border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden">
+                enctype="multipart/form-data" data-turbo="false" class="bg-white rounded-3xl p-8 border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden">
             @csrf
             <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-3">
                 <span class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center">

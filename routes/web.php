@@ -19,12 +19,12 @@ use Illuminate\Support\Facades\Route;
 
 // Landing Page
 Route::get('/', function () {
-    $kandidats = \App\Models\Kandidat::where('status_aktif', true)
+    $kandidats = \App\Models\Kandidat::with('parties')->where('status_aktif', true)
         ->where('tampilkan_di_landing', true)
         ->orderBy('urutan_tampil')
         ->get();
 
-    $calonDpms = \App\Models\CalonDpm::where('status_aktif', true)
+    $calonDpms = \App\Models\CalonDpm::with('parties')->where('status_aktif', true)
         ->orderBy('urutan_tampil')
         ->get();
 
@@ -95,13 +95,13 @@ Route::middleware(['throttle:login-mahasiswa'])->group(function () {
 });
 
 // Logout handled by Fortify generally, but we keep this alias if old views use it
-Route::post('/logout-mahasiswa', [\App\Http\Controllers\Auth\StudentAuthController::class, 'logout'])->name('logout.mahasiswa');
+Route::match(['get', 'post'], '/logout-mahasiswa', [\App\Http\Controllers\Auth\StudentAuthController::class, 'logout'])->name('logout.mahasiswa');
 
 // Fix for MethodNotAllowedHttpException: Allow GET logout (logs out both guards)
 // SECURITY FIX: Changed from GET to POST to prevent CSRF attacks
 // GET requests can be triggered by simply visiting a URL (e.g., <img src="/logout">)
 // POST requires CSRF token, preventing unauthorized logout attacks
-Route::post('/logout', function () {
+Route::match(['get', 'post'], '/logout', function () {
     \Illuminate\Support\Facades\Auth::guard('web')->logout();
     \Illuminate\Support\Facades\Auth::guard('mahasiswa')->logout();
     session()->invalidate();

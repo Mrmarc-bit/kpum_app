@@ -178,7 +178,7 @@
                                 </svg>
                             </span>
                         </a>
-                        </a>
+
                         
                         @if(($settings['enable_quick_count'] ?? 'false') === 'true')
                         <a href="#quick-count"
@@ -228,8 +228,6 @@
 
 
         </div>
-    </section>
-
     </section>
     
     <!-- Quick Count Section (If Enabled) -->

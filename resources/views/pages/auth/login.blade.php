@@ -24,7 +24,7 @@
                     class="bg-white/10 backdrop-blur-2xl rounded-[3rem] p-12 border border-white/30 shadow-2xl relative overflow-hidden group">
                     <!-- Shine -->
                     <div
-                        class="absolute inset-0 bg-linear-to-br from-white/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                        class="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
                     </div>
 
                     <div class="relative z-10">
@@ -37,7 +37,7 @@
                                 K</div>
                         @endif
                         <h2 class="text-4xl font-black text-slate-900 mb-6 leading-tight">Selamat Datang di <br><span
-                                class="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-600">{{ $settings['app_name'] ?? 'KPUM System' }}</span>.
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{{ $settings['app_name'] ?? 'KPUM System' }}</span>.
                         </h2>
                         <p class="text-lg text-slate-600 leading-relaxed mb-10">
                             Platform pemilihan elektronik resmi. Suara Anda adalah kunci untuk masa depan kampus yang

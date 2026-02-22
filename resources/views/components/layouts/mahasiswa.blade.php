@@ -35,7 +35,7 @@
         </div>
         <div class="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_200px,#bae6fd20,transparent)]"></div>
         <div
-            class="absolute top-0 left-0 w-full h-full bg-linear-to-b from-white via-white/80 to-slate-50/50 mask-[linear-gradient(to_bottom,transparent,white)]">
+            class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white via-white/80 to-slate-50/50 mask-[linear-gradient(to_bottom,transparent,white)]">
         </div>
 
         <!-- Decorative Orbs -->
@@ -75,7 +75,7 @@
 
                     <div class="h-8 w-px bg-slate-200 hidden sm:block"></div>
 
-                    <form method="POST" action="{{ route('logout.mahasiswa') }}">
+                    <form method="POST" action="{{ route('logout.mahasiswa') }}" data-turbo="false">
                         @csrf
                         <button type="submit"
                             class="inline-flex items-center px-4 py-2 border border-slate-200 text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 hover:text-red-600 hover:border-red-100 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-200">

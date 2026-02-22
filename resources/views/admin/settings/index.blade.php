@@ -32,7 +32,7 @@
             
             <!-- FORM 1: GENERAL SETTINGS -->
             <form id="settings-form" method="POST" action="{{ route('admin.settings.update') }}"
-                enctype="multipart/form-data" class="md:col-span-3 contents">
+                enctype="multipart/form-data" data-turbo="false" class="md:col-span-3 contents">
             @csrf
 
             <!-- 1. Identitas Website (Span 2 Columns) -->

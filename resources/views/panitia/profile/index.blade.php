@@ -88,7 +88,7 @@
                     </div>
                     
                     <div class="p-6">
-                        <form action="{{ route('panitia.profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                        <form action="{{ route('panitia.profile.update') }}" method="POST" enctype="multipart/form-data" data-turbo="false" class="space-y-6">
                             @csrf
                             @method('PUT')
                             

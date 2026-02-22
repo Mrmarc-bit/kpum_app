@@ -16,7 +16,7 @@
             </a>
         </div>
 
-        <form action="{{ route('admin.kandidat.update', $kandidat->id) }}" method="POST" enctype="multipart/form-data"
+        <form action="{{ route('admin.kandidat.update', $kandidat->id) }}" method="POST" enctype="multipart/form-data" data-turbo="false"
             class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/50">
             @csrf
             @method('PUT')
@@ -376,6 +376,96 @@
 
             </div>
 
+            {{-- ===== KOALISI PARTAI PENGUSUNG ===== --}}
+            @if($parties->isNotEmpty())
+            <div class="mt-8 pt-8 border-t border-slate-100">
+                <div class="mb-5 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base">Koalisi Partai Pengusung</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Pilih partai yang mendukung paslon ini. Logo diambil dari data Manajemen Partai.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    @foreach($parties as $party)
+                        @php
+                            $isSelected = in_array($party->id, old('party_ids', $selectedPartyIds));
+                            $logoUrl = $party->logo_path ? asset('storage/' . $party->logo_path) : null;
+                            $abbr = strtoupper(substr($party->short_name ?? $party->name, 0, 2));
+                        @endphp
+
+                        <label for="party_e_{{ $party->id }}"
+                            x-data="{ checked: {{ $isSelected ? 'true' : 'false' }} }"
+                            :class="checked ? 'border-blue-500 bg-blue-50 shadow-md shadow-blue-100' : 'border-slate-200 bg-slate-50 hover:border-blue-300 hover:bg-blue-50/50'"
+                            class="relative flex flex-col items-center gap-2.5 p-3 rounded-2xl border-2 cursor-pointer transition-all duration-200">
+
+                            <input type="checkbox"
+                                id="party_e_{{ $party->id }}"
+                                name="party_ids[]"
+                                value="{{ $party->id }}"
+                                {{ $isSelected ? 'checked' : '' }}
+                                @change="checked = $event.target.checked"
+                                class="sr-only">
+
+                            {{-- Checkmark pill (top-right) --}}
+                            <div class="absolute top-2 right-2 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-150"
+                                :class="checked ? 'bg-blue-500 border-blue-500' : 'border-slate-300 bg-white'">
+                                <svg x-show="checked" x-cloak class="w-3 h-3 text-white"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+
+                            {{-- Logo --}}
+                            <div class="w-14 h-14 rounded-xl overflow-hidden flex items-center justify-center bg-white border border-slate-100 shadow-sm mt-1">
+                                @if($logoUrl)
+                                    <img src="{{ $logoUrl }}"
+                                        alt="{{ e($party->name) }}"
+                                        class="w-full h-full object-contain p-1"
+                                        onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+                                    <span style="display:none" class="text-xl font-black text-slate-300 w-full h-full items-center justify-center">{{ $abbr }}</span>
+                                @else
+                                    <span class="text-xl font-black text-slate-300">{{ $abbr }}</span>
+                                @endif
+                            </div>
+
+                            {{-- Nama Partai --}}
+                            <p class="text-xs font-bold text-slate-800 leading-tight text-center line-clamp-2">
+                                {{ $party->short_name ?? $party->name }}
+                            </p>
+                        </label>
+                    @endforeach
+                </div>
+                @error('party_ids')
+                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                @enderror
+                @error('party_ids.*')
+                    <p class="text-red-500 text-xs mt-2">Partai tidak valid: {{ $message }}</p>
+                @enderror
+            </div>
+            @else
+            <div class="mt-8 pt-8 border-t border-slate-100">
+                <div class="flex items-center gap-3 p-4 bg-amber-50 border border-amber-100 rounded-2xl">
+                    <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <div>
+                        <p class="text-sm font-bold text-amber-800">Belum ada data partai</p>
+                        <p class="text-xs text-amber-700 mt-0.5">
+                            Tambahkan partai terlebih dahulu di
+                            <a href="{{ route('admin.parties.index') }}" class="underline font-semibold hover:text-amber-900">Manajemen Partai</a>
+                            untuk mengatur koalisi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <div class="mt-8 pt-8 border-t border-slate-100 flex justify-end">
                 <button type="submit"
                     class="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition-all transform hover:-translate-y-0.5">
@@ -385,11 +475,11 @@
         </form>
     </div>
 
+
     <script>
         function previewImage(input, previewId, placeholderId) {
             const preview = document.getElementById(previewId);
             const placeholder = document.getElementById(placeholderId);
-
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -400,27 +490,6 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('dropdownSearch', (config) => ({
-                selected: config.selected || '',
-                options: config.options,
-                open: false,
-                search: '',
-
-                get filteredOptions() {
-                    if (this.search === '') {
-                        return this.options;
-                    }
-
-                    return this.options.filter(option => {
-                        if (option.isGroup) return false;
-                        return option.label.toLowerCase().includes(this.search.toLowerCase());
-                    }).reduce((acc, option, index, array) => {
-                        return array;
-                    }, this.options.filter(opt => !opt.isGroup && opt.label.toLowerCase().includes(this.search.toLowerCase())));
-                }
-            }))
-    })
+        // dropdownSearch Alpine component sudah didaftarkan di resources/js/app.js
     </script>
 </x-layouts.admin>

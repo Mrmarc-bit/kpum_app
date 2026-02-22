@@ -83,7 +83,7 @@
         </div>
 
         <!-- Global Upload Form (Hidden) -->
-        <form id="global-upload-form" action="{{ route('admin.assets.store') }}" method="POST" enctype="multipart/form-data" class="hidden">
+        <form id="global-upload-form" action="{{ route('admin.assets.store') }}" method="POST" enctype="multipart/form-data" data-turbo="false" class="hidden">
             @csrf
             <input type="hidden" name="folder_id" value="{{ optional($currentFolder)->id }}">
             <input type="file" name="files[]" id="global-file-input" multiple onchange="this.form.submit()">
@@ -347,7 +347,7 @@
                     <button @click="uploadModal = false" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                 </div>
                 
-                <form action="{{ route('admin.assets.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6" x-data="{ filesCount: 0 }">
+                <form action="{{ route('admin.assets.store') }}" method="POST" enctype="multipart/form-data" data-turbo="false" class="space-y-6" x-data="{ filesCount: 0 }">
                     @csrf
                     <input type="hidden" name="folder_id" value="{{ optional($currentFolder)->id }}">
 

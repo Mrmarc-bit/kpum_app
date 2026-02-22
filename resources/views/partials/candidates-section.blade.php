@@ -305,6 +305,33 @@
                                             </p>
                                         </div>
 
+                                        <!-- Coalition Parties (Dynamic from Kandidat -> Parties) -->
+                                        <template x-if="selectedKandidat && selectedKandidat.parties && selectedKandidat.parties.length > 0">
+                                            <div class="mb-6">
+                                                <label class="block text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5 ml-1">Partai Pengusung / Koalisi</label>
+                                                <div class="flex flex-wrap gap-2 sm:gap-3 bg-slate-50/50 p-3 sm:p-4 rounded-xl border border-slate-100 shadow-sm">
+                                                    <template x-for="party in selectedKandidat.parties" :key="party.id">
+                                                        <div class="group/party relative">
+                                                            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-lg sm:rounded-xl border border-slate-200 overflow-hidden shadow-sm flex items-center justify-center transition-all duration-300 hover:border-blue-400 hover:shadow-md relative">
+                                                                <template x-if="party.logo_path">
+                                                                    <img :src="'/storage/' + (party.logo_path.includes('/') ? party.logo_path : 'images/medium/' + party.logo_path + '.webp')" 
+                                                                         :alt="party.name" 
+                                                                         class="w-full h-full object-contain p-1.5 relative z-10 bg-white"
+                                                                         x-on:error="$event.target.style.display='none'">
+                                                                </template>
+                                                                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-black text-slate-400 uppercase bg-slate-50 z-0" x-text="party.short_name || party.name.substring(0,2)"></span>
+                                                            </div>
+                                                            <!-- Tooltip Nama Partai -->
+                                                            <div class="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-slate-900 text-white text-[9px] font-bold rounded opacity-0 group-hover/party:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-20">
+                                                                <span x-text="party.name"></span>
+                                                                <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+
                                         <!-- Visi Field -->
                                         <div>
                                             <label class="block text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 sm:mb-2 ml-1">Visi</label>
