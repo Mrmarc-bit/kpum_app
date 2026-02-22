@@ -39,8 +39,8 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        // Only Admin can view user list (user management)
-        return $user->role === 'admin';
+        // Only Admin or Super Admin can view user list (user management)
+        return in_array($user->role, ['admin', 'super_admin']);
     }
 
     /**
@@ -48,8 +48,8 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        // Admin can view any user
-        if ($user->role === 'admin') {
+        // Admin or Super Admin can view any user
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             return true;
         }
 
@@ -62,8 +62,8 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        // Only Admin can create new users (Panitia/KPPS accounts)
-        return $user->role === 'admin';
+        // Only Admin or Super Admin can create new users (Panitia/KPPS accounts)
+        return in_array($user->role, ['admin', 'super_admin']);
     }
 
     /**
@@ -73,8 +73,8 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        // Admin can update any user
-        if ($user->role === 'admin') {
+        // Admin or Super Admin can update any user
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             return true;
         }
 
@@ -93,8 +93,8 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        // Only Admin can delete users
-        if ($user->role !== 'admin') {
+        // Only Admin or Super Admin can delete users
+        if (!in_array($user->role, ['admin', 'super_admin'])) {
             return false;
         }
 
@@ -111,8 +111,8 @@ class UserPolicy
      */
     public function verify(User $user, User $model): bool
     {
-        // Only Admin can manually verify emails
-        return $user->role === 'admin' && $user->id !== $model->id;
+        // Only Admin or Super Admin can manually verify emails
+        return in_array($user->role, ['admin', 'super_admin']) && $user->id !== $model->id;
     }
 
     /**
@@ -122,8 +122,8 @@ class UserPolicy
      */
     public function changeRole(User $user, User $model): bool
     {
-        // ONLY Admin can change roles
-        if ($user->role !== 'admin') {
+        // ONLY Admin or Super Admin can change roles
+        if (!in_array($user->role, ['admin', 'super_admin'])) {
             return false;
         }
 
@@ -141,8 +141,8 @@ class UserPolicy
      */
     public function manage2FA(User $user, User $model): bool
     {
-        // Admin can manage any user's 2FA
-        if ($user->role === 'admin') {
+        // Admin or Super Admin can manage any user's 2FA
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             return true;
         }
 
@@ -155,8 +155,8 @@ class UserPolicy
      */
     public function resetPassword(User $user, User $model): bool
     {
-        // Only Admin can reset passwords for other users
-        if ($user->role === 'admin' && $user->id !== $model->id) {
+        // Only Admin or Super Admin can reset passwords for other users
+        if (in_array($user->role, ['admin', 'super_admin']) && $user->id !== $model->id) {
             return true;
         }
 
