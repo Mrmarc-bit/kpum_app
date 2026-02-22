@@ -107,7 +107,7 @@ Route::match(['get', 'post'], '/logout', function () {
     session()->invalidate();
     session()->regenerateToken();
     return redirect('/');
-})->name('logout');
+});
 
 
 // ============================================
