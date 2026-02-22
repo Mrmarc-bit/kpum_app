@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.3.16-fpm
 
 # Arguments defined in docker-compose.yml
 ARG user=laravel
@@ -27,7 +27,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions gd pdo_mysql mbstring exif pcntl bcmath intl zip sockets
 
 # Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Create system user
 RUN useradd -G www-data,root -u $uid -d /home/$user $user \

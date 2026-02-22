@@ -9,9 +9,6 @@ services:
     container_name: kpum-app
     restart: unless-stopped
     working_dir: /var/www
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
     volumes:
       - ./:/var/www
     environment:
@@ -36,9 +33,6 @@ services:
     restart: unless-stopped
     command: php artisan queue:work --tries=3 --timeout=90
     working_dir: /var/www
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
     volumes:
       - ./:/var/www
     environment:
