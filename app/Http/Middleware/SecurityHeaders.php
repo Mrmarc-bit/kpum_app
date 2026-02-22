@@ -16,7 +16,6 @@ class SecurityHeaders
         $response = $next($request);
 
         // Content Security Policy - Enhanced
-        // Content Security Policy
         $response->headers->set(
             'Content-Security-Policy',
             "default-src 'self'; " .
@@ -30,8 +29,8 @@ class SecurityHeaders
             "media-src 'self'; " .
             "connect-src 'self' https://unpkg.com https://cloudflareinsights.com; " .
             "frame-src 'self' https://www.google.com; " .
-            "frame-ancestors 'self'; " .
-            "upgrade-insecure-requests;"
+            "frame-ancestors 'self';" 
+            // Removed upgrade-insecure-requests as it breaks dev environments without SSL
         );
 
         // X-Content-Type-Options
@@ -46,8 +45,8 @@ class SecurityHeaders
         // Permissions-Policy (Allow camera for scanner feature)
         $response->headers->set('Permissions-Policy', 'camera=(self), microphone=(), geolocation=(), payment=(), usb=()');
 
-        // HSTS (Strict-Transport-Security) - 1 Year
-        $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+        // HSTS (Strict-Transport-Security) - REMOVED for environments without SSL
+        // $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 
         // X-XSS-Protection (Legacy but good defense in depth)
         $response->headers->set('X-XSS-Protection', '1; mode=block');
