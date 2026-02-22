@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckMaintenanceMode
@@ -21,8 +22,8 @@ class CheckMaintenanceMode
         }
 
         // Check if user is authenticated and has admin or panitia role FIRST
-        if (auth()->check()) {
-            $user = auth()->user();
+        if (Auth::check()) {
+            $user = Auth::user();
 
             // Allow admin and panitia to bypass maintenance
             if (in_array($user->role, ['admin', 'super_admin', 'panitia'])) {
