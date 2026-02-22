@@ -2,6 +2,7 @@ services:
   app:
     build:
       context: .
+      network: host
       args:
         user: laravel
         uid: 1000
@@ -25,6 +26,7 @@ services:
   pro-worker:
     build:
       context: .
+      network: host
       args:
         user: laravel
         uid: 1000
