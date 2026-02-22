@@ -229,7 +229,7 @@
                     this.statusText = 'Memproses data...';
                     this.pollInterval = setInterval(async () => {
                         try {
-                            const statusRes = await fetch(`/admin/dpt/batch/${batchId}`);
+                            const statusRes = await fetch(`/panitia/dpt/batch/${batchId}`);
                             const status = await statusRes.json();
                             
                             this.progress = status.progress;
