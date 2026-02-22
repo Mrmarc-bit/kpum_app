@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y \
 # Install PHP extensions using the official extension installer for better reliability
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions gd pdo_mysql mbstring exif pcntl bcmath intl zip sockets redis
+    install-php-extensions gd pdo_mysql mbstring exif pcntl bcmath intl zip sockets
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
