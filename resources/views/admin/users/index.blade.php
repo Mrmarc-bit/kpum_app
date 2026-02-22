@@ -96,7 +96,7 @@
                                         
                                         @if($user->id !== auth()->id())
                                         <form action="{{ route('admin.users.destroy', $user) }}" method="POST" 
-                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?');">
+                                            data-confirm="Apakah Anda yakin ingin menghapus pengguna ini?">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors">
@@ -186,7 +186,7 @@
                             
                             @if($user->id !== auth()->id())
                                 <form action="{{ route('admin.users.destroy', $user) }}" method="POST" 
-                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?');">
+                                    data-confirm="Apakah Anda yakin ingin menghapus pengguna ini?">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 bg-slate-50 hover:text-red-600 hover:bg-red-50 transition-colors">
