@@ -317,43 +317,39 @@
 
             <div class="grid lg:grid-cols-2 gap-8 lg:gap-12">
                 <!-- Contact Info Card -->
-                <div class="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col justify-center h-full">
-                    <h3 class="text-2xl font-black text-slate-900 mb-6">Kontak Panitia</h3>
+                <div class="bg-white rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-8 md:p-10 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col justify-center h-full break-words">
+                    <h3 class="text-2xl font-black text-slate-900 mb-6 text-center sm:text-left">Kontak Panitia</h3>
                     
-                    <div class="space-y-6">
-                        <!-- WhatsApp -->
+                    <div class="space-y-4 sm:space-y-6">
                         <!-- WhatsApp -->
                         @php
                             $waNumber = $settings['contact_person'] ?? '6285183750294';
-                            // Normalize number if needed, assuming user inputs clean or we clean it.
-                            // Basic cleaning for link:
                             $waLink = 'https://wa.me/' . preg_replace('/[^0-9]/', '', $waNumber);
                         @endphp
-                        <a href="{{ $waLink }}" target="_blank" class="flex items-center gap-5 group p-4 rounded-2xl bg-green-50/50 border border-green-100 hover:bg-green-50 hover:border-green-200 transition-all duration-300">
-                            <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
+                        <a href="{{ $waLink }}" target="_blank" class="flex items-center gap-4 sm:gap-5 group p-4 rounded-2xl bg-green-50/50 border border-green-100 hover:bg-green-50 hover:border-green-200 transition-all duration-300">
+                            <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform shrink-0">
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.017-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                             </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">WhatsApp Center</div>
-                                <div class="text-lg font-black text-slate-900 group-hover:text-green-600 transition-colors">+{{ $waNumber }}</div>
-                                <div class="text-sm text-slate-500 font-medium">Respon Cepat 24/7</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">WhatsApp Center</div>
+                                <div class="text-base sm:text-lg font-black text-slate-900 group-hover:text-green-600 transition-colors truncate">+{{ $waNumber }}</div>
+                                <div class="text-xs sm:text-sm text-slate-500 font-medium">Respon Cepat 24/7</div>
                             </div>
                         </a>
 
                         <!-- Address -->
-                        <div class="flex items-start gap-5 p-4 rounded-2xl bg-blue-50/50 border border-blue-100">
-                             <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30 shrink-0">
+                        <div class="flex items-start gap-4 sm:gap-5 p-4 rounded-2xl bg-blue-50/50 border border-blue-100">
+                             <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30 shrink-0 mt-1">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Sekretariat KPUM</div>
-                                <div class="text-base font-bold text-slate-900 leading-snug mb-1">
-                                    Universitas Nahdlatul Ulama Al Ghazali (UNUGHA)
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Sekretariat KPUM</div>
+                                <div class="text-sm sm:text-base font-bold text-slate-900 leading-snug mb-1">
+                                    Universitas Nahdlatul Ulama Al Ghazali
                                 </div>
-                                <div class="text-sm text-slate-500 font-medium leading-relaxed">
-                                    {{ $settings['address'] ?? 'Jl. Kemerdekaan Barat No.17, Kesugihan Kidul, Kec. Kesugihan, Kabupaten Cilacap, Jawa Tengah 53274' }}
+                                <div class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
+                                    {{ $settings['address'] ?? 'Jl. Kemerdekaan Barat No.17, Kesugihan Kidul, Kec. Kesugihan, Kabupaten Cilacap' }}
                                 </div>
-
                             </div>
                         </div>
 
@@ -361,13 +357,13 @@
                         @php
                             $emailKpum = $settings['email_kpum'] ?? 'kpumunugha@gmail.com';
                         @endphp
-                        <a href="mailto:{{ $emailKpum }}" class="flex items-center gap-5 group p-4 rounded-2xl bg-red-50/50 border border-red-100 hover:bg-red-50 hover:border-red-200 transition-all duration-300">
-                             <div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-red-500/30 group-hover:scale-110 transition-transform">
+                        <a href="mailto:{{ $emailKpum }}" class="flex items-center gap-4 sm:gap-5 group p-4 rounded-2xl bg-red-50/50 border border-red-100 hover:bg-red-50 hover:border-red-200 transition-all duration-300">
+                             <div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-red-500/30 group-hover:scale-110 transition-transform shrink-0">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Email Resmi</div>
-                                <div class="text-lg font-black text-slate-900 group-hover:text-red-600 transition-colors">
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Email Resmi</div>
+                                <div class="text-base sm:text-lg font-black text-slate-900 group-hover:text-red-600 transition-colors truncate">
                                     {{ $emailKpum }}
                                 </div>
                             </div>
@@ -376,10 +372,10 @@
                 </div>
 
                 <!-- Google Maps -->
-                <div class="bg-white p-2 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden h-[400px] lg:h-auto">
+                <div class="bg-white p-2 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden h-[300px] sm:h-[400px] lg:h-auto w-full">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3362.385848888454!2d109.11083547422076!3d-7.625303675399003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e656bebb486d297%3A0x9acd9d808c1dda09!2sUniversitas%20Nahdlatul%20Ulama%20Al%20Ghazali!5e1!3m2!1sid!2sid!4v1771676536438!5m2!1sid!2sid" 
-                        class="w-full h-full rounded-[2rem]" 
+                        class="w-full h-full rounded-[1.5rem] sm:rounded-[2rem]" 
                         style="border:0;" 
                         allowfullscreen="" 
                         loading="lazy" 
