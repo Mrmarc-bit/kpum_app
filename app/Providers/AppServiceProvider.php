@@ -97,8 +97,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Date::use(CarbonImmutable::class);
 
-        // Force HTTPS for all URLs if not local
-        if (!app()->isLocal()) {
+        // Force HTTPS if APP_URL starts with https
+        if (str_starts_with(config('app.url') ?? '', 'https://')) {
             URL::forceScheme('https');
         }
 
