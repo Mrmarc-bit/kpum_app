@@ -26,8 +26,8 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions gd pdo_mysql mbstring exif pcntl bcmath intl zip sockets
 
-# Get latest Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Install Composer directly via script to avoid pulling another docker image (minimizes DNS issues)
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Create system user
 RUN useradd -G www-data,root -u $uid -d /home/$user $user \
