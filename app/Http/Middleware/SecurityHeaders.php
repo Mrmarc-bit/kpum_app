@@ -29,8 +29,8 @@ class SecurityHeaders
             "media-src 'self'; " .
             "connect-src 'self' https://unpkg.com https://cloudflareinsights.com; " .
             "frame-src 'self' https://www.google.com; " .
-            "frame-ancestors 'self';" 
-            // Removed upgrade-insecure-requests as it breaks dev environments without SSL
+            "frame-ancestors 'self'; " .
+            (str_starts_with(config('app.url'), 'https://') ? "upgrade-insecure-requests;" : "")
         );
 
         // X-Content-Type-Options
@@ -45,8 +45,10 @@ class SecurityHeaders
         // Permissions-Policy (Allow camera for scanner feature)
         $response->headers->set('Permissions-Policy', 'camera=(self), microphone=(), geolocation=(), payment=(), usb=()');
 
-        // HSTS (Strict-Transport-Security) - REMOVED for environments without SSL
-        // $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+        // Strict-Transport-Security (HSTS) - Enabled only if using HTTPS
+        if (str_starts_with(config('app.url'), 'https://')) {
+            $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+        }
 
         // X-XSS-Protection (Legacy but good defense in depth)
         $response->headers->set('X-XSS-Protection', '1; mode=block');
