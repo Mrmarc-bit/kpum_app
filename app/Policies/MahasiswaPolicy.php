@@ -34,7 +34,7 @@ class MahasiswaPolicy
     public function viewAny(User $user): bool
     {
         // Admin, Panitia, and KPPS can view DPT list
-        return in_array($user->role, ['admin', 'panitia', 'kpps']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia', 'kpps']);
     }
 
     /**
@@ -43,7 +43,7 @@ class MahasiswaPolicy
     public function view(User $user, Mahasiswa $mahasiswa): bool
     {
         // Admin, Panitia, and KPPS can view any mahasiswa
-        return in_array($user->role, ['admin', 'panitia', 'kpps']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia', 'kpps']);
     }
 
     /**
@@ -52,7 +52,7 @@ class MahasiswaPolicy
     public function create(User $user): bool
     {
         // Only Admin and Panitia can add new DPT entries
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -61,7 +61,7 @@ class MahasiswaPolicy
     public function update(User $user, Mahasiswa $mahasiswa): bool
     {
         // Only Admin and Panitia can edit DPT
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -74,7 +74,7 @@ class MahasiswaPolicy
      */
     public function delete(User $user, Mahasiswa $mahasiswa): bool
     {
-        if ($user->role === 'admin') {
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             // Admin can delete, but should be warned if voted
             return true;
         }
@@ -95,7 +95,7 @@ class MahasiswaPolicy
     {
         // Only Admin can perform bulk delete
         // This is a high-risk operation
-        return $user->role === 'admin';
+        return in_array($user->role, ['admin', 'super_admin']);
     }
 
     /**
@@ -104,7 +104,7 @@ class MahasiswaPolicy
     public function import(User $user): bool
     {
         // Admin and Panitia can import
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -114,7 +114,7 @@ class MahasiswaPolicy
     {
         // Only Admin can generate access codes
         // This is sensitive operation affecting voting integrity
-        return $user->role === 'admin';
+        return in_array($user->role, ['admin', 'super_admin']);
     }
 
     /**
@@ -123,7 +123,7 @@ class MahasiswaPolicy
     public function downloadLetter(User $user, Mahasiswa $mahasiswa): bool
     {
         // Admin and Panitia can download letters
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -132,7 +132,7 @@ class MahasiswaPolicy
     public function downloadBatchLetters(User $user): bool
     {
         // Admin and Panitia can download batch letters
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -141,7 +141,7 @@ class MahasiswaPolicy
     public function scanQrCode(User $user): bool
     {
         // KPPS, Admin, and Panitia can use scanner
-        return in_array($user->role, ['admin', 'panitia', 'kpps']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia', 'kpps']);
     }
 
     /**
@@ -150,6 +150,6 @@ class MahasiswaPolicy
     public function markAttendance(User $user, Mahasiswa $mahasiswa): bool
     {
         // KPPS, Admin, and Panitia can mark attendance
-        return in_array($user->role, ['admin', 'panitia', 'kpps']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia', 'kpps']);
     }
 }

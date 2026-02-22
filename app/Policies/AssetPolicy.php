@@ -35,7 +35,7 @@ class AssetPolicy
     public function viewAny(User $user): bool
     {
         // Admin and Panitia can view asset manager
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -43,7 +43,7 @@ class AssetPolicy
      */
     public function view(User $user, Asset $asset): bool
     {
-        if ($user->role === 'admin') {
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             return true;
         }
 
@@ -63,7 +63,7 @@ class AssetPolicy
      */
     public function download(User $user, Asset $asset): bool
     {
-        if ($user->role === 'admin') {
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             return true;
         }
 
@@ -84,7 +84,7 @@ class AssetPolicy
     public function create(User $user): bool
     {
         // Admin and Panitia can upload
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -92,7 +92,7 @@ class AssetPolicy
      */
     public function update(User $user, Asset $asset): bool
     {
-        if ($user->role === 'admin') {
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             return true;
         }
 
@@ -111,7 +111,7 @@ class AssetPolicy
      */
     public function delete(User $user, Asset $asset): bool
     {
-        if ($user->role === 'admin') {
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             return true;
         }
 
@@ -129,7 +129,7 @@ class AssetPolicy
     public function createFolder(User $user): bool
     {
         // Admin and Panitia can create folders
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -137,7 +137,7 @@ class AssetPolicy
      */
     public function manageFolder(User $user, $folder): bool
     {
-        if ($user->role === 'admin') {
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             return true;
         }
 

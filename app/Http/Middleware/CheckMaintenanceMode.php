@@ -25,7 +25,7 @@ class CheckMaintenanceMode
             $user = auth()->user();
 
             // Allow admin and panitia to bypass maintenance
-            if ($user->role === 'admin' || $user->role === 'panitia') {
+            if (in_array($user->role, ['admin', 'super_admin', 'panitia'])) {
                 return $next($request);
             }
         }

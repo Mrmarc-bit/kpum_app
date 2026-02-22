@@ -35,7 +35,7 @@ class KandidatPolicy
     {
         // All authenticated users can view kandidat list
         // (even KPPS for verification purposes)
-        return in_array($user->role, ['admin', 'panitia', 'kpps']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia', 'kpps']);
     }
 
     /**
@@ -44,7 +44,7 @@ class KandidatPolicy
     public function view(User $user, Kandidat $kandidat): bool
     {
         // All authenticated users can view kandidat details
-        return in_array($user->role, ['admin', 'panitia', 'kpps']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia', 'kpps']);
     }
 
     /**
@@ -53,7 +53,7 @@ class KandidatPolicy
     public function create(User $user): bool
     {
         // Only Admin and Panitia can add kandidat
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -62,7 +62,7 @@ class KandidatPolicy
     public function update(User $user, Kandidat $kandidat): bool
     {
         // Only Admin and Panitia can edit kandidat
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -78,7 +78,7 @@ class KandidatPolicy
         // Check if voting is active
         $votingActive = $this->isVotingActive();
         
-        if ($user->role === 'admin') {
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             // Admin can delete, but only if no votes exists
             // This prevents election manipulation
             $hasVotes = \App\Models\Vote::where('kandidat_id', $kandidat->id)->exists();
@@ -110,7 +110,7 @@ class KandidatPolicy
     public function toggleStatus(User $user, Kandidat $kandidat): bool
     {
         // Admin and Panitia can activate/deactivate
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -119,7 +119,7 @@ class KandidatPolicy
     public function uploadPhoto(User $user, Kandidat $kandidat): bool
     {
         // Admin and Panitia can upload photos
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**

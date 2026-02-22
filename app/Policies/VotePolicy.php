@@ -105,7 +105,7 @@ class VotePolicy
     {
         // Only Admin and Panitia can view vote counts
         // Reports show ONLY aggregated data, never individual votes
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -115,7 +115,7 @@ class VotePolicy
     {
         // Only Admin and Panitia can export results
         // Export MUST be anonymized (no mahasiswa_id exposed)
-        return in_array($user->role, ['admin', 'panitia']);
+        return in_array($user->role, ['admin', 'super_admin', 'panitia']);
     }
 
     /**
@@ -125,7 +125,7 @@ class VotePolicy
     {
         // Only Admin can view encryption settings
         // This is for security audit purposes
-        return $user->role === 'admin';
+        return in_array($user->role, ['admin', 'super_admin']);
     }
 
     /**
@@ -138,7 +138,7 @@ class VotePolicy
         // Only Admin can reset election
         // This should be combined with additional confirmation
         // (e.g., 2FA, confirmation code, multiple approvals)
-        return $user->role === 'admin';
+        return in_array($user->role, ['admin', 'super_admin']);
     }
 
     /**

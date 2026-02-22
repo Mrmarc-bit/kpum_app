@@ -35,6 +35,7 @@
                     <label for="role" class="block text-sm font-semibold text-slate-700 mb-2">Peran (Role)</label>
                     <select name="role" id="role" required
                         class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-0 text-sm bg-white">
+                        <option value="super_admin" {{ old('role', $user->role) == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
                         <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Administrator</option>
                         <option value="panitia" {{ old('role', $user->role) == 'panitia' ? 'selected' : '' }}>Panitia</option>
                         <option value="kpps" {{ old('role', $user->role) == 'kpps' ? 'selected' : '' }}>KPPS</option>

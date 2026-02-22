@@ -50,7 +50,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'string', Rule::in(['admin', 'panitia', 'kpps'])],
+            'role' => ['required', 'string', Rule::in(['admin', 'super_admin', 'panitia', 'kpps'])],
         ]);
 
         $this->service->create($validated);
@@ -78,7 +78,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'string', Rule::in(['admin', 'panitia', 'kpps'])],
+            'role' => ['required', 'string', Rule::in(['admin', 'super_admin', 'panitia', 'kpps'])],
         ]);
         
         // CRITICAL: Prevent role changes unless authorized

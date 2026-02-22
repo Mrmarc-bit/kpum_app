@@ -21,14 +21,18 @@
                 </flux:sidebar.item>
             </flux:sidebar.group>
 
-            @if(auth()->user()->role === 'admin' || auth()->user()->role === 'panitia')
+            @php
+                $userRole = auth()->user()->role;
+                $prefix = in_array($userRole, ['admin', 'super_admin']) ? 'admin' : $userRole;
+            @endphp
+            @if(in_array($userRole, ['admin', 'super_admin', 'panitia']))
                 <flux:sidebar.group :heading="__('Manajemen Kandidat')" class="grid" collapsible>
-                    <flux:sidebar.item icon="users" :href="route(auth()->user()->role . '.kandidat.index')"
-                        :current="request()->routeIs(auth()->user()->role . '.kandidat.*')" wire:navigate>
+                    <flux:sidebar.item icon="users" :href="route($prefix . '.kandidat.index')"
+                        :current="request()->routeIs($prefix . '.kandidat.*')" wire:navigate>
                         {{ __('Paslon Presma') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="user-group" :href="route(auth()->user()->role . '.calon_dpm.index')"
-                        :current="request()->routeIs(auth()->user()->role . '.calon_dpm.*')" wire:navigate>
+                    <flux:sidebar.item icon="user-group" :href="route($prefix . '.calon_dpm.index')"
+                        :current="request()->routeIs($prefix . '.calon_dpm.*')" wire:navigate>
                         {{ __('Calon DPM') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
