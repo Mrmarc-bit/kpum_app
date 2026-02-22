@@ -358,20 +358,20 @@
                         </div>
 
                         <!-- Email Card -->
-                        @if(isset($settings['email_kpum']) && $settings['email_kpum'])
-                        <a href="mailto:{{ $settings['email_kpum'] }}" class="flex items-center gap-5 group p-4 rounded-2xl bg-red-50/50 border border-red-100 hover:bg-red-50 hover:border-red-200 transition-all duration-300">
+                        @php
+                            $emailKpum = $settings['email_kpum'] ?? 'kpumunugha@gmail.com';
+                        @endphp
+                        <a href="mailto:{{ $emailKpum }}" class="flex items-center gap-5 group p-4 rounded-2xl bg-red-50/50 border border-red-100 hover:bg-red-50 hover:border-red-200 transition-all duration-300">
                              <div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-red-500/30 group-hover:scale-110 transition-transform">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Email Resmi</div>
                                 <div class="text-lg font-black text-slate-900 group-hover:text-red-600 transition-colors">
-                                    {{ $settings['email_kpum'] }}
+                                    {{ $emailKpum }}
                                 </div>
-                                <div class="text-sm text-slate-500 font-medium">Kirim Pertanyaan</div>
                             </div>
                         </a>
-                        @endif
                     </div>
                 </div>
 
