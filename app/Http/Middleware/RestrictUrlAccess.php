@@ -59,8 +59,8 @@ class RestrictUrlAccess
         // 2. SUDAH LOGIN (USER)
         // ====================================================
 
-        // A. ADMIN
-        if ($role === 'admin') {
+        // A. ADMIN & SUPER ADMIN
+        if ($role === 'admin' || $role === 'super_admin') {
             if ($request->is('panitia/*') || $request->is('bilik-suara*')) {
                 Log::info('Admin accessing forbidden area, redirect dashboard');
                 return redirect()->route('admin.dashboard');
