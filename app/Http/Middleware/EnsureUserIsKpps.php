@@ -16,7 +16,7 @@ class EnsureUserIsKpps
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::guard('web')->check() || Auth::guard('web')->user()->role !== 'kpps') {
+        if (!Auth::guard('web')->check() || !in_array(Auth::guard('web')->user()->role, ['kpps', 'admin', 'super_admin'])) {
              // Jika admin mencoba akses, bolehkan? Biasanya admin bisa segalanya.
              // Tapi di sistem ini route group dipisah.
              // Kalau admin mau lihat dashboard kpps, biasanya admin punya dashboard sendiri.

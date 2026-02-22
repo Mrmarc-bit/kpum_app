@@ -22,7 +22,7 @@ class EnsureUserIsAdmin
             return redirect('/');
         }
 
-        if (Auth::user()->role !== 'admin') {
+        if (!in_array(Auth::user()->role, ['admin', 'super_admin'])) {
             // For AJAX requests, return JSON
             if ($request->expectsJson() || $request->ajax()) {
                 return response()->json([
@@ -42,6 +42,7 @@ class EnsureUserIsAdmin
         return match ($role) {
             'panitia' => redirect()->route('panitia.dashboard'),
             'mahasiswa' => redirect()->route('student.dashboard'),
+            'admin', 'super_admin' => redirect()->route('admin.dashboard'),
             default => redirect('/'),
         };
     }

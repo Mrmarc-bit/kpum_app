@@ -22,8 +22,8 @@ class EnsureUserIsPanitia
             return redirect('/');
         }
 
-        // Allow Admin to access Panitia routes (Super User)
-        if (Auth::user()->role === 'admin') {
+        // Allow Admin/Super Admin to access Panitia routes (Super User)
+        if (in_array(Auth::user()->role, ['admin', 'super_admin'])) {
             return $next($request);
         }
 
@@ -44,7 +44,7 @@ class EnsureUserIsPanitia
     private function redirectBasedOnRole($role)
     {
         return match ($role) {
-            'admin' => redirect()->route('admin.dashboard'),
+            'admin', 'super_admin' => redirect()->route('admin.dashboard'),
             'mahasiswa' => redirect()->route('student.dashboard'),
             default => redirect('/'),
         };

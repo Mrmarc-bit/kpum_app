@@ -147,7 +147,7 @@ Route::middleware([
         return match ($user->role) {
             'mahasiswa' => redirect()->route('student.dashboard'),
             'panitia' => redirect()->route('panitia.dashboard'),
-            'admin' => redirect()->route('admin.dashboard'),
+            'admin', 'super_admin' => redirect()->route('admin.dashboard'),
             'kpps' => redirect()->route('kpps.dashboard'),
             default => redirect('/'),
         };
