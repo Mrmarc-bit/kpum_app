@@ -26,8 +26,9 @@ RUN curl -sSL https://github.com/mlocati/docker-php-extension-installer/releases
     chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions gd pdo_mysql mbstring exif pcntl bcmath intl zip sockets
 
-# Install Composer via official image to avoid DNS curl issues during build
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+# Install Composer directly from locally downloaded php phar file instead of using DNS resolution inside docker build 
+COPY composer.phar /usr/local/bin/composer
+RUN chmod +x /usr/local/bin/composer
 
 # Create system user
 RUN useradd -G www-data,root -u $uid -d /home/$user $user \
