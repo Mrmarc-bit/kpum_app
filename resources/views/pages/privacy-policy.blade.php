@@ -60,7 +60,7 @@
                         </div>
                         <h2 class="text-2xl font-black text-slate-900">1. Informasi yang Kami Kumpulkan</h2>
                     </div>
-                    <div class="pl-13 space-y-4 text-slate-600 leading-relaxed ml-13">
+                    <div class="mt-4 sm:mt-0 sm:ml-14 space-y-4 text-slate-600 leading-relaxed">
                         <p>Sistem KPUM mengumpulkan informasi berikut saat Anda menggunakan platform pemilihan elektronik kami:</p>
                         <div class="grid sm:grid-cols-2 gap-4">
                             @foreach([
@@ -88,7 +88,7 @@
                         </div>
                         <h2 class="text-2xl font-black text-slate-900">2. Cara Kami Menggunakan Informasi</h2>
                     </div>
-                    <div class="ml-13 space-y-3">
+                    <div class="mt-4 sm:mt-0 sm:ml-14 space-y-3">
                         @foreach([
                             'Verifikasi identitas mahasiswa sebagai pemilih terdaftar (DPT)',
                             'Memastikan setiap mahasiswa hanya dapat memberikan satu suara',
@@ -116,7 +116,7 @@
                         </div>
                         <h2 class="text-2xl font-black text-slate-900">3. Penyimpanan & Keamanan Data</h2>
                     </div>
-                    <div class="ml-13 space-y-4">
+                    <div class="mt-4 sm:mt-0 sm:ml-14 space-y-4">
                         <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100">
                             <p class="text-slate-700 leading-relaxed mb-4">Data Anda disimpan dengan standar keamanan tinggi menggunakan enkripsi <strong class="text-slate-900">AES-256</strong> dan teknologi <strong class="text-slate-900">Blockchain</strong> untuk memastikan integritas data pemilihan.</p>
                             <div class="grid sm:grid-cols-3 gap-3">
@@ -146,7 +146,7 @@
                         </div>
                         <h2 class="text-2xl font-black text-slate-900">4. Berbagi Informasi</h2>
                     </div>
-                    <div class="ml-13 space-y-3">
+                    <div class="mt-4 sm:mt-0 sm:ml-14 space-y-3">
                         <p class="text-slate-600">Kami <strong class="text-red-600">tidak menjual, menyewakan, atau memperdagangkan</strong> informasi pribadi Anda kepada pihak ketiga. Data hanya dapat dibagikan kepada:</p>
                         @foreach([
                             ['Pimpinan Universitas', 'Hanya data statistik anonim untuk laporan pemilihan', 'bg-blue-50 border-blue-100'],
@@ -173,7 +173,7 @@
                         </div>
                         <h2 class="text-2xl font-black text-slate-900">5. Hak-hak Anda</h2>
                     </div>
-                    <div class="ml-13 grid sm:grid-cols-2 gap-4">
+                    <div class="mt-4 sm:mt-0 sm:ml-14 grid sm:grid-cols-2 gap-4">
                         @foreach([
                             ['Akses Data','Anda berhak meminta salinan data pribadi yang kami miliki tentang Anda.'],
                             ['Koreksi Data','Anda dapat meminta koreksi data yang tidak akurat melalui panitia KPUM.'],
@@ -197,7 +197,7 @@
                         </div>
                         <h2 class="text-2xl font-black text-slate-900">6. Cookie & Teknologi Pelacakan</h2>
                     </div>
-                    <div class="ml-13 space-y-3 text-slate-600">
+                    <div class="mt-4 sm:mt-0 sm:ml-14 space-y-3 text-slate-600">
                         <p>Kami menggunakan cookie sesi yang diperlukan untuk menjaga keamanan login dan mencegah serangan CSRF. Cookie ini bersifat <strong class="text-slate-800">esensial</strong> dan tidak dapat dinonaktifkan.</p>
                         <div class="bg-orange-50 border border-orange-100 rounded-2xl p-5">
                             <p class="text-sm font-semibold text-orange-800">⚠️ Catatan Penting</p>
@@ -215,7 +215,7 @@
                         </div>
                         <h2 class="text-2xl font-black text-slate-900">7. Perubahan Kebijakan</h2>
                     </div>
-                    <div class="ml-13 text-slate-600">
+                    <div class="mt-4 sm:mt-0 sm:ml-14 text-slate-600">
                         <p>Kebijakan privasi ini dapat diperbarui sewaktu-waktu. Perubahan signifikan akan diberitahukan melalui pengumuman di halaman utama atau melalui email. Dengan terus menggunakan sistem ini, Anda menyetujui kebijakan privasi yang berlaku.</p>
                     </div>
                 </section>
@@ -229,7 +229,7 @@
                         </div>
                         <h2 class="text-2xl font-black text-slate-900">8. Kontak Kami</h2>
                     </div>
-                    <div class="ml-13">
+                    <div class="mt-4 sm:mt-0 sm:ml-14">
                         <p class="text-slate-600 mb-4">Jika Anda memiliki pertanyaan atau kekhawatiran mengenai kebijakan privasi ini, silakan hubungi kami:</p>
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
                             <div class="font-black text-slate-900 text-lg mb-1">KPUM UNUGHA</div>

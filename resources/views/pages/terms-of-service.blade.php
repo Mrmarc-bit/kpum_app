@@ -59,7 +59,7 @@
                             <p class="text-slate-600 mt-2 leading-relaxed mb-4">Platform ini hanya dapat digunakan oleh pengguna yang memenuhi kriteria berikut:</p>
                         </div>
                     </div>
-                    <div class="ml-14 space-y-3">
+                    <div class="mt-4 sm:mt-0 sm:ml-14 space-y-3">
                         @foreach([
                             ['✅','Mahasiswa aktif','Terdaftar sebagai mahasiswa aktif di UNUGHA Cilacap pada semester yang bersangkutan'],
                             ['✅','Terdaftar DPT','Terdaftar dalam Daftar Pemilih Tetap (DPT) yang telah diverifikasi oleh panitia KPUM'],
@@ -88,7 +88,7 @@
                             <p class="text-slate-600 mt-2 mb-4 leading-relaxed">Sebagai pengguna terdaftar, Anda berkewajiban untuk:</p>
                         </div>
                     </div>
-                    <div class="ml-14 grid sm:grid-cols-2 gap-4">
+                    <div class="mt-4 sm:mt-0 sm:ml-14 grid sm:grid-cols-2 gap-4">
                         @foreach([
                             ['Kerahasiaan Akses','Menjaga kerahasiaan kode akses/KTA Anda dan tidak membagikannya kepada pihak lain'],
                             ['Penggunaan Personal','Hanya menggunakan akun untuk kepentingan pribadi dan tidak mentransfer hak akses'],
@@ -115,7 +115,7 @@
                             <h2 class="text-2xl font-black text-slate-900">Larangan & Tindakan Terlarang</h2>
                         </div>
                     </div>
-                    <div class="ml-14">
+                    <div class="mt-4 sm:mt-0 sm:ml-14">
                         <div class="bg-red-50 border border-red-100 rounded-2xl p-6 space-y-3">
                             <p class="text-sm font-semibold text-red-800 mb-4">Kegiatan berikut <strong>DILARANG KERAS</strong> dan dapat berakibat sanksi hukum:</p>
                             @foreach([
@@ -147,7 +147,7 @@
                             <p class="text-slate-600 mt-2 leading-relaxed">Sistem pemilihan hanya dapat diakses selama periode yang telah ditetapkan oleh panitia KPUM. Kami berhak untuk menghentikan, menangguhkan, atau membatasi akses kapan saja untuk alasan teknis, keamanan, atau administratif.</p>
                         </div>
                     </div>
-                    <div class="ml-14 bg-amber-50 border border-amber-100 rounded-2xl p-5">
+                    <div class="mt-4 sm:mt-0 sm:ml-14 bg-amber-50 border border-amber-100 rounded-2xl p-5">
                         <p class="text-sm text-amber-800 font-semibold">⏰ Catatan Waktu Pemilihan</p>
                         <p class="text-sm text-amber-700 mt-1">Suara yang diberikan di luar periode voting yang sah tidak akan dihitung. Pemilih bertanggung jawab untuk memastikan mereka memberikan suara dalam waktu yang ditentukan.</p>
                     </div>

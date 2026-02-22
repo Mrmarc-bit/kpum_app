@@ -133,27 +133,27 @@
                             <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             </div>
-                            <div>
+                            <div class="flex-1 min-w-0">
                                 <div class="font-bold text-slate-800 text-sm mb-1">Alamat</div>
-                                <div class="text-sm text-slate-600">{{ $settings['address'] ?? 'Jl. Kemerdekaan Barat No.17, Kesugihan Kidul, Kec. Kesugihan, Kabupaten Cilacap, Jawa Tengah 53274' }}</div>
+                                <div class="text-sm text-slate-600 leading-relaxed">{{ $settings['address'] ?? 'Jl. Kemerdekaan Barat No.17, Kesugihan Kidul, Kec. Kesugihan, Kabupaten Cilacap, Jawa Tengah 53274' }}</div>
                             </div>
                         </div>
                         <div class="flex items-start gap-4">
                             <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600 shrink-0">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
-                            <div>
+                            <div class="flex-1 min-w-0">
                                 <div class="font-bold text-slate-800 text-sm mb-1">Jam Operasional</div>
-                                <div class="text-sm text-slate-600">Senin – Jumat: 08:00 – 16:00 WIB<br>Sabtu: 08:00 – 12:00 WIB<br>Minggu & Hari Libur: Tutup</div>
+                                <div class="text-sm text-slate-600 leading-relaxed">Senin – Jumat: 08:00 – 16:00 WIB<br>Sabtu: 08:00 – 12:00 WIB<br>Minggu & Hari Libur: Tutup</div>
                             </div>
                         </div>
                         <div class="flex items-start gap-4">
                             <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
-                            <div>
+                            <div class="flex-1 min-w-0">
                                 <div class="font-bold text-slate-800 text-sm mb-1">Catatan Penting</div>
-                                <div class="text-sm text-slate-600">Saat periode pemilihan aktif, tim teknis tersedia hingga 22:00 WIB untuk penanganan masalah darurat.</div>
+                                <div class="text-sm text-slate-600 leading-relaxed">Saat periode pemilihan aktif, tim teknis tersedia hingga 22:00 WIB untuk penanganan masalah darurat.</div>
                             </div>
                         </div>
                     </div>
