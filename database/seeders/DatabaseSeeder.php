@@ -14,27 +14,30 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Super Admin
-        User::factory()->create([
+        User::create([
             'name' => 'Super Admin',
             'email' => 'admin@kpum.ac.id',
             'password' => Hash::make('password'),
             'role' => 'admin',
+            'email_verified_at' => now(),
         ]);
 
         // Panitia
-        User::factory()->create([
+        User::create([
             'name' => 'Panitia KPUM',
             'email' => 'panitia@kpum.ac.id',
             'password' => Hash::make('password'),
             'role' => 'panitia',
+            'email_verified_at' => now(),
         ]);
 
         // Mahasiswa
-        User::factory()->create([
+        User::create([
             'name' => 'Mahasiswa Test',
             'email' => 'mahasiswa@kpum.ac.id',
             'password' => Hash::make('password'),
             'role' => 'mahasiswa',
+            'email_verified_at' => now(),
         ]);
         // Default Settings
         \App\Models\Setting::create([
