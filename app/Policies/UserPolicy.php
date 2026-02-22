@@ -112,7 +112,7 @@ class UserPolicy
     public function verify(User $user, User $model): bool
     {
         // Only Admin or Super Admin can manually verify emails
-        return in_array($user->role, ['admin', 'super_admin']) && $user->id !== $model->id;
+        return in_array($user->role, ['admin', 'super_admin']);
     }
 
     /**
