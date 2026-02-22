@@ -22,8 +22,15 @@ return Application::configure(basePath: dirname(__DIR__))
             return route('login');
         });
 
-        // Force trust all proxies for HTTPS detection
-        $middleware->trustProxies(at: '*');
+        // Force trust all proxies for HTTPS detection (Critical for Cloudflare)
+        $middleware->trustProxies(
+            at: '*',
+            headers: \Illuminate\Http\Request::HEADER_X_FORWARDED_FOR |
+                    \Illuminate\Http\Request::HEADER_X_FORWARDED_HOST |
+                    \Illuminate\Http\Request::HEADER_X_FORWARDED_PORT |
+                    \Illuminate\Http\Request::HEADER_X_FORWARDED_PROTO |
+                    \Illuminate\Http\Request::HEADER_X_FORWARDED_PREFIX
+        );
 
         // 1. WEB MIDDLEWARE GROUP
         // Pastikan Session sudah start sebelum cek Auth
