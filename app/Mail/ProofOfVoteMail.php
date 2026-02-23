@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -12,9 +11,9 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Mahasiswa;
 use App\Models\Setting;
 
-class ProofOfVoteMail extends Mailable implements ShouldQueue
+class ProofOfVoteMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use SerializesModels;
 
     public $user;
     public $logoBase64 = null;
