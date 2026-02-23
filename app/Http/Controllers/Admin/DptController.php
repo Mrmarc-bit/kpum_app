@@ -49,9 +49,26 @@ class DptController extends Controller
     {
         // AUTHORIZATION CHECK: Prevent IDOR on letter download
         $this->authorize('downloadLetter', $mahasiswa);
-        
-        $pdf = $this->letterService->generateNotificationLetter($mahasiswa);
-        return $pdf->download("Surat_Pemberitahuan_{$mahasiswa->nim}.pdf");
+
+        // Bump memory limit for heavy PDF generation
+        ini_set('memory_limit', '512M');
+
+        try {
+            $pdf = $this->letterService->generateNotificationLetter($mahasiswa);
+            return $pdf->download("Surat_Pemberitahuan_{$mahasiswa->nim}.pdf");
+        } catch (\Throwable $e) {
+            Log::error('downloadLetter failed for ' . $mahasiswa->nim . ': ' . $e->getMessage());
+            return response(
+                '<div style="font-family:sans-serif; text-align:center; padding: 50px;">
+                    <h1 style="color:red;">Gagal Mengunduh Surat (Error 500)</h1>
+                    <p>PDF engine kehabisan memori saat memproses gambar/logo yang terlalu besar.</p>
+                    <p><b>Solusi:</b> Kunjungi <b>Pengaturan Surat</b> lalu upload ulang Logo, Tanda Tangan, dan Stempel dengan ukuran yang lebih kecil (maks 500 KB per file).</p>
+                    <div style="margin-top:20px; padding:15px; background:#f8d7da; color:#721c24; border-radius:5px; text-align:left; font-family:monospace; font-size:12px;">
+                        <b>[Error]:</b> ' . htmlspecialchars($e->getMessage()) . '
+                    </div>
+                </div>',
+            500);
+        }
     }
 
     public function lettersIndex()

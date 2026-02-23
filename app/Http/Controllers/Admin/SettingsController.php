@@ -73,6 +73,7 @@ class SettingsController extends Controller
 
     public function downloadSampleProof(\App\Services\ProofOfVoteService $service)
     {
+        ini_set('memory_limit', '512M');
         try {
             $pdf = $service->generateSampleProof();
             return $pdf->stream('sample-bukti-pilih.pdf');
@@ -92,6 +93,7 @@ class SettingsController extends Controller
 
     public function downloadSampleNotification(\App\Services\ProofOfVoteService $service)
     {
+        ini_set('memory_limit', '512M');
         try {
             $pdf = $service->generateNotificationSample();
             return $pdf->stream('sample-pemberitahuan.pdf');
