@@ -33,7 +33,7 @@ class GenerateLettersJob implements ShouldQueue
      *
      * @var int
      */
-    public $tries = 3;
+    public $tries = 1; // Jangan retry — retry menyebabkan progress reset ke 0 (membingungkan user)
 
     /**
      * Create a new job instance.
@@ -118,6 +118,8 @@ class GenerateLettersJob implements ShouldQueue
             $query->chunk(10, function($students) use ($zip, $letterService, $batchSettings, &$processedCount, $totalStudents, $reportFile) {
                 foreach ($students as $student) {
                     /** @var \App\Models\Mahasiswa $student */
+                    $content = null;
+                    $pdf = null;
                     try {
                         // OPTIMIZATION: Use pre-generated PDF if exists
                         if ($student->notification_letter_path && Storage::disk('public')->exists($student->notification_letter_path)) {
@@ -137,14 +139,22 @@ class GenerateLettersJob implements ShouldQueue
                             $student->update(['notification_letter_path' => $path]);
                         }
                     } catch (\Throwable $e) {
-                         Log::error("Failed to add letter for NIM: {$student->nim}. Error: " . $e->getMessage());
+                        Log::error("Failed to add letter for NIM: {$student->nim}. Error: " . $e->getMessage());
+                    } finally {
+                        // MEMORY FIX: Bebaskan memory setelah setiap mahasiswa
+                        unset($content, $pdf);
                     }
                     $processedCount++;
                     
-                    // Update Progress More Frequently (every 10 records)
+                    // Update Progress every 10 records
                     if ($processedCount % 10 === 0 && $totalStudents > 0) {
                         $percentage = min(99, intval(($processedCount / $totalStudents) * 100));
                         $reportFile->update(['progress' => $percentage]);
+                    }
+
+                    // MEMORY FIX: Force GC setiap 20 records
+                    if ($processedCount % 20 === 0) {
+                        gc_collect_cycles();
                     }
                 }
             });
