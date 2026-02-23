@@ -93,13 +93,13 @@
                                             </span>
                                         </div>
                                     @elseif($file->status === 'processing')
-                                        <div class="w-full max-w-sm">
+                                        <div class="w-full max-w-sm progress-container">
                                             <div class="flex justify-between text-xs mb-1">
                                                 <span class="font-bold text-blue-600 animate-pulse">Sedang Memproses...</span>
-                                                <span class="font-bold text-slate-600">{{ $file->progress }}%</span>
+                                                <span class="font-bold text-slate-600 progress-pct">{{ $file->progress }}%</span>
                                             </div>
                                             <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                                <div class="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: <?php echo $file->progress; ?>%;"></div>
+                                                <div class="progress-bar bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: {{ $file->progress }}%;"></div>
                                             </div>
                                         </div>
                                     @elseif($file->status === 'failed')
@@ -146,28 +146,110 @@
         </div>
     </div>
     
-    {{-- Real-Time Progress Tracker (Pure JavaScript) --}}
+    {{-- Real-Time Progress Tracker --}}
     <script>
-        // Auto-refresh dinonaktifkan - gunakan tombol "Refresh Status" untuk update manual
-        // (auto-reload menyebabkan infinite loop jika ada job stuck di database)
-        var reloadTimer = null;
-        
+        var pollingInterval = null;
+
+        // Mulai polling JSON endpoint setiap 3 detik
         function startAutoRefresh() {
-            // Tidak melakukan apa-apa - disabled untuk mencegah infinite reload
-        }
-        
-        function stopAutoRefresh() {
-            if (reloadTimer) {
-                clearTimeout(reloadTimer);
-                reloadTimer = null;
+            const hasActive = document.querySelector('[data-status="processing"], [data-status="pending"]');
+            if (hasActive && !pollingInterval) {
+                pollingInterval = setInterval(pollStatus, 3000);
             }
         }
-        
+
+        function stopAutoRefresh() {
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+                pollingInterval = null;
+            }
+        }
+
         function refreshPage() {
             window.location.reload();
         }
 
-        
+        function pollStatus() {
+            fetch('/admin/letters/status', {
+                credentials: 'include',
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(r => r.ok ? r.json() : Promise.reject(r.status))
+            .then(jobs => {
+                let stillActive = false;
+
+                jobs.forEach(job => {
+                    const row = document.querySelector(`[data-job-id="${job.id}"]`);
+                    if (!row) return;
+
+                    const currentStatus = row.getAttribute('data-status');
+
+                    if (job.status === 'processing' || job.status === 'pending') {
+                        stillActive = true;
+                        row.setAttribute('data-status', job.status);
+
+                        // Update progress bar
+                        const progressContainer = row.querySelector('.progress-container');
+                        if (progressContainer) {
+                            const bar = progressContainer.querySelector('.progress-bar');
+                            const pct = progressContainer.querySelector('.progress-pct');
+                            if (bar) bar.style.width = job.progress + '%';
+                            if (pct) pct.textContent = job.progress + '%';
+                        }
+                    }
+
+                    // Status berubah (processing → completed/failed) → update DOM tanpa reload
+                    if (currentStatus !== job.status && (job.status === 'completed' || job.status === 'failed')) {
+                        row.setAttribute('data-status', job.status);
+                        updateRowStatus(row, job);
+                    }
+                });
+
+                if (!stillActive) {
+                    stopAutoRefresh();
+                }
+            })
+            .catch(err => {
+                console.warn('Polling error:', err, '- stopping.');
+                stopAutoRefresh();
+            });
+        }
+
+        // Update tampilan row saat status berubah (tanpa reload)
+        function updateRowStatus(row, job) {
+            const detailCell = row.querySelector('td:nth-child(2)');
+            const actionCell = row.querySelector('td:nth-child(3) div');
+            if (!detailCell || !actionCell) return;
+
+            // Update status badge
+            const statusArea = detailCell.querySelector('.mb-2');
+            const existingBadge = detailCell.querySelector('[class*="rounded-full"], .w-full');
+            if (existingBadge) existingBadge.remove();
+
+            if (job.status === 'completed') {
+                detailCell.insertAdjacentHTML('beforeend', `
+                    <div class="flex items-center gap-2">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                            Selesai (100%)
+                        </span>
+                    </div>`);
+                // Tambah tombol Download
+                actionCell.insertAdjacentHTML('afterbegin', `
+                    <a href="/admin/reports/download/${job.id}" data-turbo="false"
+                        class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-700 transition-colors shadow-sm shadow-emerald-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"/>
+                        </svg>
+                        Download
+                    </a>`);
+                showNotification('✅ ' + (job.details || 'Download') + ' sudah siap!', 'success');
+            } else if (job.status === 'failed') {
+                detailCell.insertAdjacentHTML('beforeend', `
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800">Gagal</span>
+                    <p class="text-xs text-red-400 mt-1 max-w-xs truncate">${job.error_message || ''}</p>`);
+            }
+        }
+
 
 
         
