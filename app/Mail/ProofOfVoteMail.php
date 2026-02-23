@@ -8,12 +8,14 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Mahasiswa;
+use App\Models\Setting;
 
 class ProofOfVoteMail extends Mailable
 {
     use SerializesModels;
 
     public $user;
+    public $logoUrl = null;
     protected $pdfContent;
 
     /**
@@ -23,6 +25,12 @@ class ProofOfVoteMail extends Mailable
     {
         $this->user = $user;
         $this->pdfContent = $pdfContent;
+
+        // Build public URL for logo (resolves to https://kpum.web.id/storage/...)
+        $logoPath = Setting::get('app_logo');
+        if ($logoPath) {
+            $this->logoUrl = url($logoPath);
+        }
     }
 
     /**

@@ -35,7 +35,16 @@
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
                                     <td align="center" style="padding-bottom: 20px;">
-                                        <div style="width: 70px; height: 70px; background-color: #ffffff; color: #1e40af; border-radius: 50%; text-align: center; line-height: 70px; font-weight: bold; font-size: 28px; margin: 0 auto;">K</div>
+                                        @if($logoUrl)
+                                            <a href="https://kpum.web.id" target="_blank" style="display: inline-block;">
+                                                <img src="{{ $logoUrl }}" alt="Logo KPUM" width="80" height="80"
+                                                    style="display: block; border: 0; border-radius: 50%; background-color: #ffffff; padding: 5px; object-fit: contain;">
+                                            </a>
+                                        @else
+                                            <a href="https://kpum.web.id" target="_blank" style="display: inline-block; text-decoration: none;">
+                                                <div style="width: 70px; height: 70px; background-color: #ffffff; color: #1e40af; border-radius: 50%; text-align: center; line-height: 70px; font-weight: bold; font-size: 28px; margin: 0 auto;">K</div>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr>
@@ -123,9 +132,9 @@
                                 </tr>
                                 <tr>
                                     <td align="center" style="padding-top: 10px; font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                                        <a href="#" style="color: #3b82f6; text-decoration: none;">Website</a> &bull; 
-                                        <a href="#" style="color: #3b82f6; text-decoration: none;">Instagram</a> &bull; 
-                                        <a href="#" style="color: #3b82f6; text-decoration: none;">Bantuan</a>
+                                        <a href="https://kpum.web.id" style="color: #3b82f6; text-decoration: none;">Website</a> &bull; 
+                                        <a href="https://instagram.com/kpumunugha" style="color: #3b82f6; text-decoration: none;">Instagram</a> &bull; 
+                                        <a href="https://kpum.web.id/bantuan" style="color: #3b82f6; text-decoration: none;">Bantuan</a>
                                     </td>
                                 </tr>
                             </table>
