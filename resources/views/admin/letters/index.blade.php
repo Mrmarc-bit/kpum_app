@@ -159,7 +159,7 @@
             if (hasProcessing) {
                 if (!refreshInterval) {
                     console.log('🔄 Starting auto-refresh for real-time progress...');
-                    refreshInterval = setInterval(refreshPage, 3000); // Refresh every 3 seconds
+                    refreshInterval = setInterval(refreshPage, 5000); // Refresh every 5 seconds
                 }
             } else {
                 stopAutoRefresh();
@@ -175,14 +175,25 @@
         }
         
         function refreshPage() {
-            // Use AJAX to refresh only the history table (faster than full page reload)
+            // Fetch tanpa X-Requested-With agar tidak masuk branch AJAX di middleware
+            // (yang bisa return 403 JSON) — gunakan page reload biasa jika gagal
             fetch(window.location.href, {
+                credentials: 'include', // Pastikan session cookie selalu dikirim
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'Accept': 'text/html',
                 }
             })
-            .then(response => response.text())
+            .then(response => {
+                // Jika response bukan sukses (mis. 403, 401, 500), reload halaman penuh
+                if (!response.ok) {
+                    console.warn('Auto-refresh got HTTP ' + response.status + ', stopping.');
+                    stopAutoRefresh();
+                    return null;
+                }
+                return response.text();
+            })
             .then(html => {
+                if (!html) return; // null jika response tidak ok
                 // Parse the response and extract the table
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
