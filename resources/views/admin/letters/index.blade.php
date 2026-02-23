@@ -76,7 +76,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-50">
                         @forelse($history as $file)
-                            <tr class="hover:bg-slate-50/50 transition-colors" data-status="{{ $file->status }}">
+                            <tr class="hover:bg-slate-50/50 transition-colors" data-status="{{ $file->status }}" data-job-id="{{ $file->id }}">
                                 <td class="px-6 py-4">
                                     <span class="block font-bold text-slate-700">{{ $file->created_at->format('d M Y') }}</span>
                                     <span class="text-xs text-slate-400 font-mono">{{ $file->created_at->format('H:i') }} WIB</span>
@@ -175,53 +175,57 @@
         }
         
         function refreshPage() {
-            // Fetch tanpa X-Requested-With agar tidak masuk branch AJAX di middleware
-            // (yang bisa return 403 JSON) — gunakan page reload biasa jika gagal
-            fetch(window.location.href, {
-                credentials: 'include', // Pastikan session cookie selalu dikirim
-                headers: {
-                    'Accept': 'text/html',
-                }
+            // Pakai JSON endpoint ringan — tidak memuat seluruh halaman HTML
+            // Ini menghindari Cloudflare WAF yang memblokir fetch ke halaman admin
+            fetch('/admin/letters/status', {
+                credentials: 'include',
+                headers: { 'Accept': 'application/json' }
             })
             .then(response => {
-                // Jika response bukan sukses (mis. 403, 401, 500), reload halaman penuh
                 if (!response.ok) {
-                    console.warn('Auto-refresh got HTTP ' + response.status + ', stopping.');
+                    console.warn('Status check got HTTP ' + response.status + ', stopping auto-refresh.');
                     stopAutoRefresh();
                     return null;
                 }
-                return response.text();
+                return response.json();
             })
-            .then(html => {
-                if (!html) return; // null jika response tidak ok
-                // Parse the response and extract the table
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const newTable = doc.querySelector('table');
-                const currentTable = document.querySelector('table');
+            .then(jobs => {
+                if (!jobs) return;
                 
-                if (newTable && currentTable) {
-                    // Get scroll position before update
-                    const scrollPos = window.scrollY;
-                    
-                    // Replace table content
-                    currentTable.innerHTML = newTable.innerHTML;
-                    
-                    // Restore scroll position
-                    window.scrollTo(0, scrollPos);
-                    
-                    // Check if still has processing jobs
-                    const stillProcessing = document.querySelector('[data-status="processing"], [data-status="pending"]');
-                    if (!stillProcessing) {
-                        stopAutoRefresh();
+                let hasActiveJob = false;
+                let allDone = true;
+
+                jobs.forEach(job => {
+                    if (job.status === 'processing' || job.status === 'pending') {
+                        hasActiveJob = true;
+                        allDone = false;
                         
-                        // Show completion notification
-                        showNotification('✅ Download sudah siap!', 'success');
+                        // Update progress bar jika ada
+                        const row = document.querySelector(`[data-job-id="${job.id}"]`);
+                        if (row) {
+                            row.setAttribute('data-status', job.status);
+                            const bar = row.querySelector('.progress-bar');
+                            if (bar) bar.style.width = job.progress + '%';
+                            const pct = row.querySelector('.progress-pct');
+                            if (pct) pct.textContent = job.progress + '%';
+                        }
+                    } else if (job.status === 'completed' || job.status === 'failed') {
+                        const row = document.querySelector(`[data-job-id="${job.id}"]`);
+                        if (row && row.getAttribute('data-status') !== job.status) {
+                            allDone = false; // Perlu reload untuk show tombol Download
+                        }
                     }
+                });
+
+                // Jika semua selesai atau ada yang baru completed/failed, reload halaman
+                if (!hasActiveJob) {
+                    stopAutoRefresh();
+                    showNotification('✅ Download sudah siap! Halaman akan di-refresh...', 'success');
+                    setTimeout(() => window.location.reload(), 1500);
                 }
             })
             .catch(error => {
-                console.error('Failed to refresh:', error);
+                console.error('Failed to check status:', error);
                 stopAutoRefresh();
             });
         }

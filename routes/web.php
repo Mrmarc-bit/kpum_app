@@ -302,6 +302,17 @@ Route::middleware([
 
         // Letters Download
         Route::get('/letters', [\App\Http\Controllers\Admin\DptController::class, 'lettersIndex'])->name('letters.index');
+        // Lightweight JSON status endpoint untuk polling (hindari Cloudflare block pada fetch ke halaman HTML penuh)
+        Route::get('/letters/status', function () {
+            $jobs = \App\Models\ReportFile::where('type', 'letters')
+                ->where('user_id', \Illuminate\Support\Facades\Auth::id())
+                ->whereIn('status', ['pending', 'processing', 'completed', 'failed'])
+                ->latest()
+                ->take(10)
+                ->get(['id', 'status', 'progress', 'error_message', 'details', 'path', 'created_at']);
+            return response()->json($jobs);
+        })->name('admin.letters.status');
+
 
         // Reset
         Route::get('/reset', [\App\Http\Controllers\Admin\ResetElectionController::class, 'index'])->name('reset.index');
