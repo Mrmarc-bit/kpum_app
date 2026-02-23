@@ -102,6 +102,7 @@ class GenerateLettersJob implements ShouldQueue
 
             $query->chunk(50, function($students) use ($letterService, $batchSettings, &$processedCount, $totalStudents, $reportFile, &$allPdfPaths) {
                 foreach ($students as $student) {
+                    /** @var \App\Models\Mahasiswa $student */
                     $pdf = null;
                     try {
                         $prodi = \Illuminate\Support\Str::slug($student->prodi ?? 'unknown');
