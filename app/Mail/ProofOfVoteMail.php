@@ -10,12 +10,14 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Mahasiswa;
+use App\Models\Setting;
 
 class ProofOfVoteMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public $user;
+    public $logoBase64 = null;
     protected $pdfContent;
 
     /**
@@ -25,6 +27,21 @@ class ProofOfVoteMail extends Mailable implements ShouldQueue
     {
         $this->user = $user;
         $this->pdfContent = $pdfContent;
+
+        // Load logo as base64 so Gmail can display it inline (not blocked as external URL)
+        $logoPath = Setting::get('app_logo');
+        if ($logoPath) {
+            $fullPath = public_path($logoPath);
+            if (!file_exists($fullPath)) {
+                $cleanPath = str_replace('storage/', '', $logoPath);
+                $fullPath = storage_path('app/public/' . $cleanPath);
+            }
+            if (file_exists($fullPath)) {
+                $ext = pathinfo($fullPath, PATHINFO_EXTENSION);
+                $mime = in_array($ext, ['png', 'webp', 'jpg', 'jpeg']) ? 'image/' . $ext : 'image/png';
+                $this->logoBase64 = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($fullPath));
+            }
+        }
     }
 
     /**
