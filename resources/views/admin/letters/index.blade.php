@@ -28,12 +28,8 @@
                             class="w-full px-4 py-4 rounded-xl border border-slate-200 bg-white focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all appearance-none font-bold text-slate-700 text-lg">
                             <option value="">-- Pilih Prodi --</option>
                             @foreach($prodiList as $prodi => $fakultas)
-                                @php
-                                    // Remove abbreviation in parentheses to match database format
-                                    // e.g., "Informatika (INF)" -> "Informatika"
-                                    $prodiClean = preg_replace('/\s*\([^)]*\)$/', '', $prodi);
-                                @endphp
-                                <option value="{{ $prodiClean }}">{{ $prodi }}</option>
+                                {{-- Value harus sama persis dengan yang tersimpan di database --}}
+                                <option value="{{ $prodi }}">{{ $prodi }}</option>
                             @endforeach
                         </select>
                         <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500">

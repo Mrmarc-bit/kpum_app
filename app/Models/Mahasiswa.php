@@ -28,14 +28,13 @@ class Mahasiswa extends Authenticatable
         'Teknik Mesin (TM)' => 'Fakultas Teknologi Industri (FTI)',
 
         // Fakultas Ekonomi (FE)
-        'Manajemen (MAN)' => 'Fakultas Ekonomi (FE)',
         'Ekonomi Pembangunan (EP)' => 'Fakultas Ekonomi (FE)',
 
         // Fakultas Keagamaan Islam (FKI)
         'Pendidikan Agama Islam (PAI)' => 'Fakultas Keagamaan Islam (FKI)',
         'Pendidikan Guru Madrasah Ibtidaiyah (PGMI)' => 'Fakultas Keagamaan Islam (FKI)',
-        'Komunikasi Penyiaran Islam (KPI)' => 'Fakultas Keagamaan Islam (FKI)',
-        'Hukum Keluarga Islam (HKI)' => 'Fakultas Keagamaan Islam (FKI)',
+        'Komunikasi dan Penyiaran Islam' => 'Fakultas Keagamaan Islam (FKI)',
+        'Hukum Keluarga Islam (Ahwal Syakhshiyyah)' => 'Fakultas Keagamaan Islam (FKI)',
     ];
 
     protected $guard = 'mahasiswa';
