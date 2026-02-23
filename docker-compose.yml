@@ -37,7 +37,11 @@ services:
     image: kpum-app # Use same image
     container_name: kpum-worker
     restart: unless-stopped
-    command: php artisan queue:work --queue=high,default --tries=3 --timeout=90
+    command: php artisan queue:work --queue=high --tries=3 --timeout=600
+    deploy:
+      resources:
+        limits:
+          memory: 4096M
     working_dir: /var/www
     volumes:
       - ./:/var/www
@@ -49,6 +53,35 @@ services:
       - app
       - db
       - redis
+    networks:
+      - kpum-network
+
+  default-worker:
+    build:
+      context: .
+      network: host
+      args:
+        user: laravel
+        uid: 1000
+    image: kpum-app
+    container_name: kpum-default-worker
+    restart: unless-stopped
+    command: php artisan queue:work --queue=default --tries=1 --timeout=1800
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      - DB_HOST=db
+      - REDIS_HOST=redis
+    depends_on:
+      - app
+      - db
+      - redis
+    deploy:
+      resources:
+        limits:
+          memory: 4096M
     networks:
       - kpum-network
 
