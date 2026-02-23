@@ -36,10 +36,10 @@ services:
         user: laravel
         uid: 1000
     image: kpum-app # Use same image
-    container_name: kpum-worker
     restart: unless-stopped
-    command: php artisan queue:work --queue=high --tries=3 --timeout=600
+    command: php artisan queue:work --queue=high --tries=3 --timeout=600 --sleep=1
     deploy:
+      replicas: 2
       resources:
         limits:
           memory: 4096M
