@@ -192,8 +192,8 @@
             {{-- Mobile: Horizontal Scroll (Snap), Desktop: Grid --}}
             <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide md:overflow-visible md:pb-0">
                 @foreach($kandidats as $kandidat)
-                    <div :class="hasVotedPresma ? 'opacity-80 grayscale contrast-75 cursor-not-allowed transform scale-95' : 'hover:shadow-2xl hover:border-blue-300/50 hover:-translate-y-2'"
-                        class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-xl transition-all duration-500 flex flex-col h-full relative w-[85vw] sm:w-[400px] flex-shrink-0 snap-center">
+                    <div :class="hasVotedPresma ? 'opacity-80 grayscale contrast-75 cursor-not-allowed transform scale-95' : 'hover:shadow-2xl hover:border-blue-300/50'"
+                        class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-xl flex flex-col h-full relative w-[85vw] sm:w-[400px] flex-shrink-0 snap-center">
                         
                         <!-- Voted Overlay -->
                         <template x-if="hasVotedPresma">
@@ -208,11 +208,11 @@
                         </template>
 
                         <!-- Photo Area -->
-                        <div class="h-64 bg-slate-100 relative overflow-hidden flex items-center justify-center group-hover:h-72 transition-all duration-500">
+                        <div class="h-72 bg-slate-100 relative overflow-hidden flex items-center justify-center">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent z-10"></div>
                             @if($kandidat->foto)
                                 <img src="{{ asset('storage/' . $kandidat->foto) }}" alt="{{ $kandidat->nama_ketua }}"
-                                    class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110">
+                                    class="w-full h-full object-cover object-top">
                             @else
                                 <div class="text-slate-300 flex flex-col items-center">
                                     <svg class="w-20 h-20 mb-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
@@ -220,7 +220,7 @@
                                 </div>
                             @endif
                             
-                            <div class="absolute bottom-0 left-0 right-0 p-6 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                            <div class="absolute bottom-0 left-0 right-0 p-6 z-20">
                                 <div class="inline-flex items-center gap-2 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg mb-2 shadow-lg">
                                     <span>No. Urut</span>
                                     <span class="text-lg">{{ str_pad($kandidat->no_urut, 2, '0', STR_PAD_LEFT) }}</span>
@@ -237,7 +237,7 @@
                             <div class="flex-1 space-y-4">
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Visi & Misi</span>
-                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-slate-600 text-sm italic leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
+                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-slate-600 text-sm italic leading-relaxed line-clamp-3">
                                         {{ $kandidat->visi ?: 'Visi dan misi pasangan calon ini sedang dalam penyempurnaan.' }}
                                     </div>
                                 </div>
@@ -272,8 +272,8 @@
                                 <button
                                     @click="openModal('{{ $kandidat->id }}', {{ json_encode($kandidat->nama_ketua . ' & ' . $kandidat->nama_wakil) }}, '{{ $kandidat->no_urut }}', 'presma')"
                                     :disabled="hasVotedPresma || isVotingClosed"
-                                    class="w-full inline-flex justify-center items-center px-4 py-4 rounded-xl transition-all font-bold text-white shadow-lg shadow-blue-500/20 relative overflow-hidden"
-                                    :class="(hasVotedPresma || isVotingClosed) ? 'bg-slate-300 cursor-not-allowed opacity-50' : 'bg-slate-900 hover:bg-blue-600 hover:shadow-blue-500/40 hover:-translate-y-1'">
+                                    class="w-full inline-flex justify-center items-center px-4 py-4 rounded-xl transition-colors font-bold text-white shadow-lg relative overflow-hidden"
+                                    :class="(hasVotedPresma || isVotingClosed) ? 'bg-slate-300 cursor-not-allowed opacity-50' : 'bg-slate-900 hover:bg-blue-600 hover:shadow-blue-500'">
                                     
                                     <span class="relative z-10 flex items-center gap-2">
                                         <span x-show="!hasVotedPresma && !isVotingClosed" class="flex items-center gap-2">
@@ -309,8 +309,8 @@
             {{-- Mobile: Horizontal Scroll (Snap), Desktop: Grid --}}
             <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide md:overflow-visible md:pb-0">
                 @foreach($calonDpms as $dpm)
-                    <div :class="hasVotedDpm ? 'opacity-80 grayscale contrast-75 cursor-not-allowed transform scale-95' : 'hover:shadow-2xl hover:border-purple-300/50 hover:-translate-y-2'"
-                        class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-xl transition-all duration-500 flex flex-col h-full relative w-[85vw] sm:w-[400px] flex-shrink-0 snap-center">
+                    <div :class="hasVotedDpm ? 'opacity-80 grayscale contrast-75 cursor-not-allowed transform scale-95' : 'hover:shadow-2xl hover:border-purple-300/50'"
+                        class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-xl flex flex-col h-full relative w-[85vw] sm:w-[400px] flex-shrink-0 snap-center">
                         
                          <!-- Voted Overlay -->
                         <template x-if="hasVotedDpm">
@@ -325,11 +325,11 @@
                         </template>
 
                         <!-- Photo Area -->
-                        <div class="h-64 bg-slate-100 relative overflow-hidden flex items-center justify-center group-hover:h-72 transition-all duration-500">
+                        <div class="h-72 bg-slate-100 relative overflow-hidden flex items-center justify-center">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent z-10"></div>
                             @if($dpm->foto)
                                 <img src="{{ asset('storage/' . $dpm->foto) }}" alt="{{ $dpm->nama }}"
-                                    class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110">
+                                    class="w-full h-full object-cover object-top">
                             @else
                                 <div class="text-slate-300 flex flex-col items-center">
                                     <svg class="w-20 h-20 mb-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
@@ -337,7 +337,7 @@
                                 </div>
                             @endif
                             
-                             <div class="absolute bottom-0 left-0 right-0 p-6 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                             <div class="absolute bottom-0 left-0 right-0 p-6 z-20">
                                 <div class="inline-flex items-center gap-2 bg-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg mb-2 shadow-lg">
                                     <span>No. Urut</span>
                                     <span class="text-lg">{{ str_pad($dpm->urutan_tampil, 2, '0', STR_PAD_LEFT) }}</span>
@@ -356,7 +356,7 @@
                              <div class="flex-1 space-y-4">
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Visi & Misi</span>
-                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-slate-600 text-sm italic leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
+                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-slate-600 text-sm italic leading-relaxed line-clamp-3">
                                         {{ $dpm->visi ?: 'Visi dan misi calon ini sedang dalam penyempurnaan.' }}
                                     </div>
                                 </div>
@@ -386,8 +386,8 @@
                                 <button
                                     @click="openModal('{{ $dpm->id }}', {{ json_encode($dpm->nama) }}, '{{ $dpm->urutan_tampil }}', 'dpm')"
                                     :disabled="hasVotedDpm || isVotingClosed"
-                                     class="w-full inline-flex justify-center items-center px-4 py-4 rounded-xl transition-all font-bold text-white shadow-lg shadow-purple-500/20 relative overflow-hidden"
-                                    :class="(hasVotedDpm || isVotingClosed) ? 'bg-slate-300 cursor-not-allowed opacity-50' : 'bg-slate-900 hover:bg-purple-600 hover:shadow-purple-500/40 hover:-translate-y-1'">
+                                     class="w-full inline-flex justify-center items-center px-4 py-4 rounded-xl transition-colors font-bold text-white shadow-lg relative overflow-hidden"
+                                    :class="(hasVotedDpm || isVotingClosed) ? 'bg-slate-300 cursor-not-allowed opacity-50' : 'bg-slate-900 hover:bg-purple-600 hover:shadow-purple-500'">
                                     
                                      <span class="relative z-10 flex items-center gap-2">
                                         <span x-show="!hasVotedDpm && !isVotingClosed" class="flex items-center gap-2">
