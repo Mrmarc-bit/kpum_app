@@ -118,41 +118,42 @@ class GenerateLettersJob implements ShouldQueue
             $query->chunk(10, function($students) use ($zip, $letterService, $batchSettings, &$processedCount, $totalStudents, $reportFile) {
                 foreach ($students as $student) {
                     /** @var \App\Models\Mahasiswa $student */
-                    $content = null;
                     $pdf = null;
                     try {
-                        // OPTIMIZATION: Use pre-generated PDF if exists
-                        if ($student->notification_letter_path && Storage::disk('public')->exists($student->notification_letter_path)) {
-                            // Use cached PDF (VERY FAST!)
-                            $content = Storage::disk('public')->get($student->notification_letter_path);
-                            $zip->addFromString("{$student->nim}_{$student->name}.pdf", $content);
-                        } else {
-                            // Generate on-the-fly (slower fallback)
+                        $prodi = \Illuminate\Support\Str::slug($student->prodi ?? 'unknown');
+                        $path = "letters/{$prodi}/{$student->nim}.pdf";
+
+                        // Pastikan PDF sudah ada di disk (generate kalau belum)
+                        if (!($student->notification_letter_path && Storage::disk('public')->exists($student->notification_letter_path))) {
+                            // Generate & simpan ke disk dulu
                             $pdf = $letterService->generateNotificationLetter($student, $batchSettings);
-                            $content = $pdf->output();
-                            $zip->addFromString("{$student->nim}_{$student->name}.pdf", $content);
-                            
-                            // Cache for future use
-                            $prodi = \Illuminate\Support\Str::slug($student->prodi ?? 'unknown');
-                            $path = "letters/{$prodi}/{$student->nim}.pdf";
-                            Storage::disk('public')->put($path, $content);
+                            Storage::disk('public')->put($path, $pdf->output());
                             $student->update(['notification_letter_path' => $path]);
+                            unset($pdf); // Bebaskan memory PDF SEGERA
                         }
+
+                        // addFile() baca dari disk — TIDAK load ke RAM
+                        $diskPath = Storage::disk('public')->path(
+                            $student->notification_letter_path ?? $path
+                        );
+                        if (file_exists($diskPath)) {
+                            $zip->addFile($diskPath, "{$student->nim}_{$student->name}.pdf");
+                        }
+
                     } catch (\Throwable $e) {
                         Log::error("Failed to add letter for NIM: {$student->nim}. Error: " . $e->getMessage());
-                    } finally {
-                        // MEMORY FIX: Bebaskan memory setelah setiap mahasiswa
-                        unset($content, $pdf);
+                        unset($pdf);
                     }
+
                     $processedCount++;
-                    
+
                     // Update Progress every 10 records
                     if ($processedCount % 10 === 0 && $totalStudents > 0) {
                         $percentage = min(99, intval(($processedCount / $totalStudents) * 100));
                         $reportFile->update(['progress' => $percentage]);
                     }
 
-                    // MEMORY FIX: Force GC setiap 20 records
+                    // Force GC setiap 20 records
                     if ($processedCount % 20 === 0) {
                         gc_collect_cycles();
                     }
