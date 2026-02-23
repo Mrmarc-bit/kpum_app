@@ -37,7 +37,7 @@ services:
     image: kpum-app # Use same image
     container_name: kpum-worker
     restart: unless-stopped
-    command: php artisan queue:work --tries=3 --timeout=90
+    command: php artisan queue:work --queue=high,default --tries=3 --timeout=90
     working_dir: /var/www
     volumes:
       - ./:/var/www

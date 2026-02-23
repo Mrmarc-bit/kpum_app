@@ -32,19 +32,20 @@ class SendProofOfVoteJob implements ShouldQueue
     public function handle(): void
     {
         try {
-            // Re-check status to be absolutely sure
-            if ($this->mahasiswa->voted_at && $this->mahasiswa->dpm_voted_at && $this->mahasiswa->email) {
-                
-                // Generate PDF service logic (Service assumed to exist or direct logic here)
-                // For decoupling, better to resolve service or do simple generation here if needed.
-                // Assuming Service exists as previously seen in Controller logic
-                
+            // Send proof email if user has email and has voted in at least one election
+            if ($this->mahasiswa->email && ($this->mahasiswa->voted_at || $this->mahasiswa->dpm_voted_at)) {
+
                 $pdf = app(\App\Services\ProofOfVoteService::class)->generatePdf($this->mahasiswa);
                 $pdfBase64 = base64_encode($pdf->output());
 
                 Mail::to($this->mahasiswa->email)->send(new ProofOfVoteMail($this->mahasiswa, $pdfBase64));
-                
+
                 Log::info('Bukti pilih berhasil dikirim', ['email' => $this->mahasiswa->email]);
+            } else {
+                Log::warning('Email bukti pilih tidak dikirim: email kosong atau belum memilih', [
+                    'mahasiswa_id' => $this->mahasiswa->id,
+                    'email' => $this->mahasiswa->email ?? '(kosong)'
+                ]);
             }
         } catch (\Exception $e) {
             Log::error('Gagal mengirim email bukti pilih [Job]', ['error' => $e->getMessage(), 'user_id' => $this->mahasiswa->id]);
