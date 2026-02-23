@@ -291,11 +291,13 @@
                 });
         });
         
-        // Modern Delete Confirmation with SweetAlert2
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const form = this.closest('.delete-form');
+        // Modern Delete Confirmation - Event Delegation
+        // (agar delete button yang muncul setelah auto-refresh table juga bisa diklik)
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.delete-btn');
+            if (!btn) return;
+            e.preventDefault();
+            const form = btn.closest('.delete-form');
 
                 // CRITICAL FIX: Cache form data SEKARANG sebelum DOM bisa berubah oleh auto-refresh
                 const formAction = form.getAttribute('action');
@@ -360,7 +362,6 @@
                         startAutoRefresh();
                     }
                 });
-            });
         });
     </script>
 </x-layouts.admin>
