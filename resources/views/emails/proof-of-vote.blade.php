@@ -35,7 +35,7 @@
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
                                     <td align="center" style="padding-bottom: 20px;">
-                                        @if($logoUrl)
+                                        @if(isset($logoUrl) && $logoUrl)
                                             <a href="https://kpum.web.id" target="_blank" style="display: inline-block;">
                                                 <img src="{{ $logoUrl }}" alt="Logo KPUM" width="80" height="80"
                                                     style="display: block; border: 0; border-radius: 50%; background-color: #ffffff; padding: 5px; object-fit: contain;">
