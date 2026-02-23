@@ -35,11 +35,7 @@
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
                                     <td align="center" style="padding-bottom: 20px;">
-                                        @if($logoBase64)
-                                            <img src="{{ $logoBase64 }}" alt="Logo" width="80" height="80" style="display: block; border: 0; background-color: #ffffff; padding: 5px; border-radius: 50%;">
-                                        @else
-                                            <div style="width: 60px; height: 60px; background-color: #ffffff; color: #1e40af; border-radius: 50%; text-align: center; line-height: 60px; font-weight: bold; font-size: 24px;">K</div>
-                                        @endif
+                                        <div style="width: 70px; height: 70px; background-color: #ffffff; color: #1e40af; border-radius: 50%; text-align: center; line-height: 70px; font-weight: bold; font-size: 28px; margin: 0 auto;">K</div>
                                     </td>
                                 </tr>
                                 <tr>
