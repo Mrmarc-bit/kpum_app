@@ -148,25 +148,12 @@
     
     {{-- Real-Time Progress Tracker (Pure JavaScript) --}}
     <script>
-        // Use 'var' or attach to window to avoid "Identifier 'refreshInterval' has already been declared" 
-        // when Turbo Drive replaces the body.
-        var refreshInterval = window.refreshInterval || null;
-        
-        // Auto-refresh: pakai window.location.reload() bukan fetch()
-        // fetch() diblokir Cloudflare JS Challenge, tapi page reload melewati challenge dengan benar
-        var reloadTimer = window.reloadTimer || null;
+        // Auto-refresh dinonaktifkan - gunakan tombol "Refresh Status" untuk update manual
+        // (auto-reload menyebabkan infinite loop jika ada job stuck di database)
+        var reloadTimer = null;
         
         function startAutoRefresh() {
-            const hasProcessing = document.querySelector('[data-status="processing"], [data-status="pending"]');
-            
-            if (hasProcessing) {
-                if (!reloadTimer) {
-                    console.log('🔄 Auto-reload dalam 8 detik...');
-                    reloadTimer = setTimeout(function() {
-                        window.location.reload();
-                    }, 8000); // Reload penuh setiap 8 detik
-                }
-            }
+            // Tidak melakukan apa-apa - disabled untuk mencegah infinite reload
         }
         
         function stopAutoRefresh() {
@@ -177,9 +164,9 @@
         }
         
         function refreshPage() {
-            // Tidak digunakan lagi - reload penuh menggantikan AJAX fetch
             window.location.reload();
         }
+
         
 
 
