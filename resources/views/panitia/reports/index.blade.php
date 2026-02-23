@@ -174,7 +174,7 @@
                                                     <span class="text-xs text-slate-400 italic">-</span>
                                                 @endif
 
-                                                <form action="{{ route('panitia.reports.destroy', $file) }}" method="POST" onsubmit="return confirm('Hapus riwayat file ini?');">
+                                                <form action="{{ route('panitia.reports.destroy', $file) }}" method="POST" data-confirm="Hapus riwayat file ini?">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Hapus File">

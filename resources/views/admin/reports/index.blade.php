@@ -166,7 +166,7 @@
                                                     </a>
                                                 @endif
 
-                                                <form action="{{ route('admin.reports.destroy', $file) }}" method="POST" onsubmit="return confirm('Hapus riwayat file ini?');">
+                                                <form action="{{ route('admin.reports.destroy', $file) }}" method="POST" data-confirm="Hapus riwayat file ini?">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="w-9 h-9 flex items-center justify-center rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all shadow-sm" title="Hapus File">

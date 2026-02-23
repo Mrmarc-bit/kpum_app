@@ -76,7 +76,7 @@
                             </a>
                             
                             <form action="{{ route('admin.calon_dpm.destroy', $calon->id) }}" method="POST"
-                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus calon ini?');">
+                                data-confirm="Apakah Anda yakin ingin menghapus calon ini?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"

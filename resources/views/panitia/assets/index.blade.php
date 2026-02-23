@@ -137,7 +137,7 @@
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                                         Rename
                                                     </button>
-                                                    <form action="{{ route('panitia.assets.folder.destroy', $folder) }}" method="POST" onsubmit="return confirm('Hapus folder ini?')">
+                                                    <form action="{{ route('panitia.assets.folder.destroy', $folder) }}" method="POST" data-confirm="Hapus folder ini?">
                                                         @csrf 
                                                         <input type="hidden" name="_method" value="DELETE">
                                                         <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2">
@@ -178,7 +178,7 @@
                                                 <div x-show="open" class="absolute right-0 top-6 w-32 bg-white rounded-lg shadow-xl border border-slate-100 z-50 py-1" style="display: none;">
                                                     <a href="{{ $asset->url }}" download class="w-full text-left px-4 py-2 text-xs text-slate-600 hover:bg-slate-50 flex items-center gap-2">Download</a>
                                                     <button data-rename-url="{{ route('panitia.assets.rename', $asset) }}" data-rename-name="{{ e($asset->name) }}" onclick="openRenameModal(this.dataset.renameUrl, this.dataset.renameName)" class="w-full text-left px-4 py-2 text-xs text-slate-600 hover:bg-slate-50 flex items-center gap-2">Rename</button>
-                                                    <form action="{{ route('panitia.assets.destroy', $asset) }}" method="POST" onsubmit="return confirm('Hapus file?')">
+                                                    <form action="{{ route('panitia.assets.destroy', $asset) }}" method="POST" data-confirm="Hapus file?">
                                                         @csrf 
                                                         <input type="hidden" name="_method" value="DELETE">
                                                         <button class="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-red-50 flex items-center gap-2">Delete</button>
@@ -209,7 +209,7 @@
                                             </button>
                                             <div x-show="open" class="absolute right-0 top-8 w-32 bg-white rounded-lg shadow-xl border border-slate-100 z-50 py-1" style="display: none;">
                                                 <button data-rename-url="{{ route('panitia.assets.folder.rename', $folder) }}" data-rename-name="{{ e($folder->name) }}" onclick="openRenameModal(this.dataset.renameUrl, this.dataset.renameName)" class="w-full text-left px-3 py-2 text-xs text-slate-600 hover:bg-slate-50">Rename</button>
-                                                <form action="{{ route('panitia.assets.folder.destroy', $folder) }}" method="POST" onsubmit="return confirm('Hapus folder ini?')">
+                                                <form action="{{ route('panitia.assets.folder.destroy', $folder) }}" method="POST" data-confirm="Hapus folder ini?">
                                                     @csrf 
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <button class="w-full text-left px-3 py-2 text-xs text-red-600 hover:bg-red-50">Delete</button>
@@ -265,7 +265,7 @@
                                                 <a href="{{ $asset->url }}" download class="w-full text-left px-3 py-2 text-xs text-slate-600 hover:bg-slate-50 flex items-center gap-2">
                                                     Download
                                                 </a>
-                                                <form action="{{ route('panitia.assets.destroy', $asset) }}" method="POST" onsubmit="return confirm('Hapus file?')">
+                                                <form action="{{ route('panitia.assets.destroy', $asset) }}" method="POST" data-confirm="Hapus file?">
                                                     @csrf 
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <button class="w-full text-left px-3 py-2 text-xs text-red-600 hover:bg-red-50 flex items-center gap-2">

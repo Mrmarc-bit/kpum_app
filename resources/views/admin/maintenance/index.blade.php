@@ -137,7 +137,7 @@
                     </div>
                     <h3 class="font-black text-lg text-slate-800">Error Logs (Terminal View)</h3>
                 </div>
-                <form action="{{ route('admin.maintenance.clear-logs') }}" method="POST" onsubmit="return confirm('Hapus semua log?')">
+                <form action="{{ route('admin.maintenance.clear-logs') }}" method="POST" data-confirm="Hapus semua log?">
                     @csrf
                     <button class="text-xs font-bold text-red-500 hover:text-red-700 hover:underline">Clear Logs</button>
                 </form>
