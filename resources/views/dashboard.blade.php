@@ -449,7 +449,31 @@
                         </p>
                     </div>
 
-                    <form method="POST" action="{{ route('vote.store') }}" @submit="submitting = true">
+                    <form method="POST" action="{{ route('vote.store') }}" @submit.prevent="
+                        submitting = true;
+                        fetch($event.target.action, {
+                            method: 'POST',
+                            body: new FormData($event.target),
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.success) {
+                                if(voteType === 'presma') hasVotedPresma = true;
+                                if(voteType === 'dpm') hasVotedDpm = true;
+                                $refs.confirmModal.close();
+                                // Optional: Tampilkan notifikasi sukses 
+                                // alert(data.message || 'Suara berhasil disimpan!');
+                            } else {
+                                alert(data.message || 'Gagal menyimpan suara.');
+                            }
+                        })
+                        .catch(err => alert('Terjadi kesalahan jaringan.'))
+                        .finally(() => submitting = false);
+                    ">
                         @csrf
                         <input type="hidden" name="type" :value="voteType">
                         <input type="hidden" name="kandidat_id" :value="selectedKandidat?.id">

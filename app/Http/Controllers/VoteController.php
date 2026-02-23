@@ -149,6 +149,9 @@ class VoteController extends Controller
             try {
                 $endDateTime = \Carbon\Carbon::parse($endTime);
                 if (now()->greaterThan($endDateTime)) {
+                    if ($request->wantsJson()) {
+                        return response()->json(['success' => false, 'message' => 'Mohon maaf, waktu pemilihan telah berakhir.']);
+                    }
                     return back()->with('error', 'Mohon maaf, waktu pemilihan telah berakhir.');
                 }
             } catch (\Exception $e) {
@@ -167,6 +170,9 @@ class VoteController extends Controller
         $mahasiswa = Auth::guard('mahasiswa')->user();
         
         if (!$mahasiswa || !($mahasiswa instanceof Mahasiswa)) {
+            if ($request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'Silakan login terlebih dahulu.']);
+            }
             return redirect()->route('login.mahasiswa')->with('error', 'Silakan login terlebih dahulu.');
         }
 
@@ -189,10 +195,20 @@ class VoteController extends Controller
                 }
             }
 
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => true, 
+                    'message' => 'Suara Anda berhasil disimpan!',
+                    'is_complete' => ($freshMahasiswa->voted_at && $freshMahasiswa->dpm_voted_at)
+                ]);
+            }
             return back()->with('success', 'Suara Anda berhasil disimpan!');
 
         } catch (\Exception $e) {
             Log::error('Vote Failed', ['user' => $mahasiswa->id, 'error' => $e->getMessage()]);
+            if ($request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'Gagal merekam suara: ' . $e->getMessage()]);
+            }
             return back()->with('error', 'Gagal merekam suara: ' . $e->getMessage());
         }
     }
