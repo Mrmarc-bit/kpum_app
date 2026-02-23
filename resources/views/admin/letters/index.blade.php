@@ -152,83 +152,37 @@
         // when Turbo Drive replaces the body.
         var refreshInterval = window.refreshInterval || null;
         
-        // Auto-refresh progress every 1 second if there's processing job
+        // Auto-refresh: pakai window.location.reload() bukan fetch()
+        // fetch() diblokir Cloudflare JS Challenge, tapi page reload melewati challenge dengan benar
+        var reloadTimer = window.reloadTimer || null;
+        
         function startAutoRefresh() {
             const hasProcessing = document.querySelector('[data-status="processing"], [data-status="pending"]');
             
             if (hasProcessing) {
-                if (!refreshInterval) {
-                    console.log('🔄 Starting auto-refresh for real-time progress...');
-                    refreshInterval = setInterval(refreshPage, 5000); // Refresh every 5 seconds
+                if (!reloadTimer) {
+                    console.log('🔄 Auto-reload dalam 8 detik...');
+                    reloadTimer = setTimeout(function() {
+                        window.location.reload();
+                    }, 8000); // Reload penuh setiap 8 detik
                 }
-            } else {
-                stopAutoRefresh();
             }
         }
         
         function stopAutoRefresh() {
-            if (refreshInterval) {
-                console.log('⏸️ Stopping auto-refresh (no active jobs)');
-                clearInterval(refreshInterval);
-                refreshInterval = null;
+            if (reloadTimer) {
+                clearTimeout(reloadTimer);
+                reloadTimer = null;
             }
         }
         
         function refreshPage() {
-            // Pakai JSON endpoint ringan — tidak memuat seluruh halaman HTML
-            // Ini menghindari Cloudflare WAF yang memblokir fetch ke halaman admin
-            fetch('/admin/letters/status', {
-                credentials: 'include',
-                headers: { 'Accept': 'application/json' }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    console.warn('Status check got HTTP ' + response.status + ', stopping auto-refresh.');
-                    stopAutoRefresh();
-                    return null;
-                }
-                return response.json();
-            })
-            .then(jobs => {
-                if (!jobs) return;
-                
-                let hasActiveJob = false;
-                let allDone = true;
-
-                jobs.forEach(job => {
-                    if (job.status === 'processing' || job.status === 'pending') {
-                        hasActiveJob = true;
-                        allDone = false;
-                        
-                        // Update progress bar jika ada
-                        const row = document.querySelector(`[data-job-id="${job.id}"]`);
-                        if (row) {
-                            row.setAttribute('data-status', job.status);
-                            const bar = row.querySelector('.progress-bar');
-                            if (bar) bar.style.width = job.progress + '%';
-                            const pct = row.querySelector('.progress-pct');
-                            if (pct) pct.textContent = job.progress + '%';
-                        }
-                    } else if (job.status === 'completed' || job.status === 'failed') {
-                        const row = document.querySelector(`[data-job-id="${job.id}"]`);
-                        if (row && row.getAttribute('data-status') !== job.status) {
-                            allDone = false; // Perlu reload untuk show tombol Download
-                        }
-                    }
-                });
-
-                // Jika semua selesai atau ada yang baru completed/failed, reload halaman
-                if (!hasActiveJob) {
-                    stopAutoRefresh();
-                    showNotification('✅ Download sudah siap! Halaman akan di-refresh...', 'success');
-                    setTimeout(() => window.location.reload(), 1500);
-                }
-            })
-            .catch(error => {
-                console.error('Failed to check status:', error);
-                stopAutoRefresh();
-            });
+            // Tidak digunakan lagi - reload penuh menggantikan AJAX fetch
+            window.location.reload();
         }
+        
+
+
         
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
