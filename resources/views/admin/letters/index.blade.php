@@ -318,6 +318,9 @@
                     focusCancel: true
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        // CRITICAL: Stop auto-refresh agar tidak interferensi navigasi delete
+                        stopAutoRefresh();
+
                         // Show loading toast
                         Swal.fire({
                             title: 'Menghapus...',
@@ -330,7 +333,7 @@
                             }
                         });
                         
-                        // Submit form
+                        // Submit form (navigasi penuh, tidak ada AJAX yang mengganggu)
                         form.submit();
                     }
                 });
