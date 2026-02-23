@@ -190,7 +190,7 @@
             </div>
 
             {{-- Mobile: Horizontal Scroll (Snap), Desktop: Grid --}}
-            <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide md:overflow-visible md:pb-0">
+            <div class="flex items-stretch md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide md:overflow-visible md:pb-0">
                 @foreach($kandidats as $kandidat)
                     <div :class="hasVotedPresma ? 'opacity-80 grayscale contrast-75 cursor-not-allowed transform scale-95' : 'hover:shadow-2xl hover:border-blue-300/50'"
                         class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-xl flex flex-col h-full relative w-[85vw] sm:w-[400px] flex-shrink-0 snap-center">
@@ -237,7 +237,7 @@
                             <div class="flex-1 space-y-4">
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Visi & Misi</span>
-                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-slate-600 text-sm italic leading-relaxed line-clamp-3">
+                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-slate-600 text-sm italic leading-relaxed h-32 overflow-y-auto">
                                         {{ $kandidat->visi ?: 'Visi dan misi pasangan calon ini sedang dalam penyempurnaan.' }}
                                     </div>
                                 </div>
@@ -263,7 +263,7 @@
                                 @endif
                             </div>
 
-                            <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-3">
+                            <div class="mt-auto pt-6 border-t border-slate-100 flex flex-col gap-3">
                                 <a href="{{ route('student.kandidat.show', $kandidat->id) }}"
                                     class="w-full inline-flex justify-center items-center px-4 py-3 rounded-xl transition-all border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 text-sm">
                                     Lihat Detail Kandidat
@@ -307,7 +307,7 @@
             </div>
 
             {{-- Mobile: Horizontal Scroll (Snap), Desktop: Grid --}}
-            <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide md:overflow-visible md:pb-0">
+            <div class="flex items-stretch md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide md:overflow-visible md:pb-0">
                 @foreach($calonDpms as $dpm)
                     <div :class="hasVotedDpm ? 'opacity-80 grayscale contrast-75 cursor-not-allowed transform scale-95' : 'hover:shadow-2xl hover:border-purple-300/50'"
                         class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-xl flex flex-col h-full relative w-[85vw] sm:w-[400px] flex-shrink-0 snap-center">
@@ -356,7 +356,7 @@
                              <div class="flex-1 space-y-4">
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Visi & Misi</span>
-                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-slate-600 text-sm italic leading-relaxed line-clamp-3">
+                                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-slate-600 text-sm italic leading-relaxed h-32 overflow-y-auto">
                                         {{ $dpm->visi ?: 'Visi dan misi calon ini sedang dalam penyempurnaan.' }}
                                     </div>
                                 </div>
@@ -382,7 +382,7 @@
                                 @endif
                             </div>
 
-                            <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-3">
+                            <div class="mt-auto pt-6 border-t border-slate-100 flex flex-col gap-3">
                                 <button
                                     @click="openModal('{{ $dpm->id }}', {{ json_encode($dpm->nama) }}, '{{ $dpm->urutan_tampil }}', 'dpm')"
                                     :disabled="hasVotedDpm || isVotingClosed"
