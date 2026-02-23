@@ -193,7 +193,7 @@
             <div class="flex items-stretch md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide md:overflow-visible md:pb-0">
                 @foreach($kandidats as $kandidat)
                     <div :class="hasVotedPresma ? 'opacity-80 grayscale contrast-75 cursor-not-allowed transform scale-95' : 'hover:shadow-2xl hover:border-blue-300/50'"
-                        class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-xl flex flex-col h-full relative w-[85vw] sm:w-[400px] flex-shrink-0 snap-center">
+                        class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-xl flex flex-col relative w-[85vw] sm:w-[400px] flex-shrink-0 snap-center">
                         
                         <!-- Voted Overlay -->
                         <template x-if="hasVotedPresma">
@@ -310,7 +310,7 @@
             <div class="flex items-stretch md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide md:overflow-visible md:pb-0">
                 @foreach($calonDpms as $dpm)
                     <div :class="hasVotedDpm ? 'opacity-80 grayscale contrast-75 cursor-not-allowed transform scale-95' : 'hover:shadow-2xl hover:border-purple-300/50'"
-                        class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-xl flex flex-col h-full relative w-[85vw] sm:w-[400px] flex-shrink-0 snap-center">
+                        class="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-xl flex flex-col relative w-[85vw] sm:w-[400px] flex-shrink-0 snap-center">
                         
                          <!-- Voted Overlay -->
                         <template x-if="hasVotedDpm">
