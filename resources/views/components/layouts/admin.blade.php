@@ -172,7 +172,7 @@
             </div>
         </div>
 
-        <nav class="p-4 space-y-1 overflow-y-auto h-[calc(100vh-4rem)]">
+        <nav class="p-4 space-y-1 overflow-y-auto h-[calc(100vh-4rem)] pb-8" style="padding-bottom: max(2rem, env(safe-area-inset-bottom))">
             <div class="px-3 mb-2 mt-4">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Utama</p>
             </div>
