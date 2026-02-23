@@ -86,12 +86,12 @@
                 </div>
             </div>
 
-            @php
-                $reportFiles = \App\Models\ReportFile::with('user')->latest()->paginate(10);
-            @endphp
+            {{-- Data sudah difilter oleh ReportController: hanya results, audit, berita_acara --}}
+            {{-- Surat Pemberitahuan (type=letters) TIDAK akan muncul di sini --}}
+            @php $reportFiles = $generatedReports ?? collect(); @endphp
 
             <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden">
-                @if($reportFiles->count() > 0)
+                @if($reportFiles->isNotEmpty())
                     <div class="overflow-x-auto">
                         <table class="w-full">
                             <thead class="bg-slate-50 border-b border-slate-100">
@@ -192,7 +192,7 @@
                     </div>
 
                     <!-- Pagination -->
-                    @if($reportFiles->hasPages())
+                    @if(method_exists($reportFiles, 'hasPages') && $reportFiles->hasPages())
                         <div class="px-6 py-4 border-t border-slate-100 bg-slate-50">
                             {{ $reportFiles->links() }}
                         </div>
