@@ -296,7 +296,15 @@
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const form = this.closest('.delete-form');
-                
+
+                // CRITICAL FIX: Cache form data SEKARANG sebelum DOM bisa berubah oleh auto-refresh
+                const formAction = form.getAttribute('action');
+                const csrfToken = form.querySelector('input[name="_token"]').value;
+
+                // CRITICAL FIX: Stop auto-refresh SEGERA - jangan tunggu sampai confirm
+                // karena interval bisa fire selama SweetAlert terbuka dan hapus form dari DOM
+                stopAutoRefresh();
+
                 Swal.fire({
                     title: '🗑️ Hapus Riwayat?',
                     html: '<p class="text-slate-600">File download akan dihapus permanen dari sistem.</p>',
@@ -318,10 +326,6 @@
                     focusCancel: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // CRITICAL: Stop auto-refresh agar tidak interferensi navigasi delete
-                        stopAutoRefresh();
-
-                        // Show loading toast
                         Swal.fire({
                             title: 'Menghapus...',
                             html: 'Mohon tunggu sebentar',
@@ -332,9 +336,28 @@
                                 Swal.showLoading();
                             }
                         });
-                        
-                        // Submit form (navigasi penuh, tidak ada AJAX yang mengganggu)
-                        form.submit();
+
+                        // CRITICAL FIX: Gunakan fetch() bukan form.submit()
+                        // karena form mungkin sudah tidak ada di DOM (dihapus oleh auto-refresh)
+                        fetch(formAction, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken,
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-Requested-With': 'XMLHttpRequest',
+                            },
+                            body: '_token=' + encodeURIComponent(csrfToken) + '&_method=DELETE'
+                        }).then(() => {
+                            // Reload halaman setelah delete berhasil
+                            window.location.reload();
+                        }).catch(() => {
+                            // Tetap reload walau ada error - agar modal tidak stuck
+                            window.location.reload();
+                        });
+
+                    } else {
+                        // User cancel: restart auto-refresh jika masih ada job aktif
+                        startAutoRefresh();
                     }
                 });
             });
