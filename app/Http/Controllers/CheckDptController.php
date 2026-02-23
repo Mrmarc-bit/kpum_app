@@ -14,7 +14,11 @@ class CheckDptController extends Controller
      */
     public function index()
     {
-        $settings = \App\Models\Setting::pluck('value', 'key')->all();
+        $settings = \Illuminate\Support\Facades\Cache::get('global_settings_array') ?? [];
+        if (empty($settings)) {
+            $settings = \App\Models\Setting::pluck('value', 'key')->all();
+            \Illuminate\Support\Facades\Cache::forever('global_settings_array', $settings);
+        }
         return view('check-dpt.index', compact('settings'));
     }
 
