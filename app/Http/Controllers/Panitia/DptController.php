@@ -286,7 +286,7 @@ class DptController extends Controller
         $history = \App\Models\ReportFile::where('type', 'letters')
             ->where('user_id', Auth::id())
             ->latest()
-            ->paginate(10);
+            ->paginate(5);
 
         return view('panitia.letters.index', [
             'title' => 'Unduh Surat Pemberitahuan',
