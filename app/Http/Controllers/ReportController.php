@@ -33,7 +33,10 @@ class ReportController extends Controller
             ? 'panitia.reports.index' 
             : 'admin.reports.index';
 
+        // Hanya tampilkan laporan resmi (hasil, audit, berita acara)
+        // JANGAN tampilkan 'letters' — itu milik halaman Unduh Surat Pemberitahuan
         $generatedReports = \App\Models\ReportFile::where('user_id', Auth::id())
+            ->whereIn('type', ['results', 'audit', 'berita_acara'])
             ->latest()
             ->get();
 
@@ -169,6 +172,11 @@ class ReportController extends Controller
     {
         if ($reportFile->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403);
+        }
+
+        // Proteksi: record 'letters' hanya boleh dihapus dari halaman Unduh Surat, bukan dari sini
+        if ($reportFile->type === 'letters') {
+            return back()->with('error', 'File surat pemberitahuan tidak dapat dihapus dari halaman ini. Gunakan halaman Unduh Surat.');
         }
 
         if ($reportFile->path && Storage::disk('public')->exists($reportFile->path)) {
