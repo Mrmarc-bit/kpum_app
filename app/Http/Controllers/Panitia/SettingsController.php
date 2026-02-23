@@ -66,14 +66,40 @@ class SettingsController extends Controller
 
     public function downloadSampleProof(\App\Services\ProofOfVoteService $service)
     {
-        $pdf = $service->generateSampleProof();
-        return $pdf->stream('sample-bukti-pilih.pdf');
+        try {
+            $pdf = $service->generateSampleProof();
+            return $pdf->stream('sample-bukti-pilih.pdf');
+        } catch (\Exception $e) {
+            return response(
+                '<div style="font-family:sans-serif; text-align:center; padding: 50px;">
+                    <h1 style="color:red;">Gagal Menampilkan PDF (Error 500)</h1>
+                    <p>Sepertinya PDF engine kehabisan memori. Hal ini biasanya terjadi karena Anda baru saja mengunggah <b>Gambar/Logo/Tanda Tangan/Stempel yang ukurannya terlalu besar</b> (di atas 1MB).</p>
+                    <p><b>Solusi:</b> Silakan kompres dan <b>Upload ulang Logo Website, Tanda Tangan, dan Stempel</b> dengan ukuran maksimal <b>500 KB</b> per gambarnya.</p>
+                    <div style="margin-top:20px; padding:15px; background:#f8d7da; color:#721c24; border-radius:5px; text-align:left; font-family:monospace; font-size:12px;">
+                        <b>[Error Debug]:</b> ' . $e->getMessage() . '
+                    </div>
+                </div>', 
+            500);
+        }
     }
 
     public function downloadSampleNotification(\App\Services\ProofOfVoteService $service)
     {
-        $pdf = $service->generateNotificationSample();
-        return $pdf->stream('sample-pemberitahuan.pdf');
+        try {
+            $pdf = $service->generateNotificationSample();
+            return $pdf->stream('sample-pemberitahuan.pdf');
+        } catch (\Exception $e) {
+            return response(
+                '<div style="font-family:sans-serif; text-align:center; padding: 50px;">
+                    <h1 style="color:red;">Gagal Menampilkan PDF (Error 500)</h1>
+                    <p>Sepertinya PDF engine kehabisan memori. Hal ini biasanya terjadi karena Anda baru saja mengunggah <b>Gambar/Logo/Tanda Tangan/Stempel yang ukurannya terlalu besar</b> (di atas 1MB).</p>
+                    <p><b>Solusi:</b> Silakan kompres dan <b>Upload ulang Logo Website, Tanda Tangan, dan Stempel</b> dengan ukuran maksimal <b>500 KB</b> per gambarnya.</p>
+                    <div style="margin-top:20px; padding:15px; background:#f8d7da; color:#721c24; border-radius:5px; text-align:left; font-family:monospace; font-size:12px;">
+                        <b>[Error Debug]:</b> ' . $e->getMessage() . '
+                    </div>
+                </div>', 
+            500);
+        }
     }
 
     public function notification()

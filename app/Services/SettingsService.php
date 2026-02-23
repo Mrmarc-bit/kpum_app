@@ -14,12 +14,20 @@ class SettingsService
      */
     public function updateSettings(array $data, ?UploadedFile $logo = null)
     {
-        // 1. Handle file upload safely
         if ($logo && $logo->isValid()) {
-             $filename = 'logo_' . time() . '.' . $logo->getClientOriginalExtension();
-             // Put content manually if needed or standard store
-             Storage::disk('public')->put('settings/' . $filename, file_get_contents($logo));
-             $data['app_logo'] = 'storage/settings/' . $filename;
+             try {
+                 $filename = 'logo_' . time() . '.webp';
+                 $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+                 $image = $manager->read($logo);
+                 $image->scaleDown(width: 500);
+                 Storage::disk('public')->put('settings/' . $filename, (string) $image->toWebp(60));
+                 $data['app_logo'] = 'storage/settings/' . $filename;
+             } catch (\Exception $e) {
+                 \Illuminate\Support\Facades\Log::warning('Failed applying intervention image on logo: ' . $e->getMessage());
+                 $filename = 'logo_' . time() . '.' . $logo->getClientOriginalExtension();
+                 Storage::disk('public')->put('settings/' . $filename, file_get_contents($logo));
+                 $data['app_logo'] = 'storage/settings/' . $filename;
+             }
         }
 
         // 2. Ensure booleans are set
