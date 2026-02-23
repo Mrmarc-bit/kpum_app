@@ -26,10 +26,11 @@ class ProofOfVoteMail extends Mailable
         $this->user = $user;
         $this->pdfContent = $pdfContent;
 
-        // Build public URL for logo (resolves to https://kpum.web.id/storage/...)
+        // Build public URL for logo using asset() — same as landing page
+        // Setting::get('app_logo') returns path like "storage/settings/logo.webp"
         $logoPath = Setting::get('app_logo');
         if ($logoPath) {
-            $this->logoUrl = url($logoPath);
+            $this->logoUrl = asset((string) $logoPath);
         }
     }
 
