@@ -20,10 +20,15 @@ class CalonDpm extends Model
     public function getFotoAttribute($value)
     {
         if (empty($value)) return null;
-        // Jika sudah berisi '/', berarti path lengkap — kembalikan apa adanya
         if (\Illuminate\Support\Str::contains($value, '/')) return $value;
-        // Kembalikan path relatif TANPA prefix 'storage/' karena blade
-        // sudah menggunakan asset('storage/' . $calon->foto)
         return "images/medium/{$value}.webp";
+    }
+
+    public function getFotoThumbAttribute()
+    {
+        $value = $this->attributes['foto'] ?? null;
+        if (empty($value)) return null;
+        if (\Illuminate\Support\Str::contains($value, '/')) return $value;
+        return "images/thumb/{$value}.webp";
     }
 }

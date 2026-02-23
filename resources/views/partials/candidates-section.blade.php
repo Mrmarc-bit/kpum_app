@@ -63,6 +63,9 @@
                                         class="relative w-full aspect-[4/5] rounded-[1.5rem] overflow-hidden shadow-inner bg-slate-100 mb-5 group-hover:shadow-md transition-shadow duration-300">
                                         @if($kandidat->foto)
                                             <img src="{{ asset('storage/' . $kandidat->foto) }}"
+                                                srcset="{{ asset('storage/' . $kandidat->foto_thumb) }} 300w, {{ asset('storage/' . $kandidat->foto) }} 800w"
+                                                sizes="(max-width: 768px) 300px, 800px"
+                                                loading="lazy"
                                                 alt="{{ $kandidat->nama_ketua }}"
                                                 class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105">
                                         @else
@@ -112,10 +115,16 @@
                                         class="relative w-full aspect-[4/5] rounded-[1.5rem] overflow-hidden shadow-inner bg-slate-100 mb-5 group-hover:shadow-md transition-shadow duration-300">
                                         @if($kandidat->foto_wakil)
                                             <img src="{{ asset('storage/' . $kandidat->foto_wakil) }}"
+                                                srcset="{{ asset('storage/' . $kandidat->foto_wakil_thumb) }} 300w, {{ asset('storage/' . $kandidat->foto_wakil) }} 800w"
+                                                sizes="(max-width: 768px) 300px, 800px"
+                                                loading="lazy"
                                                 alt="{{ $kandidat->nama_wakil }}"
                                                 class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105">
                                         @elseif($kandidat->foto)
                                             <img src="{{ asset('storage/' . $kandidat->foto) }}"
+                                                srcset="{{ asset('storage/' . $kandidat->foto_thumb) }} 300w, {{ asset('storage/' . $kandidat->foto) }} 800w"
+                                                sizes="(max-width: 768px) 300px, 800px"
+                                                loading="lazy"
                                                 alt="{{ $kandidat->nama_wakil }}"
                                                 class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105">
                                         @else
@@ -207,7 +216,7 @@
                                     <div
                                         class="w-20 h-20 rounded-2xl bg-slate-100 overflow-hidden relative shadow-sm shrink-0 ring-1 ring-slate-100">
                                         @if($dpm->foto)
-                                            <img src="{{ asset('storage/' . $dpm->foto) }}" alt="{{ $dpm->nama }}"
+                                            <img src="{{ asset('storage/' . $dpm->foto_thumb) }}" loading="lazy" alt="{{ $dpm->nama }}"
                                                 class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
                                         @else
                                             <div class="flex items-center justify-center h-full text-slate-300 bg-slate-50">

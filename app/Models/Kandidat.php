@@ -33,23 +33,37 @@ class Kandidat extends Model
     {
         if (empty($value))
             return null;
-        // Jika sudah berisi '/', berarti path lengkap — kembalikan apa adanya
         if (\Illuminate\Support\Str::contains($value, '/'))
             return $value;
-        // Kembalikan path relatif TANPA prefix 'storage/' karena semua blade
-        // sudah menggunakan asset('storage/' . $kandidat->foto)
         return "images/medium/{$value}.webp";
+    }
+
+    public function getFotoThumbAttribute()
+    {
+        $value = $this->attributes['foto'] ?? null;
+        if (empty($value))
+            return null;
+        if (\Illuminate\Support\Str::contains($value, '/'))
+            return $value;
+        return "images/thumb/{$value}.webp";
     }
 
     public function getFotoWakilAttribute($value)
     {
         if (empty($value))
             return null;
-        // Jika sudah berisi '/', berarti path lengkap — kembalikan apa adanya
         if (\Illuminate\Support\Str::contains($value, '/'))
             return $value;
-        // Kembalikan path relatif TANPA prefix 'storage/' karena semua blade
-        // sudah menggunakan asset('storage/' . $kandidat->foto_wakil)
         return "images/medium/{$value}.webp";
+    }
+
+    public function getFotoWakilThumbAttribute()
+    {
+        $value = $this->attributes['foto_wakil'] ?? null;
+        if (empty($value))
+            return null;
+        if (\Illuminate\Support\Str::contains($value, '/'))
+            return $value;
+        return "images/thumb/{$value}.webp";
     }
 }
