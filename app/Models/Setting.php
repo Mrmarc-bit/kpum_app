@@ -9,14 +9,13 @@ class Setting extends Model
 {
     protected $fillable = ['key', 'value', 'description'];
 
-    /**
-     * Get setting value by key WITHOUT caching
-     * Cache is managed at application level
-     */
     public static function get($key, $default = null)
     {
-        $setting = static::where('key', $key)->first();
-        return $setting ? $setting->value : $default;
+        $settings = Cache::rememberForever('global_settings_array', function () {
+            return static::pluck('value', 'key')->toArray();
+        });
+
+        return $settings[$key] ?? $default;
     }
 
     /**
@@ -36,6 +35,7 @@ class Setting extends Model
         Cache::forget($key);
         Cache::forget("setting_{$key}");
         Cache::forget('global_settings');
+        Cache::forget('global_settings_array'); // Clear our new high-performance array cache
 
         return $setting;
     }
@@ -48,8 +48,9 @@ class Setting extends Model
      */
     public static function isMaintenanceMode(): bool
     {
-        // Get fresh value from database (no cache)
-        $value = static::get('maintenance_mode', 'false');
+        // Dapatkan mode langsung dari DB agar aman saat cache fail/rusak (emergency mode)
+        $setting = static::where('key', 'maintenance_mode')->first();
+        $value = $setting ? $setting->value : 'false';
 
         // Use PHP native boolean filter for consistency
         // Handles: "true", "1", "yes", "on", true, 1 → true

@@ -6,7 +6,7 @@
     <title>Quick Count Real-Time - KPUM UNUGHA</title>
     
     <!-- Favicon -->
-    @php $appLogo = \App\Models\Setting::where('key', 'app_logo')->value('value'); @endphp
+    @php $appLogo = setting('app_logo'); @endphp
     @if($appLogo)
         <link rel="icon" href="{{ asset($appLogo) }}">
     @else

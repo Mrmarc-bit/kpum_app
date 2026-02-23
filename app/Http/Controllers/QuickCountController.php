@@ -14,7 +14,7 @@ class QuickCountController extends Controller
     public function index()
     {
         // Check if Quick Count feature is enabled
-        $enabled = Setting::where('key', 'enable_quick_count')->value('value') === 'true';
+        $enabled = setting('enable_quick_count') === 'true';
 
         if (!$enabled && !auth()->guard('web')->check()) {
             return redirect('/')->with('error', 'Quick Count belum dibuka untuk publik.');
@@ -28,7 +28,7 @@ class QuickCountController extends Controller
     public function getData()
     {
         // Security Check
-        $enabled = Setting::where('key', 'enable_quick_count')->value('value') === 'true';
+        $enabled = setting('enable_quick_count') === 'true';
         if (!$enabled && !auth()->guard('web')->check()) {
             return response()->json(['error' => 'Feature disabled'], 403);
         }
