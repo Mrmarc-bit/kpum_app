@@ -32,6 +32,9 @@ class SendProofOfVoteJob implements ShouldQueue
     public function handle(): void
     {
         try {
+            // Bump memory limit - DomPDF needs more than the CLI default (128M) for PDF generation
+            ini_set('memory_limit', '512M');
+
             // Send proof email if user has email and has voted in at least one election
             if ($this->mahasiswa->email && ($this->mahasiswa->voted_at || $this->mahasiswa->dpm_voted_at)) {
 
