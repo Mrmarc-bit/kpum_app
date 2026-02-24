@@ -189,6 +189,7 @@ Route::middleware([
         Route::get('/settings/letters/notification', [\App\Http\Controllers\Panitia\SettingsController::class, 'notification'])->name('settings.letters.notification');
         Route::post('/settings/letters/notification', [\App\Http\Controllers\Panitia\SettingsController::class, 'updateNotification'])->name('settings.letters.notification.update');
         Route::get('/settings/letters/notification/sample', [\App\Http\Controllers\Panitia\SettingsController::class, 'downloadSampleNotification'])->name('settings.letters.notification.sample');
+        Route::post('/settings/letters/notification/clear-cache', [\App\Http\Controllers\Panitia\SettingsController::class, 'clearLetterCache'])->name('settings.letters.notification.clear-cache');
         Route::get('/audit', [\App\Http\Controllers\Panitia\AuditLogController::class, 'index'])->name('audit.index');
         Route::get('/audit/print', [\App\Http\Controllers\Panitia\AuditLogController::class, 'print'])->name('audit.print');
         Route::delete('/audit/destroy', [\App\Http\Controllers\Panitia\AuditLogController::class, 'destroy'])->name('audit.destroy');
@@ -284,6 +285,7 @@ Route::middleware([
         Route::get('/settings/letters/notification', [\App\Http\Controllers\Admin\SettingsController::class, 'notification'])->name('settings.letters.notification');
         Route::post('/settings/letters/notification', [\App\Http\Controllers\Admin\SettingsController::class, 'updateNotification'])->name('settings.letters.notification.update');
         Route::get('/settings/letters/notification/sample', [\App\Http\Controllers\Admin\SettingsController::class, 'downloadSampleNotification'])->name('settings.letters.notification.sample');
+        Route::post('/settings/letters/notification/clear-cache', [\App\Http\Controllers\Admin\SettingsController::class, 'clearLetterCache'])->name('settings.letters.notification.clear-cache');
         Route::get('/settings/maintenance', [\App\Http\Controllers\Admin\SettingsController::class, 'maintenance'])->name('settings.maintenance');
         Route::post('/settings/maintenance', [\App\Http\Controllers\Admin\SettingsController::class, 'updateMaintenance'])->name('settings.maintenance.update');
 

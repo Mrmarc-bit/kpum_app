@@ -22,17 +22,28 @@
             </div>
 
             <div class="flex items-center gap-3">
+                <form method="POST" action="{{ route('admin.settings.letters.notification.clear-cache') }}"
+                    onsubmit="return confirm('Reset semua cache PDF surat pemberitahuan? PDF akan digenerate ulang saat download berikutnya.')">
+                    @csrf
+                    <button type="submit"
+                        class="inline-flex items-center gap-2 px-6 py-3 bg-orange-100 text-orange-700 font-bold rounded-2xl hover:bg-orange-200 transition-all hover:-translate-y-1 text-sm tracking-wide border border-orange-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Reset Cache PDF
+                    </button>
+                </form>
                 <a href="{{ route('admin.settings.letters.notification.sample') }}" target="_blank"
                     class="inline-flex items-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 font-bold rounded-2xl hover:bg-slate-200 transition-all hover:-translate-y-1 text-sm tracking-wide">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                     </svg>
                     Unduh Sampel
                 </a>
                 <button type="submit" form="settings-form"
                     class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 hover:-translate-y-1 text-sm tracking-wide">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                     Simpan Perubahan
                 </button>

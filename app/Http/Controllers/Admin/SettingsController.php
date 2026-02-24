@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class SettingsController extends Controller
 {
@@ -121,7 +124,7 @@ class SettingsController extends Controller
     {
         $request->validate([
             'letter_signature_path' => 'nullable|mimes:png,jpg,jpeg,webp|max:4096',
-            'letter_stamp_path' => 'nullable|mimes:png,jpg,jpeg,webp|max:4096',
+            'letter_stamp_path'     => 'nullable|mimes:png,jpg,jpeg,webp|max:4096',
         ]);
 
         $data = $request->except('_token', '_method');
@@ -153,7 +156,44 @@ class SettingsController extends Controller
 
         \Illuminate\Support\Facades\Cache::forget('global_settings');
 
-        return back()->with('success', 'Template surat pemberitahuan berhasil diperbarui.');
+        // Auto-invalidate: hapus semua cache PDF notification letter
+        // karena konten surat sudah berubah (tanda tangan, tanggal, dll)
+        $this->invalidateNotificationLetterCache();
+
+        return back()->with('success', '✅ Template berhasil diperbarui & cache PDF surat otomatis di-reset.');
+    }
+
+    /**
+     * Manual cache reset — dipanggil dari tombol "Reset Cache Surat".
+     */
+    public function clearLetterCache()
+    {
+        $this->invalidateNotificationLetterCache();
+        return back()->with('success', '🔄 Cache surat pemberitahuan berhasil direset. PDF akan digenerate ulang saat download berikutnya.');
+    }
+
+    /**
+     * Hapus semua cached notification letter PDF:
+     * 1. Null-kan notification_letter_path di DB (agar next download generate ulang)
+     * 2. Hapus file fisik dari storage/public/letters/
+     */
+    private function invalidateNotificationLetterCache(): void
+    {
+        // Null-kan kolom di DB (batch update, sangat cepat)
+        \App\Models\Mahasiswa::whereNotNull('notification_letter_path')
+            ->update(['notification_letter_path' => null]);
+
+        // Hapus semua file PDF dari folder storage/public/letters/
+        $storage = \Illuminate\Support\Facades\Storage::disk('public');
+        if ($storage->exists('letters')) {
+            // Hapus semua file dalam folder letters (semua subfolder/prodi)
+            $files = $storage->allFiles('letters');
+            if (!empty($files)) {
+                $storage->delete($files);
+            }
+        }
+
+        Log::info('Notification letter cache invalidated by ' . Auth::user()?->name . ' (' . Auth::user()?->role . ')');
     }
 
     public function update(Request $request)

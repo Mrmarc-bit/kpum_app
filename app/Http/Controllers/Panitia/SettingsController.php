@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Panitia;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class SettingsController extends Controller
 {
@@ -141,7 +144,38 @@ class SettingsController extends Controller
 
         \Illuminate\Support\Facades\Cache::forget('global_settings');
 
-        return back()->with('success', 'Template surat pemberitahuan berhasil diperbarui.');
+        // Auto-invalidate PDF cache karena konten surat berubah
+        $this->invalidateNotificationLetterCache();
+
+        return back()->with('success', '✅ Template berhasil diperbarui & cache PDF surat otomatis di-reset.');
+    }
+
+    /**
+     * Manual cache reset — dipanggil dari tombol "Reset Cache Surat".
+     */
+    public function clearLetterCache()
+    {
+        $this->invalidateNotificationLetterCache();
+        return back()->with('success', '🔄 Cache surat pemberitahuan berhasil direset. PDF akan digenerate ulang saat download berikutnya.');
+    }
+
+    /**
+     * Invalidate semua cached notification letter PDF.
+     */
+    private function invalidateNotificationLetterCache(): void
+    {
+        \App\Models\Mahasiswa::whereNotNull('notification_letter_path')
+            ->update(['notification_letter_path' => null]);
+
+        $storage = Storage::disk('public');
+        if ($storage->exists('letters')) {
+            $files = $storage->allFiles('letters');
+            if (!empty($files)) {
+                $storage->delete($files);
+            }
+        }
+
+        Log::info('Letter cache invalidated by ' . Auth::user()?->name . ' (' . Auth::user()?->role . ')');
     }
 
     public function update(Request $request)
