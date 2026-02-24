@@ -388,20 +388,36 @@
                             method: 'POST',
                             headers: {
                                 'X-CSRF-TOKEN': csrfToken,
-                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Accept': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest',
                             },
                             body: '_token=' + encodeURIComponent(csrfToken) + '&_method=DELETE'
-                        }).then(() => {
-                            // Reload halaman setelah delete berhasil
-                            window.location.reload();
-                        }).catch(() => {
-                            // Tetap reload walau ada error - agar modal tidak stuck
-                            window.location.reload();
+                        })
+                        .then(async response => {
+                            const data = await response.json();
+                            if (response.ok && data.success) {
+                                Swal.fire({
+                                    title: 'Berhasil!',
+                                    text: data.message || 'Riwayat berhasil dihapus.',
+                                    icon: 'success',
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire('Gagal!', data.message || 'Terjadi kesalahan saat menghapus.', 'error')
+                                    .then(() => startAutoRefresh()); // Resume polling
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Delete error:', error);
+                            Swal.fire('Error!', 'Gagal menghubungi server.', 'error')
+                                .then(() => startAutoRefresh()); // Resume polling
                         });
 
                     } else {
-                        // User cancel: restart auto-refresh jika masih ada job aktif
+                        // User batal hapus -> resume polling
                         startAutoRefresh();
                     }
                 });

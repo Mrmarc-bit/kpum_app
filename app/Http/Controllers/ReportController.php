@@ -11,9 +11,10 @@ use App\Models\Setting;
 use App\Models\Vote;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
@@ -170,24 +171,34 @@ class ReportController extends Controller
      */
     public function destroy(\App\Models\ReportFile $reportFile)
     {
-        // Check authorization: must be owner OR authenticated admin/panitia
-        $currentUserId = Auth::id();
-        $isOwner       = ($reportFile->user_id == $currentUserId); // loose == handles int/string mismatch
-        $isPrivileged  = Auth::check() && in_array(Auth::user()?->role, ['admin', 'super_admin', 'panitia']);
+        $user = Auth::user();
+        $isPrivileged = $user && in_array($user->role, ['admin', 'super_admin', 'panitia']);
+        $isOwner = $user && ($reportFile->user_id == $user->id);
 
-        if (!$isOwner && !$isPrivileged) {
+        Log::info("Attempting to delete ReportFile #{$reportFile->id}", [
+            'request_user_id' => Auth::id(),
+            'request_user_role' => $user->role ?? 'guest',
+            'file_owner_id' => $reportFile->user_id,
+            'is_privileged' => $isPrivileged,
+            'is_owner' => $isOwner
+        ]);
+
+        if (!$isPrivileged && !$isOwner) {
+            Log::warning("Unauthorized delete attempt for ReportFile #{$reportFile->id}");
             if (request()->ajax() || request()->wantsJson()) {
-                return response()->json(['success' => false, 'message' => 'Akses ditolak.'], 403);
+                return response()->json(['success' => false, 'message' => 'Anda tidak memiliki akses untuk menghapus riwayat ini.'], 403);
             }
             abort(403);
         }
 
-        // Hapus file fisik dari storage (jika ada)
+        // Hapus file fisik dari storage
         if ($reportFile->path && Storage::disk('public')->exists($reportFile->path)) {
             Storage::disk('public')->delete($reportFile->path);
+            Log::info("Physical file deleted: {$reportFile->path}");
         }
 
         $reportFile->delete();
+        Log::info("ReportFile record #{$reportFile->id} deleted from database.");
 
         if (request()->ajax() || request()->wantsJson()) {
             return response()->json(['success' => true, 'message' => 'Riwayat berhasil dihapus.']);
