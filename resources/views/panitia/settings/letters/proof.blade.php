@@ -90,12 +90,14 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Tempat & Tanggal Surat</label>
-                            <input type="text" name="letter_signature_place_date" x-model="signature_place_date"
+                            <input type="text" name="letter_signature_place_date"
+                                value="{{ $settings['letter_signature_place_date'] ?? 'Cilacap, ..... Februari 2026' }}"
                                 class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-bold text-slate-800 text-sm">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Jabatan Penanda Tangan</label>
-                            <input type="text" name="letter_signature_title" x-model="signature_title"
+                            <input type="text" name="letter_signature_title"
+                                value="{{ $settings['letter_signature_title'] ?? 'Ketua KPUM' }}"
                                 class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-bold text-slate-800 text-sm">
                         </div>
                     </div>
@@ -103,12 +105,14 @@
                     <div class="grid grid-cols-2 gap-4">
                          <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Penanda Tangan</label>
-                            <input type="text" name="letter_signature_name" x-model="signature_name"
+                            <input type="text" name="letter_signature_name"
+                                value="{{ $settings['letter_signature_name'] ?? '' }}"
                                 class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-bold text-slate-800 text-sm">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">NIM Penanda Tangan</label>
-                            <input type="text" name="letter_signature_nim" x-model="signature_nim"
+                            <input type="text" name="letter_signature_nim"
+                                value="{{ $settings['letter_signature_nim'] ?? '' }}"
                                 class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-bold text-slate-800 text-sm">
                         </div>
                     </div>
