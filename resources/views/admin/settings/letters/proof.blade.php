@@ -37,7 +37,14 @@
         @endif
 
         <form id="settings-form" method="POST" action="{{ route('admin.settings.letters.proof.update') }}"
-                enctype="multipart/form-data" data-turbo="false" class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden">
+                enctype="multipart/form-data" data-turbo="false" 
+                x-data="{
+                    signature_place_date: '{{ addslashes($settings["letter_signature_place_date"] ?? "Cilacap, ..... Februari 2026") }}',
+                    signature_title: '{{ addslashes($settings["letter_signature_title"] ?? "Ketua KPUM") }}',
+                    signature_name: '{{ addslashes($settings["letter_signature_name"] ?? "") }}',
+                    signature_nim: '{{ addslashes($settings["letter_signature_nim"] ?? "") }}'
+                }"
+                class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden">
             @csrf
             
             <div class="flex items-center gap-4 mb-8 pb-8 border-b border-slate-100">

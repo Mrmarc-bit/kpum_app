@@ -36,8 +36,8 @@ class SettingsController extends Controller
     public function updateProof(Request $request) 
     {
         $request->validate([
-            'letter_signature_path' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-            'letter_stamp_path' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'letter_signature_path' => 'nullable|mimes:png,jpg,jpeg,webp|max:4096',
+            'letter_stamp_path' => 'nullable|mimes:png,jpg,jpeg,webp|max:4096',
         ]);
 
         $data = $request->except('_token', '_method');
@@ -116,8 +116,8 @@ class SettingsController extends Controller
     {
 
         $request->validate([
-            'letter_signature_path' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-            'letter_stamp_path' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'letter_signature_path' => 'nullable|mimes:png,jpg,jpeg,webp|max:4096',
+            'letter_stamp_path' => 'nullable|mimes:png,jpg,jpeg,webp|max:4096',
         ]);
 
         $data = $request->except('_token', '_method');
