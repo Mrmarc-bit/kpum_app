@@ -170,7 +170,15 @@ class ReportController extends Controller
      */
     public function destroy(\App\Models\ReportFile $reportFile)
     {
-        if ($reportFile->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
+        // Check authorization: must be owner OR authenticated admin/panitia
+        $currentUserId = Auth::id();
+        $isOwner       = ($reportFile->user_id == $currentUserId); // loose == handles int/string mismatch
+        $isPrivileged  = Auth::check() && in_array(Auth::user()?->role, ['admin', 'super_admin', 'panitia']);
+
+        if (!$isOwner && !$isPrivileged) {
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'Akses ditolak.'], 403);
+            }
             abort(403);
         }
 
@@ -180,6 +188,10 @@ class ReportController extends Controller
         }
 
         $reportFile->delete();
+
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Riwayat berhasil dihapus.']);
+        }
 
         return back()->with('success', 'Riwayat berhasil dihapus.');
     }
