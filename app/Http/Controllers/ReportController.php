@@ -174,17 +174,13 @@ class ReportController extends Controller
             abort(403);
         }
 
-        // Proteksi: record 'letters' hanya boleh dihapus dari halaman Unduh Surat, bukan dari sini
-        if ($reportFile->type === 'letters') {
-            return back()->with('error', 'File surat pemberitahuan tidak dapat dihapus dari halaman ini. Gunakan halaman Unduh Surat.');
-        }
-
+        // Hapus file fisik dari storage (jika ada)
         if ($reportFile->path && Storage::disk('public')->exists($reportFile->path)) {
             Storage::disk('public')->delete($reportFile->path);
         }
 
         $reportFile->delete();
 
-        return back()->with('success', 'Riwayat dokumen berhasil dihapus.');
+        return back()->with('success', 'Riwayat berhasil dihapus.');
     }
 }
