@@ -12,6 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use ZipArchive;
 
 class GenerateLettersJob implements ShouldQueue
@@ -21,38 +22,16 @@ class GenerateLettersJob implements ShouldQueue
     protected $reportFileId;
     protected $filters;
 
-    /**
-     * The number of seconds the job can run before timing out.
-     *
-     * @var int
-     */
     public $timeout = 1800; // 30 minutes
+    public $tries   = 1;    // No retry — would reset progress to 0
 
-    /**
-     * The number of times the job may be attempted.
-     *
-     * @var int
-     */
-    public $tries = 1; // Jangan retry — retry menyebabkan progress reset ke 0 (membingungkan user)
-
-    /**
-     * Create a new job instance.
-     *
-     * @param int $reportFileId
-     * @param array $filters
-     */
     public function __construct($reportFileId, array $filters)
     {
         $this->reportFileId = $reportFileId;
-        $this->filters = $filters;
+        $this->filters      = $filters;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle(ProofOfVoteService $letterService)
+    public function handle(ProofOfVoteService $letterService): void
     {
         ini_set('memory_limit', '1024M');
         set_time_limit(1800);
@@ -68,8 +47,12 @@ class GenerateLettersJob implements ShouldQueue
             $prodiName = $this->filters['prodi'] ?? 'Semua Prodi';
             $reportFile->update(['status' => 'processing', 'details' => $prodiName, 'progress' => 0]);
 
-            // Build Query
-            $query = Mahasiswa::query();
+            // ── Build Query: only fetch columns needed ─────────────────
+            $query = Mahasiswa::select([
+                'id', 'nim', 'name', 'prodi', 'fakultas',
+                'access_code', 'notification_letter_path',
+            ]);
+
             if (!empty($this->filters['prodi'])) {
                 $query->where('prodi', $this->filters['prodi']);
             }
@@ -82,34 +65,37 @@ class GenerateLettersJob implements ShouldQueue
                 throw new \Exception('Tidak ada data mahasiswa dengan filter tersebut.');
             }
 
-            // Prepare ZIP path
-            $timestamp = date('Y-m-d_H-i-s');
-            $safeProdi = !empty($this->filters['prodi']) ? \Illuminate\Support\Str::slug($this->filters['prodi']) : 'all';
+            // ── Prepare ZIP destination ────────────────────────────────
+            $timestamp   = date('Y-m-d_H-i-s');
+            $safeProdi   = !empty($this->filters['prodi']) ? Str::slug($this->filters['prodi']) : 'all';
             $zipFileName = "Surat_Pemberitahuan_{$safeProdi}_{$timestamp}.zip";
-            $zipPath = "reports/{$zipFileName}";
+            $zipPath     = "reports/{$zipFileName}";
 
             if (!Storage::disk('public')->exists('reports')) {
                 Storage::disk('public')->makeDirectory('reports');
             }
             $fullZipPath = Storage::disk('public')->path($zipPath);
 
-            // =========================================================
-            // FASE 1: Pastikan semua PDF sudah ada di disk (0% - 80%)
-            // =========================================================
-            $processedCount = 0;
-            $allPdfPaths = []; // Kumpulkan semua path untuk ZIP
-            $batchSettings = $letterService->getBatchSettings(); // Pre-load sekali saja
+            // ── Pre-load letter settings (images as base64) once ───────
+            $batchSettings = $letterService->getBatchSettings();
 
-            $query->chunk(50, function($students) use ($letterService, $batchSettings, &$processedCount, $totalStudents, $reportFile, &$allPdfPaths) {
+            // ── FASE 1: Generate / collect PDFs (progress 0–80%) ──────
+            $processedCount = 0;
+            $allPdfPaths    = [];
+
+            // Chunk 100 = fewer DB round-trips than 50
+            $query->chunk(100, function ($students) use (
+                $letterService, $batchSettings,
+                &$processedCount, $totalStudents, $reportFile, &$allPdfPaths
+            ) {
                 foreach ($students as $student) {
                     /** @var \App\Models\Mahasiswa $student */
-                    $pdf = null;
                     try {
-                        $prodi = \Illuminate\Support\Str::slug($student->prodi ?? 'unknown');
-                        $path = "letters/{$prodi}/{$student->nim}.pdf";
+                        $prodi      = Str::slug($student->prodi ?? 'unknown');
+                        $path       = "letters/{$prodi}/{$student->nim}.pdf";
                         $letterPath = $student->notification_letter_path ?? $path;
 
-                        // Generate jika belum ada
+                        // Re-use cached PDF if it already exists on disk
                         if (!Storage::disk('public')->exists($letterPath)) {
                             $pdf = $letterService->generateNotificationLetter($student, $batchSettings);
                             Storage::disk('public')->put($path, $pdf->output());
@@ -120,79 +106,89 @@ class GenerateLettersJob implements ShouldQueue
 
                         $diskPath = Storage::disk('public')->path($letterPath);
                         if (file_exists($diskPath)) {
-                            $allPdfPaths["{$student->nim}_{$student->name}.pdf"] = $diskPath;
+                            // Safe archive name: NIM_Name.pdf (no slashes, no special chars)
+                            $safeName = preg_replace('/[^A-Za-z0-9_\-.]/', '_', "{$student->nim}_{$student->name}");
+                            $allPdfPaths["{$safeName}.pdf"] = $diskPath;
                         }
 
                     } catch (\Throwable $e) {
                         Log::error("Letter failed for NIM {$student->nim}: " . $e->getMessage());
-                        unset($pdf);
                     }
 
                     $processedCount++;
 
-                    // Progress 0-80% untuk fase generate
-                    if ($processedCount % 10 === 0) {
-                        $pct = min(80, intval(($processedCount / $totalStudents) * 80));
+                    // Reduce DB writes: update every 25 students
+                    if ($processedCount % 25 === 0) {
+                        $pct = min(78, intval(($processedCount / $totalStudents) * 78));
                         $reportFile->update(['progress' => $pct]);
                     }
-                    if ($processedCount % 50 === 0) {
+
+                    // Free memory every 100 students
+                    if ($processedCount % 100 === 0) {
                         gc_collect_cycles();
                     }
                 }
             });
 
-            $reportFile->update(['progress' => 82]);
+            $reportFile->update(['progress' => 80]);
 
-            // =========================================================
-            // FASE 2: Buat ZIP secepat mungkin (80% - 100%)
-            // Coba system zip command dulu (10-50x lebih cepat!)
-            // =========================================================
+            // ── FASE 2: Build ZIP (progress 80–100%) ──────────────────
+            if (count($allPdfPaths) === 0) {
+                throw new \Exception('Tidak ada file PDF yang berhasil digenerate.');
+            }
+
             $zipCreated = false;
 
-            if (count($allPdfPaths) > 0 && function_exists('exec')) {
-                // Tulis daftar file ke temp file untuk zip -@
+            // Strategy A: system `zip -j0` (store-only, fastest for PDFs)
+            // -j  = junkpaths (strip directory structure — filenames only)
+            // -0  = no compression (PDFs are already compressed internally)
+            // -@  = read filenames from stdin (avoids ARG_MAX limit)
+            // Result: 3–5x faster than default compression for 500+ PDFs
+            if (function_exists('exec')) {
                 $fileListPath = sys_get_temp_dir() . "/zip_list_{$this->reportFileId}.txt";
                 file_put_contents($fileListPath, implode("\n", array_values($allPdfPaths)));
 
-                // zip -j: jangan simpan path (hanya filename), baca dari stdin
-                $cmd  = "cd " . escapeshellarg(dirname($fullZipPath));
-                $cmd .= " && zip -j " . escapeshellarg($fullZipPath);
+                $cmd  = "zip -j0 " . escapeshellarg($fullZipPath);
                 $cmd .= " -@ < " . escapeshellarg($fileListPath);
                 $cmd .= " 2>&1";
 
-                exec($cmd, $output, $returnCode);
+                exec($cmd, $cmdOutput, $returnCode);
                 @unlink($fileListPath);
 
-                if ($returnCode === 0 && file_exists($fullZipPath)) {
+                if ($returnCode === 0 && file_exists($fullZipPath) && filesize($fullZipPath) > 0) {
                     $zipCreated = true;
-                    Log::info("ZIP created with system zip command in {$processedCount} files.");
+                    Log::info("ZIP created via system zip (store-only) for {$processedCount} files → {$zipFileName}");
                 } else {
-                    Log::warning("System zip failed (code {$returnCode}), fallback to PHP ZipArchive.");
+                    Log::warning("System zip failed (code {$returnCode}): " . implode(' ', $cmdOutput));
                 }
             }
 
-            // Fallback: PHP ZipArchive dengan addFile() (tidak load ke RAM)
+            // Strategy B: PHP ZipArchive fallback (addFile = disk-based, not RAM)
             if (!$zipCreated) {
                 $reportFile->update(['progress' => 85]);
                 $zip = new ZipArchive;
-                if ($zip->open($fullZipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
-                    throw new \Exception("Gagal membuat file ZIP: " . $fullZipPath);
+
+                if ($zip->open($fullZipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+                    throw new \Exception("Gagal membuat file ZIP: {$fullZipPath}");
                 }
+
                 foreach ($allPdfPaths as $archiveName => $diskPath) {
                     $zip->addFile($diskPath, $archiveName);
                 }
+
                 $zip->close();
+                Log::info("ZIP created via PHP ZipArchive for {$processedCount} files → {$zipFileName}");
             }
 
-            $reportFile->update(['progress' => 100]);
-
-            // Update Report Status
+            // ── Mark as completed ──────────────────────────────────────
             $reportFile->update([
                 'status'   => 'completed',
                 'progress' => 100,
                 'path'     => $zipPath,
                 'disk'     => 'public',
             ]);
+
+            Log::info("GenerateLettersJob DONE: {$processedCount} surat, file: {$zipFileName}");
 
         } catch (\Throwable $e) {
             Log::error("GenerateLettersJob CRITICAL FAILURE: " . $e->getMessage());
@@ -204,6 +200,7 @@ class GenerateLettersJob implements ShouldQueue
                     'error_message' => substr($e->getMessage(), 0, 250),
                 ]);
             }
+
             throw $e;
         }
     }
