@@ -86,24 +86,12 @@
             border-top: 1px solid #ddd;
             padding-top: 5px;
         }
-        .watermark {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            opacity: 0.08;
-            font-size: 60pt;
-            font-weight: bold;
-            color: #000;
-            z-index: -1000;
-            white-space: nowrap;
-            text-align: center;
-        }
+
     </style>
 </head>
 <body>
 
-    <div class="watermark">{{ $letterSettings['watermark_text'] }}</div>
+
 
     <div style="border-bottom: 3px double #000; margin-bottom: 20px; padding-bottom: 10px;">
         <table width="100%">

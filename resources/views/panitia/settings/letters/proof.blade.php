@@ -61,13 +61,7 @@
                         <input type="text" name="letter_sub_header" value="{{ $settings['letter_sub_header'] ?? 'UNIVERSITAS CONTOSO' }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-medium text-slate-800">
                     </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Teks Watermark</label>
-                        <input type="text" name="letter_watermark_text" value="{{ $settings['letter_watermark_text'] ?? 'OFFICIAL COPY' }}"
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-medium text-slate-800 placeholder-slate-400"
-                            placeholder="Contoh: OFFICIAL COPY, SALINAN SAH, DRAFT">
-                    </div>
-                        <div>
+
                         <label class="block text-sm font-bold text-slate-700 mb-2">Isi Paragraf Pembuka</label>
                         <textarea name="letter_body_top" rows="2"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all text-slate-800 resize-none">{{ $settings['letter_body_top'] ?? 'Menerangkan bahwa mahasiswa dengan identitas di bawah ini:' }}</textarea>
