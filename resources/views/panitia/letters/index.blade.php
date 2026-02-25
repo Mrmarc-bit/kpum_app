@@ -287,11 +287,22 @@
             });
         };
 
-        // Form Handler
-        document.getElementById('batch-download-form').addEventListener('submit', function(e) {
+        // Form Handler with Safety Check
+        function initLetterPage() {
+            const form = document.getElementById('batch-download-form');
+            if (form) {
+                // Ensure we don't attach multiple listeners
+                form.removeEventListener('submit', handleDownloadSubmit);
+                form.addEventListener('submit', handleDownloadSubmit);
+            }
+            startLettersPolling();
+        }
+
+        function handleDownloadSubmit(e) {
             e.preventDefault();
             const form = this;
             const btn = document.getElementById('submit-btn');
+            if (!btn) return;
             const originalHtml = btn.innerHTML;
             
             btn.disabled = true;
@@ -318,11 +329,11 @@
                 btn.disabled = false;
                 btn.innerHTML = originalHtml;
             });
-        });
+        }
 
-        // Initialize polling on DOM Load & Turbo load
-        document.addEventListener('DOMContentLoaded', startLettersPolling);
-        document.addEventListener('turbo:load', startLettersPolling);
+        // Initialize on DOM Load & Turbo load
+        document.addEventListener('DOMContentLoaded', initLetterPage);
+        document.addEventListener('turbo:load', initLetterPage);
         document.addEventListener('turbo:before-cache', stopLettersPolling);
 
     </script>
