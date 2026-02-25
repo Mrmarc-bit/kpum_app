@@ -74,7 +74,6 @@ class DptController extends Controller
     public function lettersIndex()
     {
         $history = \App\Models\ReportFile::where('type', 'letters')
-            ->where('user_id', Auth::id())
             ->latest()
             ->paginate(5);
 
