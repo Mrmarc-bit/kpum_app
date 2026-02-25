@@ -199,7 +199,7 @@ class SettingsController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'app_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'app_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'contact_person' => 'nullable|string|max:20',
             'email_kpum' => 'nullable|email|max:255',
             'address' => 'nullable|string|max:500',
