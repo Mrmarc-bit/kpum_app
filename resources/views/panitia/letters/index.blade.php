@@ -23,7 +23,8 @@
             <div class="relative mb-16 px-4">
                 <div class="absolute inset-0 bg-white/40 backdrop-blur-xl rounded-[2.5rem] -z-10 shadow-2xl shadow-slate-200/50 border border-white/60"></div>
                 <div class="p-8 sm:p-12">
-                    <form method="GET" action="{{ route('panitia.dpt.download-batch-letters') }}" id="batch-download-form" class="space-y-8">
+                    <form method="POST" action="{{ route('panitia.dpt.download-batch-letters') }}" id="batch-download-form" class="space-y-8">
+                        @csrf
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                             <div class="md:col-span-8 group">
                                 <label class="block text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Program Studi</label>
@@ -311,8 +312,13 @@
             const url = new URL(form.action);
             const params = new URLSearchParams(new FormData(form));
             
-            fetch(`${url}?${params.toString()}`, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            fetch(url.toString(), {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
             })
             .then(res => {
                 if (typeof Toast !== 'undefined') {
