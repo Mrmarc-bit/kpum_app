@@ -32,10 +32,7 @@
                                 <select name="prodi" required class="w-full rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 shadow-sm text-gray-700 text-sm font-medium transition-all py-2.5">
                                     <option value="">-- Pilih Prodi --</option>
                                     @foreach($prodiList as $prodi => $fakultas)
-                                        @php
-                                            $prodiClean = preg_replace('/\s*\([^)]*\)$/', '', $prodi);
-                                        @endphp
-                                        <option value="{{ $prodiClean }}">{{ $prodi }}</option>
+                                        <option value="{{ $prodi }}">{{ $prodi }}</option>
                                     @endforeach
                                 </select>
                             </div>
