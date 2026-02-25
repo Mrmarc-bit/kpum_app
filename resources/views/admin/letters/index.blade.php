@@ -122,10 +122,10 @@
                                             </a>
                                         @endif
 
-                                        <form action="{{ route('admin.reports.destroy', $file->id) }}" method="POST" class="delete-form">
+                                        <form action="{{ route('admin.reports.destroy', $file->id) }}" method="POST" class="delete-form" data-confirm="File download ini akan dihapus permanen dari sistem. Tindakan ini tidak dapat dibatalkan.">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="delete-btn p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Hapus Riwayat">
+                                            <button type="submit" class="delete-btn p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Hapus Riwayat">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </form>
@@ -331,70 +331,6 @@
                     showNotification('❌ Gagal mengirim request.', 'error');
                     button.disabled = false;
                     button.innerHTML = originalContent;
-                });
-        });
-        
-        // Modern Delete Confirmation - Event Delegation
-        // (agar delete button yang muncul setelah auto-refresh table juga bisa diklik)
-        document.addEventListener('click', function(e) {
-            const btn = e.target.closest('.delete-btn');
-            if (!btn) return;
-            e.preventDefault();
-            const form = btn.closest('.delete-form');
-
-                // CRITICAL FIX: Cache form data SEKARANG sebelum DOM bisa berubah oleh auto-refresh
-                const formAction = form.getAttribute('action');
-                const csrfToken = form.querySelector('input[name="_token"]').value;
-
-                // CRITICAL FIX: Stop auto-refresh SEGERA - jangan tunggu sampai confirm
-                // karena interval bisa fire selama SweetAlert terbuka dan hapus form dari DOM
-                stopAutoRefresh();
-
-                Swal.fire({
-                    title: '🗑️ Hapus Riwayat?',
-                    html: '<p class="text-slate-600">File download akan dihapus permanen dari sistem.</p>',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#ef4444',
-                    cancelButtonColor: '#64748b',
-                    confirmButtonText: '✓ Ya, Hapus!',
-                    cancelButtonText: '✕ Batal',
-                    reverseButtons: true,
-                    customClass: {
-                        popup: 'rounded-3xl shadow-2xl',
-                        title: 'text-2xl font-black text-slate-800',
-                        htmlContainer: 'text-slate-600',
-                        confirmButton: 'px-6 py-3 rounded-xl font-bold shadow-lg',
-                        cancelButton: 'px-6 py-3 rounded-xl font-bold'
-                    },
-                    buttonsStyling: true,
-                    focusCancel: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Menghapus...',
-                            html: 'Mohon tunggu sebentar',
-                            icon: 'info',
-                            showConfirmButton: false,
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-
-                        // Gunakan temporary form di document.body yang tahan terhadap DOM table refresh
-                        const tempForm = document.createElement('form');
-                        tempForm.method = 'POST';
-                        tempForm.action = formAction;
-                        tempForm.innerHTML = `<input type="hidden" name="_token" value="${csrfToken}">
-                                              <input type="hidden" name="_method" value="DELETE">`;
-                        document.body.appendChild(tempForm);
-                        tempForm.submit();
-
-                    } else {
-                        // User batal hapus -> resume polling
-                        startAutoRefresh();
-                    }
                 });
         });
     </script>

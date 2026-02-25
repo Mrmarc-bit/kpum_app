@@ -491,6 +491,11 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.removeAttribute('data-confirm'); // Prevent infinite loop
+                        // Fix for forms that might get detached from DOM by AJAX auto-refreshes
+                        if (!document.body.contains(form)) {
+                            form.style.display = 'none';
+                            document.body.appendChild(form);
+                        }
                         form.submit();
                     }
                 });
