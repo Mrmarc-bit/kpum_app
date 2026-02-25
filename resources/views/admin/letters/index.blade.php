@@ -382,40 +382,14 @@
                             }
                         });
 
-                        // CRITICAL FIX: Gunakan fetch() bukan form.submit()
-                        // karena form mungkin sudah tidak ada di DOM (dihapus oleh auto-refresh)
-                        fetch(formAction, {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': csrfToken,
-                                'Accept': 'application/json',
-                                'X-Requested-With': 'XMLHttpRequest',
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: '_token=' + encodeURIComponent(csrfToken) + '&_method=DELETE'
-                        })
-                        .then(async response => {
-                            const data = await response.json();
-                            if (response.ok && data.success) {
-                                Swal.fire({
-                                    title: 'Berhasil!',
-                                    text: data.message || 'Riwayat berhasil dihapus.',
-                                    icon: 'success',
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    window.location.reload();
-                                });
-                            } else {
-                                Swal.fire('Gagal!', data.message || 'Terjadi kesalahan saat menghapus.', 'error')
-                                    .then(() => startAutoRefresh()); // Resume polling
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Delete error:', error);
-                            Swal.fire('Error!', 'Gagal menghubungi server.', 'error')
-                                .then(() => startAutoRefresh()); // Resume polling
-                        });
+                        // Gunakan temporary form di document.body yang tahan terhadap DOM table refresh
+                        const tempForm = document.createElement('form');
+                        tempForm.method = 'POST';
+                        tempForm.action = formAction;
+                        tempForm.innerHTML = `<input type="hidden" name="_token" value="${csrfToken}">
+                                              <input type="hidden" name="_method" value="DELETE">`;
+                        document.body.appendChild(tempForm);
+                        tempForm.submit();
 
                     } else {
                         // User batal hapus -> resume polling

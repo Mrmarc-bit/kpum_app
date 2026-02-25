@@ -299,45 +299,62 @@
                 });
         });
 
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const form = this.closest('.delete-form');
-                
-                Swal.fire({
-                    title: '🗑️ Hapus Riwayat?',
-                    html: '<p class="text-slate-600">File download akan dihapus permanen dari sistem.</p>',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#ef4444',
-                    cancelButtonColor: '#64748b',
-                    confirmButtonText: '✓ Ya, Hapus!',
-                    cancelButtonText: '✕ Batal',
-                    reverseButtons: true,
-                    customClass: {
-                        popup: 'rounded-3xl shadow-2xl',
-                        title: 'text-2xl font-black text-slate-800',
-                        htmlContainer: 'text-slate-600',
-                        confirmButton: 'px-6 py-3 rounded-xl font-bold shadow-lg',
-                        cancelButton: 'px-6 py-3 rounded-xl font-bold'
-                    },
-                    buttonsStyling: true,
-                    focusCancel: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Menghapus...',
-                            html: 'Mohon tunggu sebentar',
-                            icon: 'info',
-                            showConfirmButton: false,
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-                        form.submit();
-                    }
-                });
+        // Modern Delete Confirmation - Event Delegation
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.delete-btn');
+            if (!btn) return;
+            e.preventDefault();
+            const form = btn.closest('.delete-form');
+            
+            // Cache form details BEFORE it gets potentially destroyed by autorefresh
+            const formAction = form.getAttribute('action');
+            const csrfToken = form.querySelector('input[name="_token"]').value;
+            
+            stopAutoRefresh();
+
+            Swal.fire({
+                title: '🗑️ Hapus Riwayat?',
+                html: '<p class="text-slate-600">File download akan dihapus permanen dari sistem.</p>',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: '✓ Ya, Hapus!',
+                cancelButtonText: '✕ Batal',
+                reverseButtons: true,
+                customClass: {
+                    popup: 'rounded-3xl shadow-2xl',
+                    title: 'text-2xl font-black text-slate-800',
+                    htmlContainer: 'text-slate-600',
+                    confirmButton: 'px-6 py-3 rounded-xl font-bold shadow-lg',
+                    cancelButton: 'px-6 py-3 rounded-xl font-bold'
+                },
+                buttonsStyling: true,
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Menghapus...',
+                        html: 'Mohon tunggu sebentar',
+                        icon: 'info',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    // Gunakan temporary form di document.body yang tahan terhadap DOM table refresh
+                    const tempForm = document.createElement('form');
+                    tempForm.method = 'POST';
+                    tempForm.action = formAction;
+                    tempForm.innerHTML = `<input type="hidden" name="_token" value="${csrfToken}">
+                                          <input type="hidden" name="_method" value="DELETE">`;
+                    document.body.appendChild(tempForm);
+                    tempForm.submit();
+                } else {
+                    startAutoRefresh();
+                }
             });
         });
     </script>
