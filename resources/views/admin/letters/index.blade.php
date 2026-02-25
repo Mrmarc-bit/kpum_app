@@ -1,340 +1,234 @@
-<x-layouts.admin :title="$title ?? 'Unduh Surat Pemberitahuan'">
-    <div class="max-w-2xl mx-auto">
-        <div class="mb-10 text-center">
-            <h1 class="text-3xl font-black text-slate-800 tracking-tight">Unduh Surat Pemberitahuan</h1>
-            <p class="text-slate-500 mt-2 font-medium">Generate & Download Surat Pemberitahuan Pemilihan (ZIP per Prodi).</p>
-        </div>
+@php
+    $prodiList = \App\Models\Mahasiswa::PRODI_LIST;
+@endphp
 
-        <form method="POST" action="{{ route('admin.dpt.download-batch-letters') }}" class="bg-white rounded-[2rem] p-8 shadow-xl border border-slate-100">
-            @csrf
-            
-            <div class="mb-8 bg-amber-50 border border-amber-100 rounded-2xl p-5 flex gap-4">
-                <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
-                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                    </svg>
+<x-layouts.admin :title="$title ?? 'Unduh Surat Pemberitahuan'">
+    <div class="relative min-h-[600px]">
+        {{-- Background Accents --}}
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -z-10"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl -z-10"></div>
+
+        <div class="max-w-4xl mx-auto py-8">
+            {{-- Header Section --}}
+            <div class="mb-12 text-center animate-fade-in">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-bold mb-4 border border-blue-100 shadow-sm">
+                    <span class="flex w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                    Bulk Letter Generation
                 </div>
-                <div class="text-sm text-amber-900">
-                    <span class="font-bold block mb-1 text-base">Batasan Sistem</span>
-                    <p class="leading-relaxed opacity-90">Untuk menjaga kinerja server, download dibatasi maksimal 500 surat per batch. Silakan pilih Program Studi untuk mengunduh surat secara bertahap.</p>
+                <h1 class="text-4xl font-black text-slate-800 tracking-tight leading-none mb-3">Unduh Surat Pemberitahuan</h1>
+                <p class="text-slate-500 font-medium max-w-lg mx-auto">Generate & Download Surat Pemberitahuan Pemilihan dalam format ZIP secara massal per Program Studi.</p>
+            </div>
+
+            {{-- Main Form Card --}}
+            <div class="relative mb-16 px-4">
+                <div class="absolute inset-0 bg-white/40 backdrop-blur-xl rounded-[2.5rem] -z-10 shadow-2xl shadow-slate-200/50 border border-white/60"></div>
+                <div class="p-8 sm:p-12">
+                    <form method="GET" action="{{ route('admin.dpt.download-batch-letters') }}" id="batch-download-form" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                            <div class="md:col-span-8 group">
+                                <label class="block text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Pilih Program Studi</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                    </div>
+                                    <select name="prodi" required
+                                        class="w-full pl-12 pr-10 py-4 rounded-2xl border border-slate-200 bg-white/80 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all appearance-none font-bold text-slate-700 text-lg shadow-sm">
+                                        <option value="">-- Pilih Prodi --</option>
+                                        @foreach($prodiList as $prodi => $fakultas)
+                                            @php
+                                                $prodiClean = preg_replace('/\s*\([^)]*\)$/', '', $prodi);
+                                            @endphp
+                                            <option value="{{ $prodiClean }}">{{ $prodi }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-4 self-end">
+                                <button type="submit" id="submit-btn"
+                                    class="w-full py-4.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-500/30 hover:-translate-y-1 active:scale-95 transition-all text-lg flex items-center justify-center gap-3">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"></path></svg>
+                                    Generate ZIP
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Alert Box --}}
+                        <div class="p-6 bg-amber-500/5 rounded-3xl border border-amber-500/10 flex gap-5 items-start">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center shrink-0 shadow-sm">
+                                <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="font-black text-amber-900 leading-none">Informasi Kapasitas</h4>
+                                <p class="text-sm text-amber-800/70 font-medium leading-relaxed">Sistem membatasi maksimal 500 surat per pengunduhan untuk menjaga stabilitas memori server. ZIP akan diproses di latar belakang.</p>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
-            <div class="space-y-6">
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Pilih Program Studi</label>
-                    <div class="relative">
-                        <select name="prodi" required
-                            class="w-full px-4 py-4 rounded-xl border border-slate-200 bg-white focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all appearance-none font-bold text-slate-700 text-lg">
-                            <option value="">-- Pilih Prodi --</option>
-                            @foreach($prodiList as $prodi => $fakultas)
-                                {{-- Value harus sama persis dengan yang tersimpan di database --}}
-                                <option value="{{ $prodi }}">{{ $prodi }}</option>
-                            @endforeach
-                        </select>
-                        <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
+            {{-- History Section --}}
+            <div class="px-4">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
+                        <h2 class="text-2xl font-black text-slate-800 tracking-tight">Riwayat Generasi</h2>
                     </div>
                 </div>
 
-                <div class="pt-4">
-                    <button type="submit"
-                        class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-xl shadow-emerald-500/30 hover:-translate-y-1 transition-all text-lg flex items-center justify-center gap-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"></path>
-                        </svg>
-                        Download ZIP
-                    </button>
-                    <p class="text-center text-slate-400 text-sm mt-4 font-medium">Proses download mungkin memakan waktu beberapa saat.</p>
+                <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left" id="history-table">
+                            <thead>
+                                <tr class="bg-slate-50/50 text-slate-400 font-black text-[10px] uppercase tracking-widest border-b border-slate-100">
+                                    <th class="px-8 py-5">Request Details</th>
+                                    <th class="px-8 py-5 text-center">Status & Progress</th>
+                                    <th class="px-8 py-5 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @forelse($history as $file)
+                                    <tr class="group hover:bg-slate-50/50 transition-colors" data-job-id="{{ $file->id }}" data-status="{{ $file->status }}">
+                                        <td class="px-8 py-6">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-blue-500 group-hover:border-blue-100 transition-all">
+                                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                                </div>
+                                                <div>
+                                                    <span class="block font-black text-slate-700 group-hover:text-slate-900 transition-colors">{{ $file->details ?? 'Semua Prodi' }}</span>
+                                                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{{ $file->created_at->translatedFormat('d F Y • H:i') }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-8 py-6">
+                                            <div class="status-content">
+                                                @if($file->status === 'completed')
+                                                    <div class="flex flex-col items-center gap-1">
+                                                        <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-black uppercase tracking-wider shadow-sm shadow-emerald-200/50">Selesai</span>
+                                                        <span class="text-[10px] font-bold text-slate-400">100% Ready</span>
+                                                    </div>
+                                                @elseif($file->status === 'processing' || $file->status === 'pending')
+                                                    <div class="w-full max-w-[150px] mx-auto space-y-2">
+                                                        <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-wider">
+                                                            <span class="text-blue-600 animate-pulse">{{ $file->status === 'pending' ? 'Antrian' : 'Proses' }}</span>
+                                                            <span class="text-slate-400 progress-pct">{{ $file->progress }}%</span>
+                                                        </div>
+                                                        <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                                            <div class="h-full bg-blue-500 rounded-full transition-all duration-500 progress-bar shadow-[0_0_8px_rgba(59,130,246,0.5)]" style="width: {{ $file->progress }}%"></div>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="flex flex-col items-center gap-1">
+                                                        <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-[10px] font-black uppercase tracking-wider shadow-sm shadow-red-200/50">Gagal</span>
+                                                        <span class="text-[10px] font-bold text-red-400 max-w-[100px] truncate" title="{{ $file->error_message }}">Error</span>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </td>
+                                        <td class="px-8 py-6 text-right">
+                                            <div class="flex justify-end items-center gap-2 action-content">
+                                                @if($file->status === 'completed')
+                                                    <a href="{{ route('admin.reports.download', $file->id) }}" data-turbo="false" 
+                                                        class="p-2.5 rounded-xl bg-slate-50 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-emerald-500/30" title="Download ZIP">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"></path></svg>
+                                                    </a>
+                                                @endif
+                                                <button type="button" onclick="deleteHistory('{{ route('admin.reports.destroy', $file->id) }}', this)" 
+                                                    class="p-2.5 rounded-xl bg-slate-50 text-slate-400 hover:bg-red-500 hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-red-500/30" title="Hapus Riwayat">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr class="empty-row">
+                                        <td colspan="3" class="px-8 py-20 text-center">
+                                            <div class="flex flex-col items-center">
+                                                <div class="w-20 h-20 rounded-[2rem] bg-slate-50 flex items-center justify-center text-slate-200 mb-4 border-2 border-dashed border-slate-100">
+                                                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                                                </div>
+                                                <h3 class="font-black text-slate-400 uppercase tracking-widest text-xs">Belum ada riwayat</h3>
+                                                <p class="text-slate-300 text-sm font-medium mt-1">Silakan pilih Program Studi di atas untuk mulai.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    @if($history->hasPages())
+                        <div class="px-8 py-6 bg-slate-50/50 border-t border-slate-100">
+                            {{ $history->links() }}
+                        </div>
+                    @endif
                 </div>
             </div>
-        </form>
-    </div>
-
-    <!-- History Table -->
-    <div class="max-w-4xl mx-auto mt-12">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-slate-800">Riwayat Download</h2>
-            <button onclick="window.location.reload()" class="text-sm text-blue-600 font-bold hover:underline flex items-center gap-1">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                Refresh Status
-            </button>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-600">
-                    <thead class="bg-slate-50 text-slate-500 uppercase tracking-wider text-xs font-bold border-b border-slate-100">
-                        <tr>
-                            <th class="px-6 py-4">Waktu Request</th>
-                            <th class="px-6 py-4" width="45%">Detail & Progres</th>
-                            <th class="px-6 py-4 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50">
-                        @forelse($history as $file)
-                            <tr class="hover:bg-slate-50/50 transition-colors" data-status="{{ $file->status }}" data-job-id="{{ $file->id }}">
-                                <td class="px-6 py-4">
-                                    <span class="block font-bold text-slate-700">{{ $file->created_at->format('d M Y') }}</span>
-                                    <span class="text-xs text-slate-400 font-mono">{{ $file->created_at->format('H:i') }} WIB</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="mb-2">
-                                        <span class="font-bold text-slate-800 block">{{ $file->details ?? 'Semua Prodi' }}</span>
-                                    </div>
-
-                                    @if($file->status === 'completed')
-                                        <div class="flex items-center gap-2">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                                                Selesai (100%)
-                                            </span>
-                                        </div>
-                                    @elseif($file->status === 'processing')
-                                        <div class="w-full max-w-sm progress-container">
-                                            <div class="flex justify-between text-xs mb-1">
-                                                <span class="font-bold text-blue-600 animate-pulse">Sedang Memproses...</span>
-                                                <span class="font-bold text-slate-600 progress-pct">{{ $file->progress }}%</span>
-                                            </div>
-                                            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                                <div class="progress-bar bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: {{ $file->progress }}%;"></div>
-                                            </div>
-                                        </div>
-                                    @elseif($file->status === 'failed')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800" title="{{ $file->error_message }}">
-                                            Gagal
-                                        </span>
-                                        <p class="text-xs text-red-400 mt-1 max-w-xs truncate">{{ $file->error_message }}</p>
-                                    @else
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600">
-                                            Menunggu Antrian...
-                                        </span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <div class="flex justify-end gap-2">
-                                        @if($file->status === 'completed')
-                                            <a href="{{ route('admin.reports.download', $file->id) }}" data-turbo="false" class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-700 transition-colors shadow-sm shadow-emerald-200">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"></path></svg>
-                                                Download
-                                            </a>
-                                        @endif
-
-                                        <button type="button" onclick="deleteHistory('{{ route('admin.reports.destroy', $file->id) }}', this)" class="delete-btn p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Hapus Riwayat">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="3" class="px-6 py-12 text-center text-slate-400 text-sm">
-                                    Belum ada riwayat download.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            
-            @if($history->hasPages())
-                <div class="px-6 py-4 border-t border-slate-100 bg-slate-50">
-                    {{ $history->links() }}
-                </div>
-            @endif
         </div>
     </div>
-    
-    {{-- Real-Time Progress Tracker --}}
+
     <script>
-        var pollingInterval = null;
+        // Ensure no multiple declarations
+        window.lettersRefreshInterval = window.lettersRefreshInterval || null;
 
-        // Mulai polling JSON endpoint setiap 3 detik
-        function startAutoRefresh() {
-            const hasActive = document.querySelector('[data-status="processing"], [data-status="pending"]');
-            if (hasActive && !pollingInterval) {
-                pollingInterval = setInterval(pollStatus, 3000);
+        function startLettersPolling() {
+            const active = document.querySelector('[data-status="processing"], [data-status="pending"]');
+            if (active && !window.lettersRefreshInterval) {
+                console.log('🔄 Bulk Letters: Polling started');
+                window.lettersRefreshInterval = setInterval(refreshHistoryTable, 3000);
             }
         }
 
-        function stopAutoRefresh() {
-            if (pollingInterval) {
-                clearInterval(pollingInterval);
-                pollingInterval = null;
+        function stopLettersPolling() {
+            if (window.lettersRefreshInterval) {
+                console.log('⏸️ Bulk Letters: Polling stopped');
+                clearInterval(window.lettersRefreshInterval);
+                window.lettersRefreshInterval = null;
             }
         }
 
-        function refreshPage() {
-            window.location.reload();
-        }
-
-        function pollStatus() {
-            fetch('/admin/letters/status', {
-                credentials: 'include',
-                headers: { 'Accept': 'application/json' }
+        function refreshHistoryTable() {
+            fetch(window.location.href, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
             })
-            .then(r => r.ok ? r.json() : Promise.reject(r.status))
-            .then(jobs => {
-                let stillActive = false;
-
-                jobs.forEach(job => {
-                    const row = document.querySelector(`[data-job-id="${job.id}"]`);
-                    if (!row) return;
-
-                    const currentStatus = row.getAttribute('data-status');
-
-                    if (job.status === 'processing' || job.status === 'pending') {
-                        stillActive = true;
-                        row.setAttribute('data-status', job.status);
-
-                        // Update progress bar
-                        const progressContainer = row.querySelector('.progress-container');
-                        if (progressContainer) {
-                            const bar = progressContainer.querySelector('.progress-bar');
-                            const pct = progressContainer.querySelector('.progress-pct');
-                            if (bar) bar.style.width = job.progress + '%';
-                            if (pct) pct.textContent = job.progress + '%';
+            .then(res => res.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newTbody = doc.querySelector('tbody');
+                const currentTbody = document.querySelector('tbody');
+                
+                if (newTbody && currentTbody) {
+                    currentTbody.innerHTML = newTbody.innerHTML;
+                    
+                    // Check if we can stop
+                    const stillActive = currentTbody.querySelector('[data-status="processing"], [data-status="pending"]');
+                    if (!stillActive) {
+                        stopLettersPolling();
+                        if (typeof Toast !== 'undefined') {
+                            Toast.fire({ icon: 'success', title: 'Generasi ZIP Selesai!' });
                         }
                     }
-
-                    // Status berubah (processing → completed/failed) → update DOM tanpa reload
-                    if (currentStatus !== job.status && (job.status === 'completed' || job.status === 'failed')) {
-                        row.setAttribute('data-status', job.status);
-                        updateRowStatus(row, job);
-                    }
-                });
-
-                if (!stillActive) {
-                    stopAutoRefresh();
                 }
             })
             .catch(err => {
-                console.warn('Polling error:', err, '- stopping.');
-                stopAutoRefresh();
+                console.error('Refresh failing:', err);
+                stopLettersPolling();
             });
         }
 
-        // Update tampilan row saat status berubah (tanpa reload)
-        function updateRowStatus(row, job) {
-            const detailCell = row.querySelector('td:nth-child(2)');
-            const actionCell = row.querySelector('td:nth-child(3) div');
-            if (!detailCell || !actionCell) return;
-
-            // Update status badge
-            const statusArea = detailCell.querySelector('.mb-2');
-            const existingBadge = detailCell.querySelector('[class*="rounded-full"], .w-full');
-            if (existingBadge) existingBadge.remove();
-
-            if (job.status === 'completed') {
-                detailCell.insertAdjacentHTML('beforeend', `
-                    <div class="flex items-center gap-2">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                            Selesai (100%)
-                        </span>
-                    </div>`);
-                // Tambah tombol Download
-                actionCell.insertAdjacentHTML('afterbegin', `
-                    <a href="/admin/reports/download/${job.id}" data-turbo="false"
-                        class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-700 transition-colors shadow-sm shadow-emerald-200">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"/>
-                        </svg>
-                        Download
-                    </a>`);
-                showNotification('✅ ' + (job.details || 'Download') + ' sudah siap!', 'success');
-            } else if (job.status === 'failed') {
-                detailCell.insertAdjacentHTML('beforeend', `
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800">Gagal</span>
-                    <p class="text-xs text-red-400 mt-1 max-w-xs truncate">${job.error_message || ''}</p>`);
-            }
-        }
-
-
-
-        
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 px-6 py-4 rounded-2xl shadow-2xl font-bold text-white z-50 animate-bounce ${
-                type === 'success' ? 'bg-emerald-500' : 'bg-blue-500'
-            }`;
-            notification.textContent = message;
-            document.body.appendChild(notification);
+        // Global Delete function 
+        window.deleteHistory = function(url, btn) {
+            const row = btn.closest('tr');
             
-            setTimeout(() => {
-                notification.classList.add('opacity-0', 'transition-opacity');
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-        
-        // Start monitoring on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            startAutoRefresh();
-        });
-        
-        // Enhanced form submission with instant AJAX feedback
-        document.querySelector('form[action*="download-batch-letters"]').addEventListener('submit', function(e) {
-            e.preventDefault(); // Stop Turbo and native browser form submission
-            
-            const form = this;
-            const button = form.querySelector('button[type="submit"]');
-            const originalContent = button.innerHTML;
-            
-            button.disabled = true;
-            button.innerHTML = `
-                <svg class="animate-spin w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span>Mengirim...</span>
-            `;
-            
-            let url = form.action;
-            let options = {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'text/html'
-                }
-            };
-            
-            if (form.method.toUpperCase() === 'GET') {
-                const params = new URLSearchParams(new FormData(form)).toString();
-                url = url + (url.includes('?') ? '&' : '?') + params;
-                options.method = 'GET';
-            } else {
-                options.method = form.method.toUpperCase();
-                options.body = new FormData(form);
-            }
-
-            fetch(url, options)
-                .then(response => {
-                    // Start auto-refresh and show success notification
-                    showNotification('⚡ Proses antrian dimulai!', 'info');
-                    
-                    // Reset state
-                    form.reset();
-                    button.disabled = false;
-                    button.innerHTML = originalContent;
-                    
-                    // Force an immediate fetch of the new row
-                    refreshPage();
-                    if(!refreshInterval) {
-                        refreshInterval = setInterval(refreshPage, 3000);
-                    }
-                })
-                .catch(error => {
-                    showNotification('❌ Gagal mengirim request.', 'error');
-                    button.disabled = false;
-                    button.innerHTML = originalContent;
-                });
-        });
-
-        // AJAX Delete Handler
-        function deleteHistory(url, btn) {
             Swal.fire({
-                title: 'Hapus Riwayat?',
-                text: "File download ini akan dihapus permanen dari sistem.",
+                title: 'Konfirmasi Hapus',
+                text: 'Hapus riwayat download ini secara permanen?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
@@ -342,16 +236,21 @@
                 confirmButtonText: 'Ya, Hapus!',
                 cancelButtonText: 'Batal',
                 reverseButtons: true,
-                customClass: { popup: 'rounded-2xl' }
+                backdrop: 'rgba(15, 23, 42, 0.4)',
+                customClass: {
+                    popup: 'rounded-[2rem] border-none shadow-2xl',
+                    confirmButton: 'rounded-xl font-black px-6 py-3',
+                    cancelButton: 'rounded-xl font-black px-6 py-3'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const row = btn.closest('tr');
-                    if (row) row.style.opacity = '0.5';
-
+                    // Visual feedback
+                    if (row) row.style.opacity = '0.3';
+                    
                     fetch(url, {
                         method: 'DELETE',
                         headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                             'Accept': 'application/json',
                             'X-Requested-With': 'XMLHttpRequest'
                         }
@@ -359,21 +258,89 @@
                     .then(res => res.ok ? res.json() : Promise.reject(res))
                     .then(data => {
                         if (data.success) {
-                            showNotification(data.message || 'Riwayat berhasil dihapus.', 'success');
-                            if (row) row.remove();
-                            // Optional: auto refresh if empty rows
-                            if (!document.querySelector('tbody tr:not(.empty-row)')) refreshPage();
+                            if (row) {
+                                row.classList.add('animate-fadeOut');
+                                setTimeout(() => {
+                                    row.remove();
+                                    // If empty, reload to show empty state
+                                    if (!document.querySelector('tbody tr:not(.empty-row)')) {
+                                        window.location.reload();
+                                    }
+                                }, 400);
+                            }
+                            if (typeof Toast !== 'undefined') {
+                                Toast.fire({ icon: 'success', title: data.message });
+                            }
                         } else {
-                            showNotification(data.message || 'Gagal menghapus riwayat.', 'error');
                             if (row) row.style.opacity = '1';
+                            Swal.fire('Error', data.message || 'Gagal menghapus.', 'error');
                         }
                     })
-                    .catch(e => {
-                        showNotification('Gagal menghapus riwayat.', 'error');
+                    .catch(err => {
+                        console.error(err);
                         if (row) row.style.opacity = '1';
+                        if (typeof Toast !== 'undefined') {
+                            Toast.fire({ icon: 'error', title: 'Gagal menghubungi server' });
+                        }
                     });
                 }
             });
-        }
+        };
+
+        // Form Handler
+        document.getElementById('batch-download-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const btn = document.getElementById('submit-btn');
+            const originalHtml = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<svg class="animate-spin w-6 h-6 mr-1" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...';
+            
+            const url = new URL(form.action);
+            const params = new URLSearchParams(new FormData(form));
+            
+            fetch(`${url}?${params.toString()}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => {
+                if (typeof Toast !== 'undefined') {
+                    Toast.fire({ icon: 'info', title: 'Antrian dimulai!' });
+                }
+                form.reset();
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+                refreshHistoryTable();
+                startLettersPolling();
+            })
+            .catch(err => {
+                console.error(err);
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+            });
+        });
+
+        // Initialize polling on DOM Load & Turbo load
+        document.addEventListener('DOMContentLoaded', startLettersPolling);
+        document.addEventListener('turbo:load', startLettersPolling);
+        document.addEventListener('turbo:before-cache', stopLettersPolling);
+
     </script>
+
+    <style>
+        .animate-fadeOut {
+            animation: fadeOut 0.4s ease-out forwards;
+        }
+        @keyframes fadeOut {
+            from { opacity: 0.3; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.6s ease-out forwards;
+        }
+    </style>
 </x-layouts.admin>
