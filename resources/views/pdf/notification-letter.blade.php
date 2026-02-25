@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Surat Pemberitahuan - Sample</title>
+    <title>Surat Pemberitahuan - {{ $data['name'] }} ({{ $data['nim'] }})</title>
     <style>
         @page {
             margin: 1cm;
