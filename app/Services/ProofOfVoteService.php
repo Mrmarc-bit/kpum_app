@@ -311,6 +311,21 @@ class ProofOfVoteService
             if (file_exists($fullPath)) {
                 try {
                     $type = pathinfo($fullPath, PATHINFO_EXTENSION);
+                    
+                    if (strtolower($type) === 'webp' && function_exists('imagecreatefromwebp')) {
+                        $im = @imagecreatefromwebp($fullPath);
+                        if ($im !== false) {
+                            ob_start();
+                            // Enable alpha blending for transparent webp
+                            imagealphablending($im, false);
+                            imagesavealpha($im, true);
+                            imagepng($im);
+                            $data = ob_get_clean();
+                            imagedestroy($im);
+                            return 'data:image/png;base64,' . base64_encode($data);
+                        }
+                    }
+
                     $data = file_get_contents($fullPath);
                     return 'data:image/' . $type . ';base64,' . base64_encode($data);
                 } catch (\Exception $e) {
