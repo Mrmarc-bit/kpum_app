@@ -575,7 +575,12 @@
                             form.style.display = 'none';
                             document.body.appendChild(form);
                         }
-                        form.submit();
+                        
+                        if (typeof form.requestSubmit === 'function') {
+                            form.requestSubmit();
+                        } else {
+                            form.submit();
+                        }
                     }
                 });
             }

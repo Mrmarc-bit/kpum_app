@@ -475,7 +475,11 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('delete-all-form').submit();
+                    if (typeof document.getElementById('delete-all-form').requestSubmit === 'function') {
+                        document.getElementById('delete-all-form').requestSubmit();
+                    } else {
+                        document.getElementById('delete-all-form').submit();
+                    }
                 }
             })
         }
@@ -500,7 +504,11 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    form.submit();
+                    if (typeof form.requestSubmit === 'function') {
+                        form.requestSubmit();
+                    } else {
+                        form.submit();
+                    }
                 }
             })
         }
