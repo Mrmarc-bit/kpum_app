@@ -3,158 +3,155 @@
 @endphp
 
 <x-layouts.admin :title="$title ?? 'Unduh Surat Pemberitahuan'">
-    <div class="relative min-h-[600px]">
-        {{-- Background Accents --}}
-        <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -z-10"></div>
-        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl -z-10"></div>
-
-        <div class="max-w-4xl mx-auto py-8">
-            {{-- Header Section --}}
-            <div class="mb-12 text-center animate-fade-in">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-bold mb-4 border border-blue-100 shadow-sm">
-                    <span class="flex w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                    Bulk Letter Generation
-                </div>
-                <h1 class="text-4xl font-black text-slate-800 tracking-tight leading-none mb-3">Unduh Surat Pemberitahuan</h1>
-                <p class="text-slate-500 font-medium max-w-lg mx-auto">Generate & Download Surat Pemberitahuan Pemilihan dalam format ZIP secara massal per Program Studi.</p>
+    <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+        {{-- Header Section --}}
+        <div class="mb-8 border-b border-gray-100 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">Unduh Surat Pemberitahuan</h1>
+                <p class="text-gray-500 text-sm font-medium">Buat dan unduh surat pemberitahuan pemilih format ZIP secara massal.</p>
             </div>
+        </div>
 
-            {{-- Main Form Card --}}
-            <div class="relative mb-16 px-4">
-                <div class="absolute inset-0 bg-white/40 backdrop-blur-xl rounded-[2.5rem] -z-10 shadow-2xl shadow-slate-200/50 border border-white/60"></div>
-                <div class="p-8 sm:p-12">
-                    <form method="POST" action="{{ route('admin.dpt.download-batch-letters') }}" id="batch-download-form" class="space-y-8">
-                        @csrf
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                            <div class="md:col-span-8 group">
-                                <label class="block text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Pilih Program Studi</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+        {{-- Main Content Grid --}}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            {{-- Form Section --}}
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-5 sm:p-6">
+                        <h2 class="text-base font-bold text-gray-800 mb-5 flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            </span>
+                            Buat Permintaan
+                        </h2>
+                        
+                        <form method="POST" action="{{ route('admin.dpt.download-batch-letters') }}" id="batch-download-form" class="space-y-4">
+                            @csrf
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Pilih Program Studi <span class="text-red-500">*</span></label>
+                                <select name="prodi" required class="w-full rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 shadow-sm text-gray-700 text-sm font-medium transition-all py-2.5">
+                                    <option value="">-- Pilih Prodi --</option>
+                                    @foreach($prodiList as $prodi => $fakultas)
+                                        @php
+                                            $prodiClean = preg_replace('/\s*\([^)]*\)$/', '', $prodi);
+                                        @endphp
+                                        <option value="{{ $prodiClean }}">{{ $prodi }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="rounded-lg bg-yellow-50 p-3.5 border border-yellow-100 mt-2">
+                                <div class="flex items-start gap-3">
+                                    <div class="flex-shrink-0 mt-0.5">
+                                        <svg class="h-4 w-4 text-yellow-600" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
                                     </div>
-                                    <select name="prodi" required
-                                        class="w-full pl-12 pr-10 py-4 rounded-2xl border border-slate-200 bg-white/80 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all appearance-none font-bold text-slate-700 text-lg shadow-sm">
-                                        <option value="">-- Pilih Prodi --</option>
-                                        @foreach($prodiList as $prodi => $fakultas)
-                                            @php
-                                                $prodiClean = preg_replace('/\s*\([^)]*\)$/', '', $prodi);
-                                            @endphp
-                                            <option value="{{ $prodiClean }}">{{ $prodi }}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    <div class="text-xs text-yellow-800 leading-relaxed font-medium">
+                                        Proses pembuatan ZIP dilakukan di latar belakang. Anda dapat meninggalkan halaman ini dan memantau status di tabel riwayat.
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="md:col-span-4 self-end">
-                                <button type="submit" id="submit-btn"
-                                    class="w-full py-4.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-500/30 hover:-translate-y-1 active:scale-95 transition-all text-lg flex items-center justify-center gap-3">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"></path></svg>
-                                    Generate ZIP
-                                </button>
-                            </div>
-                        </div>
-
-                        {{-- Alert Box --}}
-                        <div class="p-6 bg-amber-500/5 rounded-3xl border border-amber-500/10 flex gap-5 items-start">
-                            <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center shrink-0 shadow-sm">
-                                <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                            </div>
-                            <div class="space-y-1">
-                                <h4 class="font-black text-amber-900 leading-none">Informasi Kapasitas</h4>
-                                <p class="text-sm text-amber-800/70 font-medium leading-relaxed">Sistem membatasi maksimal 500 surat per pengunduhan untuk menjaga stabilitas memori server. ZIP akan diproses di latar belakang.</p>
-                            </div>
-                        </div>
-                    </form>
+                            <button type="submit" id="submit-btn" class="w-full mt-4 flex justify-center items-center py-3 px-4 rounded-lg shadow-sm text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100 transition-all active:scale-[0.98]">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"></path></svg>
+                                Generate ZIP
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
             {{-- History Section --}}
-            <div class="px-4">
-                <div class="flex items-center justify-between mb-8">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-500">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <h2 class="text-2xl font-black text-slate-800 tracking-tight">Riwayat Generasi</h2>
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
+                        <h2 class="text-base font-bold text-gray-800 flex items-center gap-2">
+                            <span class="text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </span>
+                            Riwayat Generasi
+                        </h2>
                     </div>
-                </div>
 
-                <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left" id="history-table">
-                            <thead>
-                                <tr class="bg-slate-50/50 text-slate-400 font-black text-[10px] uppercase tracking-widest border-b border-slate-100">
-                                    <th class="px-8 py-5">Request Details</th>
-                                    <th class="px-8 py-5 text-center w-64">Status & Progress</th>
-                                    <th class="px-8 py-5 text-right w-32">Actions</th>
+                            <thead class="bg-gray-50/50">
+                                <tr>
+                                    <th class="px-5 py-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest border-b border-gray-100">Detail Permintaan</th>
+                                    <th class="px-5 py-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest border-b border-gray-100 text-center w-40">Status</th>
+                                    <th class="px-5 py-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest border-b border-gray-100 text-right w-28">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100">
+                            <tbody class="divide-y divide-gray-50">
                                 @forelse($history as $file)
-                                    <tr class="group hover:bg-slate-50/50 transition-colors" data-job-id="{{ $file->id }}" data-status="{{ $file->status }}">
-                                        <td class="px-8 py-6">
-                                            <div class="flex items-center gap-4">
-                                                <div class="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-blue-500 group-hover:border-blue-100 transition-all">
-                                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    <tr class="hover:bg-gray-50/50 transition-colors group" data-job-id="{{ $file->id }}" data-status="{{ $file->status }}">
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-lg bg-blue-50/50 flex items-center justify-center text-blue-500 border border-blue-100/50">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                                                 </div>
-                                                <div>
-                                                    <span class="block font-black text-slate-700 group-hover:text-slate-900 transition-colors">{{ $file->details ?? 'Semua Prodi' }}</span>
-                                                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{{ $file->created_at->translatedFormat('d F Y • H:i') }}</span>
+                                                <div class="flex flex-col">
+                                                    <span class="text-sm font-bold text-gray-800">{{ $file->details ?? 'Semua Prodi' }}</span>
+                                                    <span class="text-xs font-medium text-gray-400">{{ $file->created_at->translatedFormat('d M Y • H:i') }}</span>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-8 py-6">
-                                            <div class="status-content">
+                                        
+                                        <td class="px-5 py-4">
+                                            <div class="flex justify-center status-content">
                                                 @if($file->status === 'completed')
-                                                    <div class="flex flex-col items-center gap-1">
-                                                        <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-black uppercase tracking-wider shadow-sm shadow-emerald-200/50">Selesai</span>
-                                                        <span class="text-[10px] font-bold text-slate-400">100% Ready</span>
-                                                    </div>
+                                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-green-50 text-green-600 border border-green-100">
+                                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                        Selesai
+                                                    </span>
                                                 @elseif($file->status === 'processing' || $file->status === 'pending')
-                                                    <div class="w-full max-w-[150px] mx-auto space-y-2">
-                                                        <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-wider">
-                                                            <span class="text-blue-600 animate-pulse">{{ $file->status === 'pending' ? 'Antrian' : 'Proses' }}</span>
-                                                            <span class="text-slate-400 progress-pct">{{ $file->progress }}%</span>
+                                                    <div class="w-full">
+                                                        <div class="flex justify-between items-center mb-1.5 text-[10px] font-bold tracking-wide">
+                                                            <span class="text-blue-600 animate-pulse">{{ $file->status === 'pending' ? 'ANTRIAN' : 'PROSES' }}</span>
+                                                            <span class="text-gray-500 progress-pct">{{ $file->progress }}%</span>
                                                         </div>
-                                                        <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                                            <div class="h-full bg-blue-500 rounded-full transition-all duration-500 progress-bar shadow-[0_0_8px_rgba(59,130,246,0.5)]" style="width: {{ $file->progress }}%"></div>
+                                                        <div class="w-full bg-blue-50 rounded-full h-1.5 overflow-hidden">
+                                                            <div class="bg-blue-500 h-1.5 rounded-full progress-bar transition-all duration-300" style="width: {{ $file->progress }}%"></div>
                                                         </div>
                                                     </div>
                                                 @else
-                                                    <div class="flex flex-col items-center gap-1">
-                                                        <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-[10px] font-black uppercase tracking-wider shadow-sm shadow-red-200/50">Gagal</span>
-                                                        <span class="text-[10px] font-bold text-red-400 max-w-[180px] break-words text-center leading-snug">{{ $file->error_message ?: 'System Error' }}</span>
+                                                    <div class="flex flex-col items-center">
+                                                        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-red-50 text-red-600 border border-red-100 mb-1.5">
+                                                            <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                                            Gagal
+                                                        </span>
+                                                        <button type="button" onclick="showErrorDetail('{{ htmlspecialchars($file->error_message ?: 'Terjadi kesalahan sistem yang tidak diketahui.', ENT_QUOTES, 'UTF-8') }}')" class="text-[10px] font-bold text-gray-500 hover:text-red-600 flex items-center gap-1 transition-colors bg-gray-50 hover:bg-red-50 px-2 py-0.5 rounded border border-gray-100">
+                                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                            Lihat Error
+                                                        </button>
                                                     </div>
                                                 @endif
                                             </div>
                                         </td>
-                                        <td class="px-8 py-6 text-right">
-                                            <div class="flex justify-end items-center gap-2 action-content">
+                                        
+                                        <td class="px-5 py-4 whitespace-nowrap text-right">
+                                            <div class="flex items-center justify-end gap-2 action-content">
                                                 @if($file->status === 'completed')
-                                                    <a href="{{ route('admin.reports.download', $file->id) }}" data-turbo="false" 
-                                                        class="p-2.5 rounded-xl bg-slate-50 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-emerald-500/30" title="Download ZIP">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"></path></svg>
+                                                    <a href="{{ route('admin.reports.download', $file->id) }}" data-turbo="false" class="text-blue-600 hover:text-white bg-blue-50 hover:bg-blue-600 p-2 rounded-lg flex items-center justify-center transition-all border border-blue-100 hover:border-blue-600" title="Unduh File">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"></path></svg>
                                                     </a>
                                                 @endif
-                                                <button type="button" onclick="deleteHistory('{{ route('admin.reports.destroy', $file->id) }}', this)" 
-                                                    class="p-2.5 rounded-xl bg-slate-50 text-slate-400 hover:bg-red-500 hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-red-500/30" title="Hapus Riwayat">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                <button type="button" onclick="deleteHistory('{{ route('admin.reports.destroy', $file->id) }}', this)" class="text-gray-400 hover:text-white bg-gray-50 hover:bg-red-500 p-2 rounded-lg transition-all border border-gray-100 hover:border-red-500" title="Hapus Riwayat">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr class="empty-row">
-                                        <td colspan="3" class="px-8 py-20 text-center">
-                                            <div class="flex flex-col items-center">
-                                                <div class="w-20 h-20 rounded-[2rem] bg-slate-50 flex items-center justify-center text-slate-200 mb-4 border-2 border-dashed border-slate-100">
-                                                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                                        <td colspan="3" class="px-5 py-12 text-center">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <div class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-3">
+                                                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
                                                 </div>
-                                                <h3 class="font-black text-slate-400 uppercase tracking-widest text-xs">Belum ada riwayat</h3>
-                                                <p class="text-slate-300 text-sm font-medium mt-1">Silakan pilih Program Studi di atas untuk mulai.</p>
+                                                <span class="text-sm font-bold text-gray-500">Belum Ada Riwayat</span>
+                                                <span class="text-xs text-gray-400 mt-1">Data unduhan belum tersedia</span>
                                             </div>
                                         </td>
                                     </tr>
@@ -164,7 +161,7 @@
                     </div>
                     
                     @if($history->hasPages())
-                        <div class="px-8 py-6 bg-slate-50/50 border-t border-slate-100">
+                        <div class="px-5 py-4 border-t border-gray-100 bg-gray-50/50">
                             {{ $history->links() }}
                         </div>
                     @endif
@@ -174,20 +171,17 @@
     </div>
 
     <script>
-        // Ensure no multiple declarations
         window.lettersRefreshInterval = window.lettersRefreshInterval || null;
 
         function startLettersPolling() {
             const active = document.querySelector('[data-status="processing"], [data-status="pending"]');
             if (active && !window.lettersRefreshInterval) {
-                console.log('🔄 Bulk Letters: Polling started');
                 window.lettersRefreshInterval = setInterval(refreshHistoryTable, 3000);
             }
         }
 
         function stopLettersPolling() {
             if (window.lettersRefreshInterval) {
-                console.log('⏸️ Bulk Letters: Polling stopped');
                 clearInterval(window.lettersRefreshInterval);
                 window.lettersRefreshInterval = null;
             }
@@ -204,15 +198,14 @@
                 const newTbody = doc.querySelector('tbody');
                 const currentTbody = document.querySelector('tbody');
                 
-                if (newTbody && currentTbody) {
+                if (newTbody && currentTbody && currentTbody.innerHTML !== newTbody.innerHTML) {
                     currentTbody.innerHTML = newTbody.innerHTML;
                     
-                    // Check if we can stop
                     const stillActive = currentTbody.querySelector('[data-status="processing"], [data-status="pending"]');
                     if (!stillActive) {
                         stopLettersPolling();
-                        if (typeof Toast !== 'undefined') {
-                            Toast.fire({ icon: 'success', title: 'Generasi ZIP Selesai!' });
+                        if (typeof window.Toast !== 'undefined') {
+                            window.Toast.fire({ icon: 'success', title: 'Generasi ZIP Selesai!' });
                         }
                     }
                 }
@@ -223,30 +216,41 @@
             });
         }
 
-        // Global Delete function 
+        window.showErrorDetail = function(message) {
+            Swal.fire({
+                title: 'Detail Kesalahan',
+                html: `<div class="bg-red-50 text-red-700 p-4 rounded-lg text-left text-sm font-mono whitespace-pre-wrap border border-red-100 overflow-x-auto">${message}</div>`,
+                icon: 'error',
+                confirmButtonColor: '#3b82f6',
+                confirmButtonText: 'Tutup',
+                customClass: {
+                    popup: 'rounded-xl',
+                    confirmButton: 'rounded-lg font-bold px-6 py-2.5 shadow-none'
+                }
+            });
+        };
+
         window.deleteHistory = function(url, btn) {
             const row = btn.closest('tr');
             
             Swal.fire({
-                title: 'Konfirmasi Hapus',
-                text: 'Hapus riwayat download ini secara permanen?',
+                title: 'Hapus Riwayat?',
+                text: 'File ZIP (jika ada) akan ikut terhapus.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#94a3b8',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal',
+                cancelButtonColor: '#f3f4f6',
+                confirmButtonText: 'Hapus',
+                cancelButtonText: '<span class="text-gray-700">Batal</span>',
                 reverseButtons: true,
-                backdrop: 'rgba(15, 23, 42, 0.4)',
                 customClass: {
-                    popup: 'rounded-[2rem] border-none shadow-2xl',
-                    confirmButton: 'rounded-xl font-black px-6 py-3',
-                    cancelButton: 'rounded-xl font-black px-6 py-3'
+                    popup: 'rounded-xl',
+                    confirmButton: 'rounded-lg font-bold px-6 py-2.5',
+                    cancelButton: 'rounded-lg font-bold px-6 py-2.5'
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Visual feedback
-                    if (row) row.style.opacity = '0.3';
+                    if (row) row.style.opacity = '0.5';
                     
                     fetch(url, {
                         method: 'DELETE',
@@ -260,17 +264,13 @@
                     .then(data => {
                         if (data.success) {
                             if (row) {
-                                row.classList.add('animate-fadeOut');
-                                setTimeout(() => {
-                                    row.remove();
-                                    // If empty, reload to show empty state
-                                    if (!document.querySelector('tbody tr:not(.empty-row)')) {
-                                        window.location.reload();
-                                    }
-                                }, 400);
+                                row.remove();
+                                if (!document.querySelector('tbody tr:not(.empty-row)')) {
+                                    window.location.reload();
+                                }
                             }
-                            if (typeof Toast !== 'undefined') {
-                                Toast.fire({ icon: 'success', title: data.message });
+                            if (typeof window.Toast !== 'undefined') {
+                                window.Toast.fire({ icon: 'success', title: 'Berhasil dihapus' });
                             }
                         } else {
                             if (row) row.style.opacity = '1';
@@ -280,19 +280,17 @@
                     .catch(err => {
                         console.error(err);
                         if (row) row.style.opacity = '1';
-                        if (typeof Toast !== 'undefined') {
-                            Toast.fire({ icon: 'error', title: 'Gagal menghubungi server' });
+                        if (typeof window.Toast !== 'undefined') {
+                            window.Toast.fire({ icon: 'error', title: 'Gagal menghubungi server' });
                         }
                     });
                 }
             });
         };
 
-        // Form Handler with Safety Check
         function initLetterPage() {
             const form = document.getElementById('batch-download-form');
             if (form) {
-                // Ensure we don't attach multiple listeners
                 form.removeEventListener('submit', handleDownloadSubmit);
                 form.addEventListener('submit', handleDownloadSubmit);
             }
@@ -307,11 +305,9 @@
             const originalHtml = btn.innerHTML;
             
             btn.disabled = true;
-            btn.innerHTML = '<svg class="animate-spin w-6 h-6 mr-1" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...';
+            btn.innerHTML = '<svg class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...';
             
             const url = new URL(form.action);
-            const params = new URLSearchParams(new FormData(form));
-            
             fetch(url.toString(), {
                 method: 'POST',
                 body: new FormData(form),
@@ -321,8 +317,8 @@
                 }
             })
             .then(res => {
-                if (typeof Toast !== 'undefined') {
-                    Toast.fire({ icon: 'info', title: 'Antrian dimulai!' });
+                if (typeof window.Toast !== 'undefined') {
+                    window.Toast.fire({ icon: 'info', title: 'Antrian dimulai!' });
                 }
                 form.reset();
                 btn.disabled = false;
@@ -337,27 +333,8 @@
             });
         }
 
-        // Initialize on DOM Load & Turbo load
         document.addEventListener('DOMContentLoaded', initLetterPage);
         document.addEventListener('turbo:load', initLetterPage);
         document.addEventListener('turbo:before-cache', stopLettersPolling);
-
     </script>
-
-    <style>
-        .animate-fadeOut {
-            animation: fadeOut 0.4s ease-out forwards;
-        }
-        @keyframes fadeOut {
-            from { opacity: 0.3; transform: scale(1); }
-            to { opacity: 0; transform: scale(0.95); }
-        }
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-            animation: fade-in 0.6s ease-out forwards;
-        }
-    </style>
 </x-layouts.admin>
