@@ -88,8 +88,8 @@
                             <thead>
                                 <tr class="bg-slate-50/50 text-slate-400 font-black text-[10px] uppercase tracking-widest border-b border-slate-100">
                                     <th class="px-8 py-5">Details</th>
-                                    <th class="px-8 py-5 text-center">Status & Progress</th>
-                                    <th class="px-8 py-5 text-right">Actions</th>
+                                    <th class="px-8 py-5 text-center w-64">Status & Progress</th>
+                                    <th class="px-8 py-5 text-right w-32">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
@@ -126,7 +126,7 @@
                                                 @else
                                                     <div class="flex flex-col items-center gap-1">
                                                         <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-[10px] font-black uppercase tracking-wider shadow-sm shadow-red-200/50">Failed</span>
-                                                        <span class="text-[10px] font-bold text-red-400 max-w-[100px] truncate" title="{{ $file->error_message }}">System Error</span>
+                                                        <span class="text-[10px] font-bold text-red-400 max-w-[180px] break-words text-center leading-snug">{{ $file->error_message ?: 'System Error' }}</span>
                                                     </div>
                                                 @endif
                                             </div>
