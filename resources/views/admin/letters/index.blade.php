@@ -390,6 +390,7 @@
                                 'X-CSRF-TOKEN': csrfToken,
                                 'Accept': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest',
+                                'Content-Type': 'application/x-www-form-urlencoded'
                             },
                             body: '_token=' + encodeURIComponent(csrfToken) + '&_method=DELETE'
                         })
