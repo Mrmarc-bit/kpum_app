@@ -8,6 +8,7 @@ ARG uid=1000
 RUN apt-get update && apt-get install -y \
     git \
     curl \
+    gnupg \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
@@ -19,6 +20,8 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libicu-dev \
     libssl-dev \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions using the official extension installer for better reliability
