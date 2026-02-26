@@ -19,7 +19,7 @@
                     Update Terkini
                 </div>
 
-                <h1 class="text-6xl sm:text-8xl font-black text-[#111111] leading-[0.85] tracking-tighter mb-10">
+                <h1 class="text-6xl sm:text-8xl font-black text-slate-900 leading-[0.85] tracking-tighter mb-10">
                     Grow Bold.<br>
                     Move Free.<br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Play Hard.</span>
@@ -30,10 +30,13 @@
                 </p>
 
                 <!-- Search/Newsletter Style -->
-                <div class="mt-12 max-w-md">
-                    <form action="#" class="relative group">
-                        <input type="text" placeholder="Cari berita atau pengumuman..." class="w-full bg-slate-50 border-b-2 border-slate-200 py-6 px-1 pr-32 focus:outline-none focus:border-[#111111] transition-colors text-lg font-bold placeholder:text-slate-400 placeholder:font-medium">
-                        <button class="absolute right-0 top-1/2 -translate-y-1/2 bg-[#111111] text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-xl shadow-slate-200">
+                <div class="mt-12 max-w-xl">
+                    <form action="#" class="relative flex items-center bg-white rounded-2xl p-2 border-2 border-slate-100 focus-within:ring-4 focus-within:ring-blue-50 focus-within:border-blue-500 transition-all shadow-sm">
+                        <div class="pl-4 pr-2 text-slate-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </div>
+                        <input type="text" placeholder="Cari berita atau pengumuman..." class="w-full bg-transparent border-none py-3 px-2 focus:outline-none focus:ring-0 text-slate-700 font-medium placeholder:text-slate-400">
+                        <button class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 whitespace-nowrap">
                             Cari
                         </button>
                     </form>
@@ -48,10 +51,10 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @forelse($posts as $index => $item)
                 @php
-                    $bgColors = ['bg-[#C6CDFF]', 'bg-[#EAF0B0]', 'bg-[#A288A6]', 'bg-[#FFD4E2]', 'bg-[#C4F5E0]'];
+                    $bgColors = ['bg-blue-100', 'bg-lime-100', 'bg-purple-100', 'bg-pink-100', 'bg-emerald-100'];
                     $colorIndex = $index % count($bgColors);
                 @endphp
-                <div class="group relative flex flex-col bg-[#F4F5F6] rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-2 h-full">
+                <div class="group relative flex flex-col bg-slate-50 rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-2 h-full border border-slate-100">
 
                     <!-- Top Info -->
                     <div class="p-8 pb-4">

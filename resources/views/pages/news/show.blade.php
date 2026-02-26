@@ -36,28 +36,23 @@
             @endif
 
             <!-- Article Body -->
-            <div class="prose prose-slate prose-xl max-w-none
-                prose-headings:font-black prose-headings:text-slate-900 prose-headings:tracking-tight
-                prose-p:text-slate-600 prose-p:leading-relaxed prose-p:font-medium
-                prose-a:text-blue-600 prose-a:font-bold prose-strong:text-slate-900 prose-strong:font-black">
-
-                {!! $post->content !!}
-
+            <div class="text-lg text-slate-700 leading-relaxed whitespace-pre-wrap font-medium">
+                {{ $post->content }}
             </div>
 
             <!-- Author Card & Share -->
-            <div class="mt-20 pt-10 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-8">
-                <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white text-2xl font-black">
-                        {{ substr($post->author->name ?? 'A', 0, 1) }}
+            <div class="mt-16 pt-8 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-4 w-full sm:w-auto">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white text-2xl font-black shrink-0 shadow-lg shadow-blue-500/30">
+                        {{ substr($post->user->name ?? 'A', 0, 1) }}
                     </div>
                     <div>
                         <div class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Diterbitkan oleh</div>
-                        <div class="text-lg font-black text-slate-900">{{ $post->author->name ?? 'Admin KPUM' }}</div>
+                        <div class="text-lg font-black text-slate-900">{{ $post->user->name ?? 'Admin KPUM' }}</div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3">
+                <div class="flex items-center justify-start sm:justify-end gap-3 w-full sm:w-auto">
                     <span class="text-sm font-black text-slate-400 uppercase tracking-widest mr-2">Share:</span>
                     @foreach(['FB', 'WA', 'TW'] as $share)
                     <button class="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-900 hover:text-white transition-all font-black text-xs">
