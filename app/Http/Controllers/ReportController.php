@@ -30,8 +30,8 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $view = Auth::user()->role === 'panitia' 
-            ? 'panitia.reports.index' 
+        $view = Auth::user()->role === 'panitia'
+            ? 'panitia.reports.index'
             : 'admin.reports.index';
 
         // Hanya tampilkan laporan resmi (hasil, audit, berita acara)
@@ -95,7 +95,7 @@ class ReportController extends Controller
                 'status' => 'failed',
                 'error_message' => $e->getMessage()
             ]);
-            
+
             // Re-throw to show error to user
             throw $e;
         }
@@ -154,8 +154,12 @@ class ReportController extends Controller
      */
     public function downloadFile(\App\Models\ReportFile $reportFile)
     {
-        // Security check
-        if ($reportFile->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
+        // Security check: Owner, Admin, Super Admin, or Panitia (for shared administration)
+        $user = Auth::user();
+        $isPrivileged = $user && in_array($user->role, ['admin', 'super_admin', 'panitia']);
+        $isOwner = $user && ($reportFile->user_id == $user->id);
+
+        if (!$isPrivileged && !$isOwner) {
             abort(403);
         }
 

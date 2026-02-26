@@ -24,7 +24,7 @@
                             </span>
                             Buat Permintaan
                         </h2>
-                        
+
                         <form method="POST" action="{{ route('panitia.dpt.download-batch-letters') }}" id="batch-download-form" class="space-y-4">
                             @csrf
                             <div>
@@ -94,7 +94,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        
+
                                         <td class="px-5 py-4">
                                             <div class="flex justify-center status-content">
                                                 @if($file->status === 'completed')
@@ -126,7 +126,7 @@
                                                 @endif
                                             </div>
                                         </td>
-                                        
+
                                         <td class="px-5 py-4 whitespace-nowrap text-right">
                                             <div class="flex items-center justify-end gap-2 action-content">
                                                 @if($file->status === 'completed')
@@ -156,7 +156,7 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                     @if($history->hasPages())
                         <div class="px-5 py-4 border-t border-gray-100 bg-gray-50/50">
                             {{ $history->links() }}
@@ -194,10 +194,10 @@
                 const doc = parser.parseFromString(html, 'text/html');
                 const newTbody = doc.querySelector('tbody');
                 const currentTbody = document.querySelector('tbody');
-                
+
                 if (newTbody && currentTbody && currentTbody.innerHTML !== newTbody.innerHTML) {
                     currentTbody.innerHTML = newTbody.innerHTML;
-                    
+
                     const stillActive = currentTbody.querySelector('[data-status="processing"], [data-status="pending"]');
                     if (!stillActive) {
                         stopLettersPolling();
@@ -229,7 +229,7 @@
 
         window.deleteHistory = function(url, btn) {
             const row = btn.closest('tr');
-            
+
             Swal.fire({
                 title: 'Hapus Riwayat?',
                 text: 'File ZIP (jika ada) akan ikut terhapus.',
@@ -248,7 +248,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (row) row.style.opacity = '0.5';
-                    
+
                     fetch(url, {
                         method: 'DELETE',
                         headers: {
@@ -300,20 +300,21 @@
             const btn = document.getElementById('submit-btn');
             if (!btn) return;
             const originalHtml = btn.innerHTML;
-            
+
             btn.disabled = true;
             btn.innerHTML = '<svg class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...';
-            
+
             const url = new URL(form.action);
             fetch(url.toString(), {
                 method: 'POST',
                 body: new FormData(form),
-                headers: { 
+                headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 }
             })
             .then(res => {
+                if (!res.ok) throw new Error('Server returned ' + res.status);
                 if (typeof window.Toast !== 'undefined') {
                     window.Toast.fire({ icon: 'info', title: 'Antrian dimulai!' });
                 }
@@ -327,6 +328,11 @@
                 console.error(err);
                 btn.disabled = false;
                 btn.innerHTML = originalHtml;
+                Swal.fire({
+                    title: 'Gagal Membuat Antrian',
+                    text: 'Terjadi kesalahan saat menghubungi server. Pastikan Anda masih terlogin.',
+                    icon: 'error'
+                });
             });
         }
 
