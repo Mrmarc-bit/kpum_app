@@ -19,21 +19,21 @@
                     Update Terkini
                 </div>
 
-                <h1 class="text-6xl sm:text-8xl font-black text-slate-900 leading-[0.85] tracking-tighter mb-10">
+                <h1 class="text-6xl sm:text-8xl font-black text-[#111111] leading-[0.85] tracking-tighter mb-10">
                     Grow Bold.<br>
                     Move Free.<br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Play Hard.</span>
                 </h1>
 
-                <p class="text-xl text-slate-600 font-medium max-w-2xl leading-relaxed">
+                <p class="text-xl text-slate-500 font-medium max-w-2xl leading-relaxed">
                     Satu ruang di mana mahasiswa menemukan informasi seputar pesta demokrasi, pergerakan, dan edukasi politik — semua dalam lingkungan yang suportif dan transparan.
                 </p>
 
                 <!-- Search/Newsletter Style -->
                 <div class="mt-12 max-w-md">
                     <form action="#" class="relative group">
-                        <input type="email" placeholder="Cari berita atau pengumuman..." class="w-full bg-slate-50 border-b-2 border-slate-200 py-6 px-1 pr-32 focus:outline-none focus:border-blue-600 transition-colors text-lg font-bold placeholder:text-slate-400 placeholder:font-medium">
-                        <button class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-600 transition-all shadow-xl shadow-slate-200">
+                        <input type="text" placeholder="Cari berita atau pengumuman..." class="w-full bg-slate-50 border-b-2 border-slate-200 py-6 px-1 pr-32 focus:outline-none focus:border-[#111111] transition-colors text-lg font-bold placeholder:text-slate-400 placeholder:font-medium">
+                        <button class="absolute right-0 top-1/2 -translate-y-1/2 bg-[#111111] text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-xl shadow-slate-200">
                             Cari
                         </button>
                     </form>
@@ -45,7 +45,7 @@
     {{-- News Grid Section --}}
     <section class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @forelse($posts as $index => $item)
                 @php
                     $bgColors = ['bg-[#C6CDFF]', 'bg-[#EAF0B0]', 'bg-[#A288A6]', 'bg-[#FFD4E2]', 'bg-[#C4F5E0]'];
@@ -74,7 +74,7 @@
                         </p>
                     </div>
 
-                    <!-- Decorative Footer Block inspired by the user's reference -->
+                    <!-- Decorative Footer Block -->
                     <div class="px-3 pb-3 mt-auto">
                         <div class="h-[260px] w-full rounded-[2rem] {{ $bgColors[$colorIndex] }} flex items-center justify-center relative overflow-hidden group-hover:bg-opacity-90 transition-colors duration-500">
 
