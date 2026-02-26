@@ -25,18 +25,15 @@
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Play Hard.</span>
                 </h1>
 
-                <p class="text-xl text-slate-500 font-medium max-w-2xl leading-relaxed">
+                <p class="text-xl text-slate-600 font-medium max-w-2xl leading-relaxed">
                     Satu ruang di mana mahasiswa menemukan informasi seputar pesta demokrasi, pergerakan, dan edukasi politik — semua dalam lingkungan yang suportif dan transparan.
                 </p>
 
                 <!-- Search/Newsletter Style -->
-                <div class="mt-12 max-w-xl">
-                    <form action="#" class="relative flex items-center bg-white rounded-2xl p-2 border-2 border-slate-100 focus-within:ring-4 focus-within:ring-blue-50 focus-within:border-blue-500 transition-all shadow-sm">
-                        <div class="pl-4 pr-2 text-slate-400">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        </div>
-                        <input type="text" placeholder="Cari berita atau pengumuman..." class="w-full bg-transparent border-none py-3 px-2 focus:outline-none focus:ring-0 text-slate-700 font-medium placeholder:text-slate-400">
-                        <button class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 whitespace-nowrap">
+                <div class="mt-12 max-w-md">
+                    <form action="#" class="relative group">
+                        <input type="email" placeholder="Cari berita atau pengumuman..." class="w-full bg-slate-50 border-b-2 border-slate-200 py-6 px-1 pr-32 focus:outline-none focus:border-blue-600 transition-colors text-lg font-bold placeholder:text-slate-400 placeholder:font-medium">
+                        <button class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-600 transition-all shadow-xl shadow-slate-200">
                             Cari
                         </button>
                     </form>
@@ -48,71 +45,49 @@
     {{-- News Grid Section --}}
     <section class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
                 @forelse($posts as $index => $item)
                 @php
-                    $bgColors = ['bg-blue-100', 'bg-lime-100', 'bg-purple-100'];
+                    $bgColors = ['bg-[#D4E2FF]', 'bg-[#F0F5C4]', 'bg-[#CAB5D6]', 'bg-[#FFD4E2]', 'bg-[#C4F5E0]'];
                     $colorIndex = $index % count($bgColors);
                 @endphp
-                <div class="group relative flex flex-col bg-slate-50 border border-slate-100 rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-2 h-[500px] lg:h-[600px]">
+                <div class="group flex flex-col bg-[#F8F9FA] rounded-[3rem] border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-4 h-full">
+                    <!-- Top Section -->
+                    <div class="p-10 pb-6 flex justify-between items-start">
+                        <span class="px-5 py-2 rounded-full bg-slate-200/50 text-slate-600 text-[10px] font-black uppercase tracking-widest">
+                            {{ $item->category }}
+                        </span>
 
-                    <!-- Top Info -->
-                    <div class="p-8 pb-4 flex-1">
-                        <div class="flex justify-between items-start mb-6">
-                            <span class="px-4 py-1.5 rounded-full bg-slate-200 text-slate-700 text-xs font-black tracking-wide truncate max-w-[150px]">
-                                {{ $item->category }}
-                            </span>
-                            <div class="w-10 h-10 shrink-0 bg-white rounded-full flex items-center justify-center text-slate-900 border-2 border-slate-100 group-hover:border-slate-900 transition-colors shadow-sm ml-2">
-                                <svg class="w-4 h-4 -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </div>
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-900 border border-slate-200 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm">
+                            <svg class="w-6 h-6 -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </div>
+                    </div>
 
-                        <h3 class="text-2xl lg:text-3xl font-black text-slate-900 mb-4 tracking-tight leading-[1.2]">
-                            <a href="{{ route('news.show', $item->slug) }}" class="before:absolute before:inset-0">
+                    <!-- Content Section -->
+                    <div class="px-10 flex-1">
+                        <h3 class="text-3xl font-black text-slate-900 mb-6 group-hover:text-blue-600 transition-colors leading-tight">
+                            <a href="{{ route('news.show', $item->slug) }}">
                                 {{ $item->title }}
                             </a>
                         </h3>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-3 font-medium">
+                        <p class="text-slate-500 font-medium leading-relaxed">
                             {{ $item->excerpt }}
                         </p>
                     </div>
 
-                    <!-- Decorative Footer Block -->
-                    <div class="px-3 pb-3 mt-auto h-[220px] lg:h-[280px]">
-                        <div class="h-full w-full rounded-[2rem] {{ $bgColors[$colorIndex] }} flex items-center justify-center relative overflow-hidden group-hover:bg-opacity-90 transition-colors duration-500">
-
-                            @if($index % 3 == 0)
-                                <!-- Orangey spiky blob stretching on a bar -->
-                                <svg class="w-40 h-40 xl:w-48 xl:h-48 drop-shadow-xl scale-100 group-hover:scale-110 transition-transform duration-700" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M 30 140 L 30 70 L 170 70 L 170 140" fill="none" stroke="#111" stroke-width="4" stroke-linecap="square"/>
-                                    <path fill="#FF9E66" d="M100,80 l15,20 l25,-10 l-10,25 l25,15 l-25,10 l10,25 l-25,-10 l-15,20 l-15,-20 l-25,10 l10,-25 l-25,-10 l25,-15 l-10,-25 l25,10 z" />
-                                    <!-- Cute Eyes -->
-                                    <path d="M 85 110 Q 90 100 95 110" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>
-                                    <path d="M 105 110 Q 110 100 115 110" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>
-                                </svg>
-                            @elseif($index % 3 == 1)
-                                <!-- Pink multi-fingered plant playing volleyball -->
-                                <svg class="w-40 h-40 xl:w-48 xl:h-48 drop-shadow-xl scale-100 group-hover:scale-110 transition-transform duration-700" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill="#F28B9F" d="M100,160 C50,160 30,140 30,120 C30,110 40,90 50,90 C50,90 60,110 70,120 L80,70 C80,60 100,50 100,70 L110,110 L120,60 C120,50 140,50 140,60 L140,120 C140,120 160,100 170,100 C180,100 180,120 170,130 C150,150 130,160 100,160 Z"/>
-                                    <!-- Cute Face -->
-                                    <path d="M 85 130 Q 90 120 95 130" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>
-                                    <path d="M 115 130 Q 120 120 125 130" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>
-                                    <!-- Volleyball -->
-                                    <circle cx="120" cy="70" r="22" fill="#EAF0B0" stroke="#111" stroke-width="4"/>
-                                    <path d="M 100 60 Q 120 50 140 80" fill="none" stroke="#111" stroke-width="3"/>
-                                    <path d="M 105 85 Q 125 70 135 55" fill="none" stroke="#111" stroke-width="3"/>
-                                </svg>
-                            @else
-                                <!-- Abstract forms with a ping-pong style racket -->
-                                <svg class="w-40 h-40 xl:w-48 xl:h-48 drop-shadow-xl scale-100 group-hover:scale-110 transition-transform duration-700" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill="#B294BB" d="M 120 40 Q 180 30 180 100 Q 180 170 110 170 Q 50 170 50 100 Q 50 50 120 40 Z" />
-                                    <!-- Racket -->
-                                    <circle cx="90" cy="90" r="30" fill="none" stroke="#111" stroke-width="5"/>
-                                    <path d="M 110 110 L 140 140" fill="none" stroke="#111" stroke-width="12" stroke-linecap="round"/>
-                                    <!-- Ball/Blob -->
-                                    <circle cx="140" cy="80" r="14" fill="#F4F4F4" stroke="#111" stroke-width="4"/>
-                                </svg>
-                            @endif
+                    <!-- Illustration/Graphic Part -->
+                    <div class="mt-10 p-4 pt-0 h-72">
+                        <div class="w-full h-full rounded-[2.5rem] {{ $bgColors[$colorIndex] }} flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
+                            <!-- Simple Abstract Shape/Icon -->
+                            <div class="opacity-80 group-hover:opacity-100 transition-opacity">
+                                @if($index % 3 == 0)
+                                    <svg class="w-32 h-32 text-blue-500/40" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                                @elseif($index % 3 == 1)
+                                    <svg class="w-32 h-32 text-green-500/40" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                                @else
+                                    <svg class="w-32 h-32 text-purple-500/40" fill="currentColor" viewBox="0 0 24 24"><path d="M21 3.01H3c-1.1 0-2 .9-2 2V13c0 1.1.9 2 2 2h8l-4 4v1h10v-1l-4-4h8c1.1 0 2-.9 2-2v-7.99c0-1.11-.89-2-2-2zM21 13H3V5.01h18V13z"/></svg>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
