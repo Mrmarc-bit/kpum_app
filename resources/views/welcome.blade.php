@@ -58,6 +58,8 @@
                         class="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all">Jadwal</a>
                     <a href="{{ route('check-dpt') }}"
                         class="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all">Cek DPT</a>
+                    <a href="{{ route('news.index') }}"
+                        class="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all">Berita</a>
                     <div class="w-px h-5 bg-slate-200 mx-2"></div>
                     <a href="{{ \Illuminate\Support\Facades\URL::signedRoute('login.mahasiswa') }}"
                         class="group inline-flex items-center justify-center px-5 py-2 text-sm font-bold rounded-full text-white bg-slate-900 hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all duration-300">
@@ -83,6 +85,7 @@
                 <a href="#home" @click="mobileMenuOpen = false" class="block px-4 py-2.5 text-base font-semibold text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all">Beranda</a>
                 <a href="#jadwal" @click="mobileMenuOpen = false" class="block px-4 py-2.5 text-base font-semibold text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all">Jadwal</a>
                 <a href="{{ route('check-dpt') }}" @click="mobileMenuOpen = false" class="block px-4 py-2.5 text-base font-semibold text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all">Cek DPT</a>
+                <a href="{{ route('news.index') }}" @click="mobileMenuOpen = false" class="block px-4 py-2.5 text-base font-semibold text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all">Berita</a>
                 <div class="pt-3 px-2">
                     <a href="{{ \Illuminate\Support\Facades\URL::signedRoute('login.mahasiswa') }}"
                        class="w-full flex items-center justify-center px-5 py-3 text-base font-bold rounded-xl text-white bg-slate-900 hover:bg-blue-600 shadow-md transition-all">
@@ -326,6 +329,10 @@
 
     <!-- Party Marquee Section -->
     @include('partials.party-marquee')
+
+    <div class="mt-20">
+        @include('partials.news-section')
+    </div>
 
     <!-- Contact & Location Section -->
     <section id="contact" class="py-24 bg-slate-50 relative overflow-hidden">

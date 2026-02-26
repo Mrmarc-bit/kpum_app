@@ -48,6 +48,7 @@ class RestrictUrlAccess
                 $request->is('contact-support') ||
                 $request->is('documentation') ||
                 $request->is('tentang-kpum') ||
+                $request->is('news*') ||
                 $request->is('sitemap*') ||
                 $request->is('robots*')
             ) {
@@ -142,6 +143,7 @@ class RestrictUrlAccess
             $request->is('terms-of-service') ||
             $request->is('contact-support') ||
             $request->is('documentation') ||
-            $request->is('tentang-kpum');
+            $request->is('tentang-kpum') ||
+            $request->is('news*');
     }
 }

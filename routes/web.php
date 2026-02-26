@@ -67,6 +67,19 @@ Route::get('/tentang-kpum', function () {
     return view('pages.about', compact('settings'));
 })->name('about');
 
+// News & Articles
+Route::get('/news', function () {
+    $posts = \App\Models\Post::published()->orderBy('published_at', 'desc')->paginate(9);
+    $settings = \App\Models\Setting::pluck('value', 'key')->all();
+    return view('pages.news.index', compact('posts', 'settings'));
+})->name('news.index');
+
+Route::get('/news/{slug}', function ($slug) {
+    $post = \App\Models\Post::where('slug', $slug)->published()->firstOrFail();
+    $settings = \App\Models\Setting::pluck('value', 'key')->all();
+    return view('pages.news.show', compact('post', 'settings'));
+})->name('news.show');
+
 // Maintenance Page
 Route::get('/maintenance', function () {
     return view('maintenance', [
@@ -100,6 +113,7 @@ Route::get('/sitemap.xml', function () {
         ['loc' => route('contact-support'), 'lastmod' => now()->toAtomString(), 'priority' => '0.5'],
         ['loc' => route('documentation'), 'lastmod' => now()->toAtomString(), 'priority' => '0.5'],
         ['loc' => route('about'), 'lastmod' => now()->toAtomString(), 'priority' => '0.7'],
+        ['loc' => route('news.index'), 'lastmod' => now()->toAtomString(), 'priority' => '0.8'],
     ];
 
     $xml = '<?xml version="1.0" encoding="UTF-8"?>';
