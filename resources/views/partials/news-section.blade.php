@@ -10,7 +10,7 @@
             <!-- Headline Column -->
             <div class="w-full lg:w-[35%] xl:w-[32%] lg:sticky lg:top-32 space-y-8 flex-shrink-0">
                 <div class="space-y-6">
-                    <h2 class="text-5xl sm:text-7xl lg:text-8xl font-black text-[#111111] leading-[0.9] tracking-tighter break-words">
+                    <h2 class="text-4xl sm:text-6xl lg:text-7xl font-black text-[#111111] leading-[0.9] tracking-tighter break-words">
                         Warta<br>Demokrasi.
                     </h2>
                     <p class="text-lg text-slate-500 font-medium leading-relaxed max-w-sm">
