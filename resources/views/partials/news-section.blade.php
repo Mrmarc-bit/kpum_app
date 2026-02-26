@@ -5,10 +5,10 @@
 @if($news->count() > 0)
 <section class="py-24 relative overflow-hidden bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-20 items-start">
 
             <!-- Headline Column -->
-            <div class="lg:col-span-4 lg:sticky lg:top-32 space-y-8">
+            <div class="w-full lg:w-[35%] xl:w-[32%] lg:sticky lg:top-32 space-y-8 flex-shrink-0">
                 <div class="space-y-6">
                     <h2 class="text-6xl sm:text-7xl lg:text-8xl font-black text-[#111111] leading-[0.9] tracking-tighter">
                         Warta<br>Demokrasi.
