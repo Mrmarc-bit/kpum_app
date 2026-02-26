@@ -330,9 +330,7 @@
     <!-- Party Marquee Section -->
     @include('partials.party-marquee')
 
-    <div class="mt-8">
-        @include('partials.news-section')
-    </div>
+    @include('partials.news-section')
 
     <!-- Contact & Location Section -->
     <section id="contact" class="py-24 bg-slate-50 relative overflow-hidden">
