@@ -11,7 +11,7 @@
 
                 {{-- Left Sidebar (Sticky Hero) --}}
                 <div class="w-full lg:w-[35%] xl:w-[32%] lg:sticky lg:top-36 flex-shrink-0">
-                    <h1 class="text-[3.5rem] md:text-[4.5rem] lg:text-[4rem] xl:text-[4.75rem] font-black text-[#111111] leading-[0.95] tracking-tighter mb-8 break-normal">
+                    <h1 class="text-5xl sm:text-6xl lg:text-[4rem] xl:text-[4.75rem] font-black text-[#111111] leading-[0.9] tracking-tighter mb-8 break-words">
                         Grow Bold.<br>
                         Move Free.<br>
                         Play Hard.
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
 
-                                <h3 class="text-2xl xl:text-[1.75rem] font-black text-[#111111] mb-3 tracking-tight leading-[1.1] pr-2">
+                                <h3 class="text-xl sm:text-2xl xl:text-[1.75rem] font-black text-[#111111] mb-3 tracking-tight leading-[1.1] pr-2">
                                     <a href="{{ route('news.show', $item->slug) }}" class="before:absolute before:inset-0">
                                         {{ $item->title }}
                                     </a>

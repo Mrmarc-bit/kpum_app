@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth overflow-x-hidden">
 
 <head>
     <meta charset="utf-8">
@@ -40,7 +40,7 @@
     @stack('head')
 </head>
 
-<body class="font-sans antialiased text-foreground bg-background min-h-screen flex flex-col">
+<body class="font-sans antialiased text-foreground bg-background min-h-screen flex flex-col overflow-x-hidden">
     {{ $slot }}
 
     {{-- @fluxScripts --}}

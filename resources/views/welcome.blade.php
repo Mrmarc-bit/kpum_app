@@ -101,7 +101,7 @@
 
     <!-- Hero Section -->
     <section id="home"
-        class="relative min-h-screen flex items-center pt-40 pb-20 overflow-hidden selection:bg-indigo-100 selection:text-indigo-900">
+        class="relative min-h-screen flex items-center pt-40 pb-20 overflow-hidden selection:bg-indigo-100 selection:text-indigo-900 overflow-x-hidden">
         <!-- Animated Background with Grid -->
         <div class="absolute inset-0 -z-10 bg-slate-50">
             <!-- Grid Pattern -->
@@ -145,7 +145,7 @@
                         Demokrasi Mahasiswa 2026
                     </div>
 
-                    <h1 class="text-4xl sm:text-5xl tracking-tighter font-black text-slate-900 md:text-8xl mb-6 sm:mb-8 leading-[1.1] sm:leading-[0.9] min-h-[3em] sm:min-h-[2em]"
+                    <h1 class="text-4xl sm:text-5xl tracking-tighter font-black text-slate-900 md:text-8xl mb-6 sm:mb-8 leading-[1.1] sm:leading-[0.9] min-h-[4.5em] sm:min-h-[2em] break-words"
                         x-data="{
                             text: '',
                             wordIndex: 0,
