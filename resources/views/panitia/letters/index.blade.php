@@ -314,7 +314,7 @@
                 }
             })
             .then(res => {
-                if (!res.ok) throw new Error('Server returned ' + res.status);
+                if (!res.ok) throw new Error('Status: ' + res.status);
                 if (typeof window.Toast !== 'undefined') {
                     window.Toast.fire({ icon: 'info', title: 'Antrian dimulai!' });
                 }
@@ -330,7 +330,7 @@
                 btn.innerHTML = originalHtml;
                 Swal.fire({
                     title: 'Gagal Membuat Antrian',
-                    text: 'Terjadi kesalahan saat menghubungi server. Pastikan Anda masih terlogin.',
+                    text: 'Terjadi kesalahan (' + err.message + '). Silakan refresh halaman (F5) dan coba lagi. Jika tetap gagal, pastikan Anda masih login.',
                     icon: 'error'
                 });
             });

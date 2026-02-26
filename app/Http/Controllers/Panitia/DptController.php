@@ -277,6 +277,13 @@ class DptController extends Controller
         // Dispatch Job
         \App\Jobs\GenerateLettersJob::dispatch($reportFile->id, $request->only(['prodi', 'fakultas']));
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Permintaan download sedang diproses di latar belakang.'
+            ]);
+        }
+
         return redirect()->route('panitia.letters.index')
             ->with('success', 'Permintaan download sedang diproses di latar belakang. Silakan cek tabel riwayat di bawah.');
     }
