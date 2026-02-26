@@ -148,7 +148,6 @@
                                 setTimeout(() => this.type(), typeSpeed);
                             }
                         }">
-                        <span class="text-sm font-bold text-blue-600 block mb-2 uppercase tracking-widest">E-Voting KPUM UNUGHA</span>
                         Suara Anda<span class="text-blue-600">.</span><br>
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 animate-gradient-x"
@@ -180,7 +179,7 @@
                             </span>
                         </a>
 
-                        
+
                         @if(($settings['enable_quick_count'] ?? 'false') === 'true')
                         <a href="#quick-count"
                            class="px-8 py-4 bg-white/80 text-indigo-600 text-lg font-bold rounded-2xl border border-indigo-100 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 shadow-lg shadow-indigo-500/10 hover:shadow-xl hover:shadow-indigo-500/20 transition-all duration-300 backdrop-blur-sm w-full sm:w-auto hover:-translate-y-1 flex items-center justify-center gap-2">
@@ -230,7 +229,7 @@
 
         </div>
     </section>
-    
+
     <!-- Quick Count Section (If Enabled) -->
     @if(($settings['enable_quick_count'] ?? 'false') === 'true')
         @include('partials.quick-count-section')
@@ -320,7 +319,7 @@
                 <!-- Contact Info Card -->
                 <div class="bg-white rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-8 md:p-10 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col justify-center h-full break-words">
                     <h3 class="text-2xl font-black text-slate-900 mb-6 text-center sm:text-left">Kontak Panitia</h3>
-                    
+
                     <div class="space-y-4 sm:space-y-6">
                         <!-- WhatsApp -->
                         @php
@@ -374,12 +373,12 @@
 
                 <!-- Google Maps -->
                 <div class="bg-white p-2 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden min-h-[350px] sm:min-h-[400px] lg:h-auto w-full flex flex-col">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3362.385848888454!2d109.11083547422076!3d-7.625303675399003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e656bebb486d297%3A0x9acd9d808c1dda09!2sUniversitas%20Nahdlatul%20Ulama%20Al%20Ghazali!5e1!3m2!1sid!2sid!4v1771676536438!5m2!1sid!2sid" 
-                        class="w-full h-full flex-1 rounded-2xl" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3362.385848888454!2d109.11083547422076!3d-7.625303675399003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e656bebb486d297%3A0x9acd9d808c1dda09!2sUniversitas%20Nahdlatul%20Ulama%20Al%20Ghazali!5e1!3m2!1sid!2sid!4v1771676536438!5m2!1sid!2sid"
+                        class="w-full h-full flex-1 rounded-2xl"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
                 </div>
@@ -389,7 +388,7 @@
 
     <!-- Footer -->
     <footer class="bg-white py-16 relative overflow-hidden">
-        
+
 
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
