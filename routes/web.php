@@ -62,6 +62,11 @@ Route::get('/documentation', function () {
     return view('pages.documentation', compact('settings'));
 })->name('documentation');
 
+Route::get('/tentang-kpum', function () {
+    $settings = \App\Models\Setting::pluck('value', 'key')->all();
+    return view('pages.about', compact('settings'));
+})->name('about');
+
 // Maintenance Page
 Route::get('/maintenance', function () {
     return view('maintenance', [
@@ -94,6 +99,7 @@ Route::get('/sitemap.xml', function () {
         ['loc' => route('terms-of-service'), 'lastmod' => now()->toAtomString(), 'priority' => '0.3'],
         ['loc' => route('contact-support'), 'lastmod' => now()->toAtomString(), 'priority' => '0.5'],
         ['loc' => route('documentation'), 'lastmod' => now()->toAtomString(), 'priority' => '0.5'],
+        ['loc' => route('about'), 'lastmod' => now()->toAtomString(), 'priority' => '0.7'],
     ];
 
     $xml = '<?xml version="1.0" encoding="UTF-8"?>';

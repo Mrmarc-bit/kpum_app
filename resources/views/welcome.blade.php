@@ -438,6 +438,7 @@
             <div class="flex justify-center flex-wrap gap-8 text-sm font-semibold text-slate-400">
                 <a href="{{ route('privacy-policy') }}" class="hover:text-blue-600 transition-colors">Privacy Policy</a>
                 <a href="{{ route('terms-of-service') }}" class="hover:text-blue-600 transition-colors">Terms of Service</a>
+                <a href="{{ route('about') }}" class="hover:text-blue-600 transition-colors">Tentang KPUM</a>
                 <a href="{{ route('contact-support') }}" class="hover:text-blue-600 transition-colors">Contact Support</a>
                 <a href="{{ route('documentation') }}" class="hover:text-blue-600 transition-colors">Documentation</a>
             </div>

@@ -20,6 +20,7 @@
         <div class="flex justify-center flex-wrap gap-8 text-sm font-semibold text-slate-400">
             <a href="{{ route('privacy-policy') }}" class="hover:text-blue-600 transition-colors {{ request()->routeIs('privacy-policy') ? 'text-blue-600' : '' }}">Privacy Policy</a>
             <a href="{{ route('terms-of-service') }}" class="hover:text-blue-600 transition-colors {{ request()->routeIs('terms-of-service') ? 'text-blue-600' : '' }}">Terms of Service</a>
+            <a href="{{ route('about') }}" class="hover:text-blue-600 transition-colors {{ request()->routeIs('about') ? 'text-blue-600' : '' }}">Tentang KPUM</a>
             <a href="{{ route('contact-support') }}" class="hover:text-blue-600 transition-colors {{ request()->routeIs('contact-support') ? 'text-blue-600' : '' }}">Contact Support</a>
             <a href="{{ route('documentation') }}" class="hover:text-blue-600 transition-colors {{ request()->routeIs('documentation') ? 'text-blue-600' : '' }}">Documentation</a>
         </div>
