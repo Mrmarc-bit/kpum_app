@@ -225,6 +225,7 @@ Route::middleware([
         Route::resource('timeline', \App\Http\Controllers\Panitia\TimelineController::class);
         Route::resource('calon_dpm', \App\Http\Controllers\Panitia\CalonDpmController::class);
         Route::resource('parties', \App\Http\Controllers\Panitia\PartyController::class);
+        Route::resource('posts', \App\Http\Controllers\Panitia\PostController::class);
 
         // Features
 
@@ -292,6 +293,7 @@ Route::middleware([
         Route::resource('kandidat', \App\Http\Controllers\Admin\KandidatController::class);
         Route::resource('calon_dpm', \App\Http\Controllers\Admin\CalonDpmController::class);
         Route::resource('parties', \App\Http\Controllers\Admin\PartyController::class);
+        Route::resource('posts', \App\Http\Controllers\Admin\PostController::class);
         Route::resource('timeline', \App\Http\Controllers\Admin\TimelineController::class);
 
         // DPT Custom Routes (Must be before resource to avoid ID conflict)

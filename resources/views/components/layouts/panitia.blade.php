@@ -54,7 +54,7 @@
             font-size: 0.875rem !important;
             color: #64748b !important;
         }
-        
+
         /* Turbo Progress Bar */
         .turbo-progress-bar {
             position: fixed;
@@ -67,7 +67,7 @@
             z-index: 9999;
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
-        
+
         @keyframes gradient-shift {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -179,6 +179,17 @@
                 <span class="whitespace-nowrap">Manajemen Partai</span>
             </a>
 
+            <a href="{{ route('panitia.posts.index') }}"
+                class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('panitia.posts.*') ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 group' }}">
+                <svg class="w-5 h-5 transition-colors {{ request()->routeIs('panitia.posts.*') ? 'text-purple-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-.586-1.414l-4.5-4.5A2 2 0 0012.586 3H15">
+                    </path>
+                </svg>
+                <span class="whitespace-nowrap">Portal Berita</span>
+            </a>
+
             <a href="{{ route('panitia.dpt.index') }}"
                 class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('panitia.dpt.*') ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 group' }}">
                 <svg class="w-5 h-5 transition-colors {{ request()->routeIs('panitia.dpt.*') ? 'text-purple-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none"
@@ -210,7 +221,7 @@
                 </svg>
                 <span class="whitespace-nowrap">Timeline Kegiatan</span>
             </a>
-            
+
             <div class="px-3 mb-2 mt-8">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Alat Pemilu</p>
             </div>
@@ -236,7 +247,7 @@
                 </svg>
                 <span class="whitespace-nowrap">Unduh Surat</span>
             </a>
-            
+
             <div class="px-3 mb-2 mt-8">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Arsip & Laporan</p>
             </div>
@@ -466,10 +477,10 @@
         document.addEventListener('submit', function(e) {
             const form = e.target;
             const message = form.getAttribute('data-confirm');
-            
+
             if (message) {
                 e.preventDefault();
-                
+
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
                     text: message,
@@ -496,7 +507,7 @@
                             form.style.display = 'none';
                             document.body.appendChild(form);
                         }
-                        
+
                         if (typeof form.requestSubmit === 'function') {
                             form.requestSubmit();
                         } else {
