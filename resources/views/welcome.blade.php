@@ -264,7 +264,7 @@
     @endif
 
     <!-- Countdown Section -->
-    <section class="py-24 bg-white relative overflow-hidden">
+    <section class="py-16 bg-white relative overflow-hidden">
         <div
             class="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px]">
         </div>
@@ -330,7 +330,7 @@
     <!-- Party Marquee Section -->
     @include('partials.party-marquee')
 
-    <div class="mt-20">
+    <div class="mt-8">
         @include('partials.news-section')
     </div>
 

@@ -3,7 +3,7 @@
 @endphp
 
 @if($news->count() > 0)
-<section class="py-24 relative overflow-hidden bg-white">
+<section class="py-16 relative overflow-hidden bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-20 items-start">
 

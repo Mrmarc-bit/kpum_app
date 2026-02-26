@@ -129,7 +129,7 @@
         </div>
 
         <!-- Vertical Timeline Implementation -->
-        <div class="mt-48 md:mt-72 pt-20 max-w-5xl mx-auto px-2 sm:px-4 border-t border-slate-100">
+        <div class="mt-20 md:mt-32 pt-16 max-w-5xl mx-auto px-2 sm:px-4 border-t border-slate-100">
             <div class="text-center mb-16 relative">
                 <div class="absolute inset-0 flex items-center justify-center opacity-5 select-none pointer-events-none">
                     <span class="text-9xl font-black tracking-tighter uppercase italic">Roadmap</span>
