@@ -11,6 +11,7 @@
     <meta name="keywords" content="KPUM, KPUM UNUGHA, UNUGHA, Pemilwa, Pemilwa UNUGHA, E-Voting UNUGHA, Universitas Nahdlatul Ulama Al Ghazali Cilacap, KPUM Cilacap, Pemilihan Mahasiswa">
     <meta name="author" content="KPUM UNUGHA">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ config('app.url') }}{{ Request::is('/') ? '' : '/' . Request::path() }}">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
