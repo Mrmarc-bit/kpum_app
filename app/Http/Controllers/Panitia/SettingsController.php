@@ -63,6 +63,7 @@ class SettingsController extends Controller
         }
 
         \Illuminate\Support\Facades\Cache::forget('global_settings');
+        \Illuminate\Support\Facades\Cache::forget('global_settings_array');
 
         return back()->with('success', 'Template surat bukti pilih berhasil diperbarui.');
     }
@@ -143,6 +144,7 @@ class SettingsController extends Controller
         }
 
         \Illuminate\Support\Facades\Cache::forget('global_settings');
+        \Illuminate\Support\Facades\Cache::forget('global_settings_array');
 
         // Auto-invalidate PDF cache karena konten surat berubah
         $this->invalidateNotificationLetterCache();

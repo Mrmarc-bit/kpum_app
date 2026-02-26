@@ -310,27 +310,35 @@ class ProofOfVoteService
 
             if (file_exists($fullPath)) {
                 try {
-                    $type = pathinfo($fullPath, PATHINFO_EXTENSION);
+                    $type = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
                     
-                    if (strtolower($type) === 'webp' && function_exists('imagecreatefromwebp')) {
+                    if ($type === 'webp' && function_exists('imagecreatefromwebp')) {
                         $im = @imagecreatefromwebp($fullPath);
                         if ($im !== false) {
                             ob_start();
-                            // Enable alpha blending for transparent webp
                             imagealphablending($im, false);
                             imagesavealpha($im, true);
                             imagepng($im);
                             $data = ob_get_clean();
                             imagedestroy($im);
                             return 'data:image/png;base64,' . base64_encode($data);
+                        } else {
+                            Log::warning("ProofOfVoteService: Failed to create image from WebP: " . $fullPath);
                         }
                     }
 
                     $data = file_get_contents($fullPath);
+                    if ($data === false) {
+                        Log::warning("ProofOfVoteService: Failed to read file contents: " . $fullPath);
+                        return null;
+                    }
                     return 'data:image/' . $type . ';base64,' . base64_encode($data);
                 } catch (\Exception $e) {
+                    Log::error("ProofOfVoteService: Error processing image " . $fullPath . ": " . $e->getMessage());
                     return null;
                 }
+            } else {
+                Log::warning("ProofOfVoteService: Image not found at any path: " . $path);
             }
             
             return null;
