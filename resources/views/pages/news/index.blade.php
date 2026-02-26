@@ -7,26 +7,26 @@
     <section class="min-h-[100dvh] bg-white pt-28 pb-20 relative lg:pt-36">
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
 
-            <div class="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start">
+            <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-20 items-start">
 
                 {{-- Left Sidebar (Sticky Hero) --}}
-                <div class="w-full lg:w-[32%] xl:w-[28%] lg:sticky lg:top-36 flex-shrink-0">
-                    <h1 class="text-[3.5rem] md:text-7xl lg:text-[4.5rem] xl:text-[5.5rem] font-black text-[#111111] leading-[0.9] tracking-tighter mb-8">
+                <div class="w-full lg:w-[35%] xl:w-[32%] lg:sticky lg:top-36 flex-shrink-0">
+                    <h1 class="text-[3.5rem] md:text-[4.5rem] lg:text-[4rem] xl:text-[4.75rem] font-black text-[#111111] leading-[0.95] tracking-tighter mb-8 break-normal">
                         Grow Bold.<br>
                         Move Free.<br>
                         Play Hard.
                     </h1>
 
-                    <p class="text-[17px] text-slate-500 font-medium max-w-[90%] leading-[1.6] mb-14">
+                    <p class="text-[16px] text-slate-500 font-medium max-w-[95%] lg:max-w-full leading-[1.6] mb-12">
                         A space where students discover information about the festival of democracy, movement, and political education — all in a supportive and transparent environment.
                     </p>
 
                     <!-- Search Form Style -->
-                    <div class="max-w-md w-full">
+                    <div class="w-full">
                         <form action="{{ route('news.index') }}" method="GET" class="relative flex items-end gap-3 w-full">
-                            <div class="flex-1 border-b-[1.5px] border-slate-300 pb-2 relative group focus-within:border-[#111111] transition-colors">
-                                <label class="text-[12px] uppercase tracking-wider text-slate-500 font-medium select-none absolute -top-5 left-0">Search articles</label>
-                                <input type="text" name="search" value="{{ request('search') }}" placeholder="Enter keyword..." class="w-full bg-transparent border-none p-0 focus:outline-none focus:ring-0 text-base font-medium text-[#111111] placeholder:text-slate-300">
+                            <div class="flex-1 border-b-2 border-slate-200 pb-2 relative group focus-within:border-[#111111] transition-colors">
+                                <label class="text-[11px] uppercase tracking-widest text-slate-400 font-bold select-none absolute -top-5 left-0">Search articles</label>
+                                <input type="text" name="search" value="{{ request('search') }}" placeholder="Enter keyword..." class="w-full bg-transparent border-none p-0 pb-1 focus:outline-none focus:ring-0 text-base font-medium text-[#111111] placeholder:text-slate-300">
                             </div>
                             <button type="submit" class="bg-[#111111] text-white px-7 py-3 md:px-8 md:py-3.5 rounded-xl font-bold hover:bg-slate-800 transition-colors whitespace-nowrap hidden sm:block">
                                 Search
@@ -42,36 +42,36 @@
                 </div>
 
                 {{-- Right Content (Cards Grid) --}}
-                <div class="w-full lg:w-[68%] xl:w-[72%]">
-                    <div class="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+                <div class="w-full lg:w-[65%] xl:w-[68%]">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-8">
                         @forelse($posts as $index => $item)
                         @php
                             $bgColors = ['bg-[#C6CDFF]', 'bg-[#EAF0B0]', 'bg-[#A288A6]', 'bg-[#FFD4E2]', 'bg-[#C4F5E0]'];
                             $colorIndex = $index % count($bgColors);
                         @endphp
                         <!-- Card Item -->
-                        <div class="group relative flex flex-col bg-[#F9FAFB] rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 hover:-translate-y-1 h-full border border-slate-100 min-h-[480px]">
+                        <div class="group relative flex flex-col bg-[#F9FAFB] rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 hover:-translate-y-1 h-full border border-slate-100 min-h-[460px]">
 
                             <!-- Top Info & Text Content -->
-                            <div class="px-7 pt-8 pb-6 flex-1 flex flex-col">
-                                <div class="flex justify-between items-start mb-6">
-                                    <span class="px-4 py-2 rounded-full bg-[#E5E7EB] text-slate-700 text-[11px] font-black tracking-widest uppercase">
+                            <div class="px-7 pt-7 pb-5 flex-1 flex flex-col">
+                                <div class="flex justify-between items-start mb-5">
+                                    <span class="px-4 py-2 rounded-full bg-[#E5E7EB] text-slate-700 text-[10px] font-black tracking-widest uppercase">
                                         {{ $item->category }}
                                     </span>
-                                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-800 shadow-sm border border-slate-100 group-hover:bg-[#111] group-hover:border-[#111] group-hover:text-white transition-colors duration-300">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center text-slate-800 shadow-sm border border-slate-100 group-hover:bg-[#111] group-hover:border-[#111] group-hover:text-white transition-colors duration-300">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                             <line x1="7" y1="17" x2="17" y2="7"></line>
                                             <polyline points="7 7 17 7 17 17"></polyline>
                                         </svg>
                                     </div>
                                 </div>
 
-                                <h3 class="text-[1.65rem] md:text-[2rem] font-black text-[#111111] mb-3 tracking-tight leading-[1.05]">
+                                <h3 class="text-2xl xl:text-[1.75rem] font-black text-[#111111] mb-3 tracking-tight leading-[1.1] pr-2">
                                     <a href="{{ route('news.show', $item->slug) }}" class="before:absolute before:inset-0">
                                         {{ $item->title }}
                                     </a>
                                 </h3>
-                                <p class="text-slate-500 text-[15px] leading-relaxed line-clamp-2 md:line-clamp-3 font-medium">
+                                <p class="text-slate-500 text-sm xl:text-[15px] leading-relaxed line-clamp-3 font-medium">
                                     {{ $item->excerpt }}
                                 </p>
                             </div>
