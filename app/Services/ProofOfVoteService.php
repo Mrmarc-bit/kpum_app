@@ -312,21 +312,43 @@ class ProofOfVoteService
                 try {
                     $type = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
                     
-                    if ($type === 'webp' && function_exists('imagecreatefromwebp')) {
-                        $im = @imagecreatefromwebp($fullPath);
-                        if ($im !== false) {
+                    if (file_exists($fullPath)) {
+                        $im = null;
+                        if ($type === 'webp' && function_exists('imagecreatefromwebp')) {
+                            $im = @imagecreatefromwebp($fullPath);
+                        } elseif (in_array($type, ['jpg', 'jpeg']) && function_exists('imagecreatefromjpeg')) {
+                            $im = @imagecreatefromjpeg($fullPath);
+                        } elseif ($type === 'png' && function_exists('imagecreatefrompng')) {
+                            $im = @imagecreatefrompng($fullPath);
+                        }
+
+                        // If we have an image resource, let's resize it to be safe for DomPDF
+                        if ($im) {
+                            $width = imagesx($im);
+                            $height = imagesy($im);
+                            $targetWidth = 400; // Sufficient for signatures/stamps
+                            
+                            if ($width > $targetWidth) {
+                                $targetHeight = floor($height * ($targetWidth / $width));
+                                $tmp = imagecreatetruecolor($targetWidth, $targetHeight);
+                                imagealphablending($tmp, false);
+                                imagesavealpha($tmp, true);
+                                imagecopyresampled($tmp, $im, 0, 0, 0, 0, $targetWidth, $targetHeight, $width, $height);
+                                imagedestroy($im);
+                                $im = $tmp;
+                            }
+
                             ob_start();
                             imagealphablending($im, false);
                             imagesavealpha($im, true);
-                            imagepng($im);
+                            imagepng($im); // Always output as PNG for DomPDF compatibility
                             $data = ob_get_clean();
                             imagedestroy($im);
                             return 'data:image/png;base64,' . base64_encode($data);
-                        } else {
-                            Log::warning("ProofOfVoteService: Failed to create image from WebP: " . $fullPath);
                         }
                     }
 
+                    // Fallback to direct read if GD fails or type is unsupported
                     $data = file_get_contents($fullPath);
                     if ($data === false) {
                         Log::warning("ProofOfVoteService: Failed to read file contents: " . $fullPath);
