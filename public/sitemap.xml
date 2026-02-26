@@ -24,4 +24,28 @@
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
+    <url>
+        <loc>https://kpum.web.id/privacy-policy</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://kpum.web.id/terms-of-service</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://kpum.web.id/contact-support</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://kpum.web.id/documentation</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
 </urlset>
