@@ -48,7 +48,7 @@ class SettingsController extends Controller
             $file = $request->file('letter_signature_path');
             if ($file->isValid()) {
                 $filename = 'signature_' . time() . '.' . $file->getClientOriginalExtension();
-                \Illuminate\Support\Facades\Storage::disk('public')->put('settings/' . $filename, file_get_contents($file));
+                Storage::disk('public')->put('settings/' . $filename, file_get_contents($file));
                 $data['letter_signature_path'] = 'storage/settings/' . $filename;
             }
         }
@@ -57,7 +57,7 @@ class SettingsController extends Controller
             $file = $request->file('letter_stamp_path');
             if ($file->isValid()) {
                 $filename = 'stamp_' . time() . '.' . $file->getClientOriginalExtension();
-                \Illuminate\Support\Facades\Storage::disk('public')->put('settings/' . $filename, file_get_contents($file));
+                Storage::disk('public')->put('settings/' . $filename, file_get_contents($file));
                 $data['letter_stamp_path'] = 'storage/settings/' . $filename;
             }
         }
@@ -134,7 +134,7 @@ class SettingsController extends Controller
             $file = $request->file('letter_signature_path');
             if ($file->isValid()) {
                 $filename = 'signature_' . time() . '.' . $file->getClientOriginalExtension();
-                \Illuminate\Support\Facades\Storage::disk('public')->put('settings/' . $filename, file_get_contents($file));
+                Storage::disk('public')->put('settings/' . $filename, file_get_contents($file));
                 $data['letter_signature_path'] = 'storage/settings/' . $filename;
             }
         }
@@ -143,7 +143,7 @@ class SettingsController extends Controller
             $file = $request->file('letter_stamp_path');
             if ($file->isValid()) {
                 $filename = 'stamp_' . time() . '.' . $file->getClientOriginalExtension();
-                \Illuminate\Support\Facades\Storage::disk('public')->put('settings/' . $filename, file_get_contents($file));
+                Storage::disk('public')->put('settings/' . $filename, file_get_contents($file));
                 $data['letter_stamp_path'] = 'storage/settings/' . $filename;
             }
         }
@@ -186,7 +186,7 @@ class SettingsController extends Controller
             ->update(['notification_letter_path' => null]);
 
         // Hapus semua file PDF dari folder storage/public/letters/
-        $storage = \Illuminate\Support\Facades\Storage::disk('public');
+        $storage = Storage::disk('public');
         if ($storage->exists('letters')) {
             // Hapus semua file dalam folder letters (semua subfolder/prodi)
             $files = $storage->allFiles('letters');

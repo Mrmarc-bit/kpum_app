@@ -334,7 +334,6 @@ class ProofOfVoteService
                                 imagealphablending($tmp, false);
                                 imagesavealpha($tmp, true);
                                 imagecopyresampled($tmp, $im, 0, 0, 0, 0, $targetWidth, $targetHeight, $width, $height);
-                                imagedestroy($im);
                                 $im = $tmp;
                             }
 
@@ -343,7 +342,6 @@ class ProofOfVoteService
                             imagesavealpha($im, true);
                             imagepng($im); // Always output as PNG for DomPDF compatibility
                             $data = ob_get_clean();
-                            imagedestroy($im);
                             return 'data:image/png;base64,' . base64_encode($data);
                         }
                     }
