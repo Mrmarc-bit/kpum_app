@@ -176,7 +176,7 @@
                         Suara Anda<span class="text-blue-600">.</span><br>
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 animate-gradient-x"
-                            x-text="text"></span><span class="text-blue-600 animate-[pulse_1s_infinite] ml-1">|</span>
+                            x-text="text">Masa Depan Kita</span><span class="text-blue-600 animate-[pulse_1s_infinite] ml-1">|</span>
                     </h1>
 
                     <p class="mt-6 max-w-2xl mx-auto text-xl text-slate-600/90 leading-relaxed font-medium">

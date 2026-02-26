@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? config('app.name', 'KPUM UNUGHA') }} | E-Voting Universitas Nahdlatul Ulama Al Ghazali</title>
-    <meta name="description" content="Sistem Informasi e-Voting KPUM UNUGHA Cilacap. Platform pemilihan mahasiswa yang transparan, aman, dan berintegritas untuk Universitas Nahdlatul Ulama Al Ghazali Cilacap.">
-    <meta name="keywords" content="KPUM UNUGHA, UNUGHA Cilacap, E-Voting UNUGHA, Pemilihan Mahasiswa, Universitas Nahdlatul Ulama Al Ghazali, KPUM, Pemilu Raya UNUGHA">
+    <title>{{ $title ?? config('app.name', 'KPUM UNUGHA') }} | E-Voting & Pemilwa Universitas Nahdlatul Ulama Al Ghazali Cilacap</title>
+    <meta name="description" content="Situs Resmi KPUM UNUGHA Cilacap - Platform e-Voting Pemilwa Universitas Nahdlatul Ulama Al Ghazali. Pemilihan mahasiswa yang transparan, aman, jujur, dan adil.">
+    <meta name="keywords" content="KPUM, KPUM UNUGHA, UNUGHA, Pemilwa, Pemilwa UNUGHA, E-Voting UNUGHA, Universitas Nahdlatul Ulama Al Ghazali Cilacap, KPUM Cilacap, Pemilihan Mahasiswa">
     <meta name="author" content="KPUM UNUGHA">
     <meta name="robots" content="index, follow">
 
