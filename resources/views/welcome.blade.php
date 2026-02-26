@@ -148,6 +148,7 @@
                                 setTimeout(() => this.type(), typeSpeed);
                             }
                         }">
+                        <span class="text-sm font-bold text-blue-600 block mb-2 uppercase tracking-widest">E-Voting KPUM UNUGHA</span>
                         Suara Anda<span class="text-blue-600">.</span><br>
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 animate-gradient-x"
