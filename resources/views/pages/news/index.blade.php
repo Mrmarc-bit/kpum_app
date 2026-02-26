@@ -41,16 +41,25 @@
                     </div>
                 </div>
 
-                {{-- Right Content (Cards Grid) --}}
-                <div class="w-full lg:w-[65%] xl:w-[68%]">
-                    <div class="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-8">
+                {{-- Right Content (Cards Slider) --}}
+                <div class="w-full lg:w-[65%] xl:w-[68%] min-w-0">
+
+                    {{-- Minimalist Scrollbar Style --}}
+                    <style>
+                        .news-slider::-webkit-scrollbar { height: 10px; }
+                        .news-slider::-webkit-scrollbar-track { background: transparent; }
+                        .news-slider::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 20px; border: 3px solid white; }
+                        .news-slider::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+                    </style>
+
+                    <div class="news-slider flex overflow-x-auto gap-6 xl:gap-8 pb-8 snap-x snap-mandatory scroll-smooth w-full">
                         @forelse($posts as $index => $item)
                         @php
                             $bgColors = ['bg-[#C6CDFF]', 'bg-[#EAF0B0]', 'bg-[#A288A6]', 'bg-[#FFD4E2]', 'bg-[#C4F5E0]'];
                             $colorIndex = $index % count($bgColors);
                         @endphp
                         <!-- Card Item -->
-                        <div class="group relative flex flex-col bg-[#F9FAFB] rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 hover:-translate-y-1 h-full border border-slate-100 min-h-[460px]">
+                        <div class="w-[85%] sm:w-[calc(50%-12px)] xl:w-[calc(50%-16px)] flex-shrink-0 snap-center group relative flex flex-col bg-[#F9FAFB] rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 hover:-translate-y-1 border border-slate-100 min-h-[460px]">
 
                             <!-- Top Info & Text Content -->
                             <div class="px-7 pt-7 pb-5 flex-1 flex flex-col">
@@ -111,7 +120,7 @@
                             </div>
                         </div>
                         @empty
-                        <div class="col-span-full py-20 text-center">
+                        <div class="w-full py-20 text-center">
                             <p class="text-slate-400 font-medium text-xl">No articles published yet.</p>
                         </div>
                         @endforelse
