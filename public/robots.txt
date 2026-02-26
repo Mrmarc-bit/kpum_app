@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin
+Disallow: /panitia
+Disallow: /kpps
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://kpum.web.id/sitemap.xml

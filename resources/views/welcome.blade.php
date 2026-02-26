@@ -1,4 +1,28 @@
 <x-layouts.guest title="KPUM - Universitas Nahdlatul Ulama Al Ghazali Cilacap">
+    @push('head')
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "KPUM Universitas Nahdlatul Ulama Al Ghazali",
+      "url": "{{ url('/') }}",
+      "logo": "{{ isset($settings['app_logo']) ? asset((string) $settings['app_logo']) : '' }}",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Jl. Kemerdekaan Barat No.17, Kesugihan Kidul, Kec. Kesugihan",
+        "addressLocality": "Cilacap",
+        "addressRegion": "Jawa Tengah",
+        "postalCode": "53272",
+        "addressCountry": "ID"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+{{ $settings['contact_person'] ?? '6285183750294' }}",
+        "contactType": "technical support"
+      }
+    }
+    </script>
+    @endpush
     <!-- Floating Navbar -->
     <div class="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
         <nav x-data="{ mobileMenuOpen: false }"
@@ -148,6 +172,7 @@
                                 setTimeout(() => this.type(), typeSpeed);
                             }
                         }">
+                        <span class="text-sm font-bold text-blue-600 block mb-2 uppercase tracking-widest">E-Voting KPUM UNUGHA</span>
                         Suara Anda<span class="text-blue-600">.</span><br>
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 animate-gradient-x"

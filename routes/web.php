@@ -82,6 +82,36 @@ Route::post('/cek-dpt/search', [\App\Http\Controllers\CheckDptController::class,
 
 
 // ============================================
+// 1.1 SITEMAP FOR SEO
+// ============================================
+
+Route::get('/sitemap.xml', function () {
+    $urls = [
+        ['loc' => route('home'), 'lastmod' => now()->toAtomString(), 'priority' => '1.0'],
+        ['loc' => route('check-dpt'), 'lastmod' => now()->toAtomString(), 'priority' => '0.8'],
+        ['loc' => route('quick-count'), 'lastmod' => now()->toAtomString(), 'priority' => '0.8'],
+        ['loc' => route('privacy-policy'), 'lastmod' => now()->toAtomString(), 'priority' => '0.3'],
+        ['loc' => route('terms-of-service'), 'lastmod' => now()->toAtomString(), 'priority' => '0.3'],
+        ['loc' => route('contact-support'), 'lastmod' => now()->toAtomString(), 'priority' => '0.5'],
+        ['loc' => route('documentation'), 'lastmod' => now()->toAtomString(), 'priority' => '0.5'],
+    ];
+
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    foreach ($urls as $url) {
+        $xml .= '<url>';
+        $xml .= '<loc>' . $url['loc'] . '</loc>';
+        $xml .= '<lastmod>' . $url['lastmod'] . '</lastmod>';
+        $xml .= '<priority>' . $url['priority'] . '</priority>';
+        $xml .= '</url>';
+    }
+    $xml .= '</urlset>';
+
+    return response($xml)->header('Content-Type', 'text/xml');
+});
+
+
+// ============================================
 // 2. AUTHENTICATION ROUTES
 // ============================================
 
