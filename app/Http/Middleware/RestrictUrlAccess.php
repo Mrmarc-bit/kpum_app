@@ -46,7 +46,9 @@ class RestrictUrlAccess
                 $request->is('privacy-policy') ||
                 $request->is('terms-of-service') ||
                 $request->is('contact-support') ||
-                $request->is('documentation')
+                $request->is('documentation') ||
+                $request->is('sitemap*') ||
+                $request->is('robots*')
             ) {
                 return $next($request);
             }
