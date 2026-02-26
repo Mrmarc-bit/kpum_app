@@ -28,14 +28,16 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
+            <div class="lg:col-span-8 flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scroll-bar" style="scrollbar-width: none;">
+                <!-- Hide scrollbar style hack for webkit inline just in case -->
+                <style> .hide-scroll-bar::-webkit-scrollbar { display: none; } </style>
 
                 @foreach($news as $index => $item)
                 @php
                     $bgColors = ['bg-blue-100', 'bg-lime-100', 'bg-purple-100'];
                     $colorIndex = $index % count($bgColors);
                 @endphp
-                <div class="group relative flex flex-col bg-slate-50 rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-2 border border-slate-100 h-full">
+                <div class="group relative flex flex-col bg-slate-50 rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-2 snap-center shrink-0 w-[85vw] sm:w-[320px] lg:w-[320px] xl:w-[360px] border border-slate-100 h-full">
 
                     <!-- Top Info -->
                     <div class="p-8 pb-4">
