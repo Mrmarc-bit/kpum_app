@@ -146,16 +146,16 @@ Route::match(['get', 'post'], '/logout', function () {
 
 Route::middleware(['role.mahasiswa'])->group(function () {
 
-    
+
     // Voting Routes (portfolio view rendered automatically if voting hasn't started)
     Route::get('/bilik-suara', [\App\Http\Controllers\VoteController::class, 'index'])->name('student.dashboard');
     Route::get('/bilik-suara/kandidat/{kandidat}', [\App\Http\Controllers\VoteController::class, 'showKandidat'])->name('student.kandidat.show');
-    
+
     // Apply strict throttling to voting action
     Route::post('/vote', [\App\Http\Controllers\VoteController::class, 'store'])
         ->middleware('throttle:vote')
         ->name('vote.store');
-        
+
     Route::get('/bukti-pilih/download', [\App\Http\Controllers\ProofOfVoteController::class, 'download'])->name('vote.proof.download');
     Route::post('/bukti-pilih/email', [\App\Http\Controllers\VoteController::class, 'sendProofEmail'])->name('vote.proof.email');
 });
@@ -215,7 +215,7 @@ Route::middleware([
         Route::get('/settings/letters/proof', [\App\Http\Controllers\Panitia\SettingsController::class, 'proof'])->name('settings.letters.proof');
         Route::post('/settings/letters/proof', [\App\Http\Controllers\Panitia\SettingsController::class, 'updateProof'])->name('settings.letters.proof.update');
         Route::get('/settings/letters/proof/sample', [\App\Http\Controllers\Panitia\SettingsController::class, 'downloadSampleProof'])->name('settings.letters.proof.sample');
-        
+
         Route::get('/settings/letters/notification', [\App\Http\Controllers\Panitia\SettingsController::class, 'notification'])->name('settings.letters.notification');
         Route::post('/settings/letters/notification', [\App\Http\Controllers\Panitia\SettingsController::class, 'updateNotification'])->name('settings.letters.notification.update');
         Route::get('/settings/letters/notification/sample', [\App\Http\Controllers\Panitia\SettingsController::class, 'downloadSampleNotification'])->name('settings.letters.notification.sample');
@@ -231,7 +231,7 @@ Route::middleware([
         Route::get('/reports/results', [\App\Http\Controllers\ReportController::class, 'downloadResults'])->name('reports.results');
         Route::get('/reports/ba', [\App\Http\Controllers\ReportController::class, 'downloadBeritaAcara'])->name('reports.ba');
         Route::get('/reports/audit', [\App\Http\Controllers\ReportController::class, 'downloadAuditLogs'])->name('reports.audit');
-        
+
         // Asset Management (Panitia)
         Route::get('/assets', [\App\Http\Controllers\Panitia\AssetController::class, 'index'])->name('assets.index');
         Route::post('/assets', [\App\Http\Controllers\Panitia\AssetController::class, 'store'])->name('assets.store');
@@ -255,7 +255,7 @@ Route::middleware([
 
         // Letters Download (Panitia)
         Route::get('/letters', [\App\Http\Controllers\Panitia\DptController::class, 'lettersIndex'])->name('letters.index');
-        Route::get('/letters/download-batch', [\App\Http\Controllers\Panitia\DptController::class, 'downloadBatchLetters'])->name('dpt.download-batch-letters');
+        Route::post('/letters/download-batch', [\App\Http\Controllers\Panitia\DptController::class, 'downloadBatchLetters'])->name('dpt.download-batch-letters');
 
         // Profile
         Route::get('/profile', [\App\Http\Controllers\Panitia\ProfileController::class, 'index'])->name('profile.index');
@@ -273,13 +273,13 @@ Route::middleware([
         Route::resource('calon_dpm', \App\Http\Controllers\Admin\CalonDpmController::class);
         Route::resource('parties', \App\Http\Controllers\Admin\PartyController::class);
         Route::resource('timeline', \App\Http\Controllers\Admin\TimelineController::class);
-        
+
         // DPT Custom Routes (Must be before resource to avoid ID conflict)
         Route::post('dpt/generate-access-codes', [\App\Http\Controllers\Admin\DptController::class, 'generateAccessCodes'])->name('dpt.generate-access-codes');
         // Additional DPT Routes (must be placed BEFORE resource)
         Route::post('dpt/download-batch-letters', [\App\Http\Controllers\Admin\DptController::class, 'downloadBatchLetters'])->name('dpt.download-batch-letters');
         Route::get('dpt/{mahasiswa}/download-letter', [\App\Http\Controllers\Admin\DptController::class, 'downloadLetter'])->name('dpt.download-letter');
-        
+
         Route::get('dpt/download-batch-letters', function() {
             return redirect()->route('admin.letters.index')->with('error', 'Akses langsung ditolak. Gunakan tombol download.');
         });
@@ -288,11 +288,11 @@ Route::middleware([
         Route::get('dpt/sample', [\App\Http\Controllers\Admin\DptController::class, 'downloadSample'])->name('dpt.download-sample');
         Route::delete('dpt/destroy-all', [\App\Http\Controllers\Admin\DptController::class, 'destroyAll'])->name('dpt.destroy-all');
         Route::get('dpt/batch/{batchId}', [\App\Http\Controllers\Admin\DptController::class, 'batchStatus'])->name('dpt.batch.status');
-        
+
         Route::resource('dpt', \App\Http\Controllers\Admin\DptController::class)
             ->parameters(['dpt' => 'mahasiswa'])
             ->except(['show']);
-        
+
         // Features
         Route::get('/analytics', [\App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('analytics.index');
         Route::get('/analytics/data', [\App\Http\Controllers\Admin\AnalyticsController::class, 'getChartData'])->name('analytics.data');
@@ -366,17 +366,17 @@ Route::middleware([
             $validated = $request->validate([
                 'encryption_level' => 'required|in:standard,high,blockchain'
             ]);
-            
+
             \App\Models\Setting::set('encryption_level', $validated['encryption_level'], 'Vote encryption level');
-            
+
             \Illuminate\Support\Facades\Cache::flush();
-            
+
             $levelLabels = [
                 'standard' => 'Standard (AES-256)',
                 'high' => 'High (End-to-End)',
                 'blockchain' => 'Blockchain Mode'
             ];
-            
+
             return redirect()
                 ->route('admin.security.encryption')
                 ->with('success', '✅ Mode enkripsi berhasil diubah ke: ' . $levelLabels[$validated['encryption_level']]);
@@ -387,7 +387,7 @@ Route::middleware([
         Route::get('/reports/results', [\App\Http\Controllers\ReportController::class, 'downloadResults'])->name('reports.results');
         Route::get('/reports/ba', [\App\Http\Controllers\ReportController::class, 'downloadBeritaAcara'])->name('reports.ba');
         Route::get('/reports/audit', [\App\Http\Controllers\ReportController::class, 'downloadAuditLogs'])->name('reports.audit');
-        
+
         // Asset Management (Admin)
         Route::get('/assets', [\App\Http\Controllers\Admin\AssetController::class, 'index'])->name('assets.index');
         Route::post('/assets', [\App\Http\Controllers\Admin\AssetController::class, 'store'])->name('assets.store');
@@ -410,7 +410,7 @@ Route::middleware([
     // --------------------------------------------
     Route::prefix('kpps')->name('kpps.')->middleware('role.kpps')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Kpps\DashboardController::class, 'index'])->name('dashboard');
-        
+
         // Scanner
         Route::get('/scanner', [\App\Http\Controllers\Kpps\ScannerController::class, 'index'])->name('scanner.index');
         Route::post('/scanner/verify', [\App\Http\Controllers\Kpps\ScannerController::class, 'verify'])->name('scanner.verify');
