@@ -1,4 +1,28 @@
 <x-layouts.guest title="KPUM - Universitas Nahdlatul Ulama Al Ghazali Cilacap">
+    @push('head')
+    <script type="application/ld+json">
+    {
+      "{{ '@' }}context": "https://schema.org",
+      "{{ '@' }}type": "Organization",
+      "name": "KPUM Universitas Nahdlatul Ulama Al Ghazali",
+      "url": "{{ url('/') }}",
+      "logo": "{{ setting('app_logo') ? asset(setting('app_logo')) : '' }}",
+      "address": {
+        "{{ '@' }}type": "PostalAddress",
+        "streetAddress": "Jl. Kemerdekaan Barat No.17, Kesugihan Kidul, Kec. Kesugihan",
+        "addressLocality": "Cilacap",
+        "addressRegion": "Jawa Tengah",
+        "postalCode": "53272",
+        "addressCountry": "ID"
+      },
+      "contactPoint": {
+        "{{ '@' }}type": "ContactPoint",
+        "telephone": "+{{ $settings['contact_person'] ?? '6285183750294' }}",
+        "contactType": "technical support"
+      }
+    }
+    </script>
+    @endpush
     <!-- Floating Navbar -->
     <div class="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
         <nav x-data="{ mobileMenuOpen: false }"
