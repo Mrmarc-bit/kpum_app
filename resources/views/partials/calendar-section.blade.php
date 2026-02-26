@@ -17,8 +17,8 @@
                 blanks: [],
                 trailingBlanks: [],
                 monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-                
-                init() { 
+
+                init() {
                     this.generateCalendar();
                 },
 
@@ -27,7 +27,7 @@
                     const daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
                     this.blanks = Array(firstDay).fill(0);
                     this.days = Array.from({length: daysInMonth}, (_, i) => i + 1);
-                    
+
                     const totalCells = firstDay + daysInMonth;
                     const trailingCount = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
                     this.trailingBlanks = Array(trailingCount).fill(0);
@@ -37,22 +37,22 @@
                 nextMonth() { this.month++; if (this.month > 11) { this.month = 0; this.year++; } this.generateCalendar(); },
                 goToday() { const now = new Date(); this.month = now.getMonth(); this.year = now.getFullYear(); this.generateCalendar(); },
                 isToday(day) { const today = new Date(); return day === today.getDate() && this.month === today.getMonth() && this.year === today.getFullYear(); },
-                
+
                 getEventsForDay(day) {
                     if (!this.events || !Array.isArray(this.events)) return [];
                     const d = new Date(this.year, this.month, day);
                     d.setHours(0,0,0,0);
                     const time = d.getTime();
-                    
+
                     return this.events.filter(e => {
                         // Priority 1: Check start_date (and optional end_date range)
                         if (e.start_date) {
                             const start = new Date(e.start_date);
                             start.setHours(0,0,0,0);
-                            
+
                             const end = e.end_date ? new Date(e.end_date) : new Date(e.start_date);
                             end.setHours(0,0,0,0);
-                            
+
                             return time >= start.getTime() && time <= end.getTime();
                         }
                         // Priority 2: Check legacy 'date' (single day)
@@ -61,7 +61,7 @@
                             ed.setHours(0,0,0,0);
                             return ed.getTime() === time;
                         }
-                        return false; 
+                        return false;
                     });
                 },
 
@@ -127,12 +127,89 @@
                 </div>
             </div>
         </div>
+
+        <!-- Vertical Timeline Implementation -->
+        <div class="mt-24 max-w-5xl mx-auto">
+            <div class="text-center mb-16 relative">
+                <div class="absolute inset-0 flex items-center justify-center opacity-5 select-none pointer-events-none">
+                    <span class="text-9xl font-black tracking-tighter uppercase italic">Roadmap</span>
+                </div>
+                <span class="inline-block py-1.5 px-4 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-[10px] font-black uppercase tracking-[0.2em] mb-4">Agenda Utama</span>
+                <h3 class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">Timeline Perjalanan Pemilwa</h3>
+                <div class="w-16 h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="relative">
+                <!-- Central Line -->
+                <div class="absolute left-6 md:left-1/2 inset-y-0 w-0.5 bg-gradient-to-b from-transparent via-slate-200 to-transparent md:-translate-x-px"></div>
+
+                <div class="space-y-12 relative">
+                    @forelse($timelines as $index => $item)
+                        @php
+                            $isCompleted = $item->is_completed || (\Carbon\Carbon::parse($item->end_date ?? $item->start_date)->isPast());
+                            $isCurrent = \Carbon\Carbon::parse($item->start_date)->isToday() ||
+                                        (\Carbon\Carbon::now()->isBetween($item->start_date, $item->end_date ?? $item->start_date));
+                        @endphp
+
+                        <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                            <!-- Dot Icon -->
+                            <div class="flex items-center justify-center w-12 h-12 rounded-2xl border-4 border-white shadow-xl shadow-slate-200 transition-all duration-500 group-hover:scale-110 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-20
+                                {{ $isCurrent ? 'bg-blue-600 text-white animate-bounce' : ($isCompleted ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-400') }}">
+
+                                @if($isCompleted)
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                @elseif($isCurrent)
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                @else
+                                    <span class="text-lg font-black tracking-tighter">{{ $index + 1 }}</span>
+                                @endif
+                            </div>
+
+                            <!-- Content Card -->
+                            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white p-6 sm:p-8 rounded-[2rem] border {{ $isCurrent ? 'border-blue-200 ring-4 ring-blue-50 shadow-2xl shadow-blue-500/10' : 'border-slate-100 shadow-xl shadow-slate-200/50' }} hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
+                                @if($isCurrent)
+                                    <div class="absolute top-0 right-0 px-4 py-1.5 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-bl-2xl">Sedang Berlangsung</div>
+                                @endif
+
+                                <span class="inline-block px-3 py-1 rounded-xl bg-slate-50 text-indigo-600 text-[11px] font-bold border border-slate-100 mb-4 font-mono">
+                                    {{ \Carbon\Carbon::parse($item->start_date)->translatedFormat('d M Y') }}
+                                    @if($item->end_date && $item->end_date != $item->start_date)
+                                        - {{ \Carbon\Carbon::parse($item->end_date)->translatedFormat('d M Y') }}
+                                    @endif
+                                </span>
+
+                                <h4 class="text-xl font-black text-slate-900 mb-3 leading-tight">{{ $item->title }}</h4>
+                                <p class="text-slate-500 text-sm leading-relaxed font-medium">
+                                    {{ $item->description ?: 'Agenda pelaksanaan tahapan pemilwa sesuai dengan ketetapan komisi pemilihan.' }}
+                                </p>
+
+                                <div class="mt-6 pt-4 border-t border-slate-50 flex items-center gap-3">
+                                    <div class="flex -space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-blue-100 border border-white"></div>
+                                        <div class="w-6 h-6 rounded-full bg-indigo-100 border border-white"></div>
+                                        <div class="w-6 h-6 rounded-full bg-slate-100 border border-white"></div>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Update Resmi KPUM</span>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-20">
+                            <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-dashed border-slate-200">
+                                <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <h5 class="text-slate-400 font-bold uppercase tracking-widest text-sm">Belum Ada Timeline Dipublikasikan</h5>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
 <!-- Global Event Modal -->
-<div x-data="{ 
-        open: false, 
+<div x-data="{
+        open: false,
         event: {},
         formatDate() {
             const fmt = (d) => {
@@ -141,7 +218,7 @@
                     return new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
                 } catch(e) { return d; }
             };
-            
+
             if (this.event.start_date) {
                 const s = fmt(this.event.start_date);
                 if (this.event.end_date && this.event.end_date !== this.event.start_date) {
@@ -155,17 +232,17 @@
             if (!this.event || !this.event.title) return;
             const title = encodeURIComponent(this.event.title);
             const desc = encodeURIComponent(this.event.description || '');
-            
+
             // Handle Start Date
             let sRaw = this.event.start_date || this.event.date || new Date().toISOString();
             let start = sRaw.split(' ')[0].replace(/-/g, '');
-            
+
             // Handle End Date (Exclusive for GCal)
             let eRaw = this.event.end_date || sRaw;
             let endDate = new Date(eRaw);
             endDate.setDate(endDate.getDate() + 1);
             let end = endDate.toISOString().split('T')[0].replace(/-/g, '');
-            
+
             window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${desc}&dates=${start}/${end}`, '_blank');
         }
     }" @open-event.window="event = $event.detail; open = true" @keydown.escape.window="open = false">
