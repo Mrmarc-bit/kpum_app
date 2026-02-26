@@ -34,7 +34,7 @@ class PostController extends Controller
         $post->user_id = Auth::id();
 
         if ($request->is_published) {
-            $post->published_at = now();
+            $post->published_at = \Carbon\Carbon::now();
         }
 
         $post->save();
@@ -60,7 +60,7 @@ class PostController extends Controller
         // Handle published_at state change
         if ($request->is_published && !$post->is_published) {
             // Jika baru saja dipublish
-            $post->published_at = now();
+            $post->published_at = \Carbon\Carbon::now();
         } elseif (!$request->is_published) {
             // Jika ditarik kembali ke draft
             $post->published_at = null;
