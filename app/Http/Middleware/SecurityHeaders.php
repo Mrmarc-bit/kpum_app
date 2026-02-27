@@ -22,8 +22,8 @@ class SecurityHeaders
             "base-uri 'self'; " .
             "object-src 'none'; " .
             "form-action 'self'; " .
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://static.cloudflareinsights.com; " .
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " .
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://static.cloudflareinsights.com https://cdn.quilljs.com; " .
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.quilljs.com; " .
             "font-src 'self' https://fonts.gstatic.com; " .
             "img-src 'self' data: https://grainy-gradients.vercel.app; " .
             "media-src 'self'; " .
