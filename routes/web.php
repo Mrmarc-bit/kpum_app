@@ -116,6 +116,17 @@ Route::get('/sitemap.xml', function () {
         ['loc' => route('news.index'), 'lastmod' => now()->toAtomString(), 'priority' => '0.8'],
     ];
 
+    // Add News Posts
+    $posts = \App\Models\Post::published()->get();
+    foreach ($posts as $post) {
+        $urls[] = [
+            'loc' => route('news.show', $post->slug),
+            'lastmod' => $post->updated_at->toAtomString(),
+            'priority' => '0.6'
+        ];
+    }
+
+
     $xml = '<?xml version="1.0" encoding="UTF-8"?>';
     $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     foreach ($urls as $url) {

@@ -6,4 +6,13 @@ Disallow: /kpps
 Disallow: /login
 Disallow: /register
 
+# Block aggressive scrapers
+User-agent: Amazonbot
+Disallow: /
+User-agent: CCBot
+Disallow: /
+User-agent: GPTBot
+Disallow: /
+
 Sitemap: https://kpum.web.id/sitemap.xml
+

@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? config('app.name', 'KPUM UNUGHA') }} | E-Voting & Pemilwa Universitas Nahdlatul Ulama Al Ghazali Cilacap</title>
-    <meta name="description" content="Situs Resmi KPUM UNUGHA Cilacap - Platform e-Voting Pemilwa Universitas Nahdlatul Ulama Al Ghazali. Pemilihan mahasiswa yang transparan, aman, jujur, dan adil.">
-    <meta name="keywords" content="KPUM, KPUM UNUGHA, UNUGHA, Pemilwa, Pemilwa UNUGHA, E-Voting UNUGHA, Universitas Nahdlatul Ulama Al Ghazali Cilacap, KPUM Cilacap, Pemilihan Mahasiswa">
+    <title>{{ $title ?? config('app.name', 'KPUM UNUGHA') }} | E-Voting & Pemilwa UNUGHA 2026 Cilacap</title>
+    <meta name="description" content="Situs Resmi KPUM UNUGHA 2026 - Platform E-Voting Pemilihan Raya (Pemira) / Pemilwa Universitas Nahdlatul Ulama Al Ghazali Cilacap. Transparan, aman, dan terpercaya.">
+    <meta name="keywords" content="kpum, e-voting, e vitubg, pemilu, kpum unugha, unugha, pemilihan raya, pemilwa, pemira unugha 2026, kpum cilacap, pemira unugha, universitas nahdlatul ulama al ghazali cilacap">
     <meta name="author" content="KPUM UNUGHA">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ config('app.url') }}{{ Request::is('/') ? '' : '/' . Request::path() }}">
 
     <!-- Open Graph / Facebook -->
