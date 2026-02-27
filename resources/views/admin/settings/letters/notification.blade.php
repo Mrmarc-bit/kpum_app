@@ -15,38 +15,41 @@
     }" class="space-y-8">
 
         <!-- Page Header -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+        <!-- Page Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-2">
             <div>
-                <h1 class="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">Template Surat Pemberitahuan</h1>
-                <p class="text-slate-500 mt-2 font-medium text-sm md:text-base">Sesuaikan format surat pemberitahuan pemungutan suara.</p>
+                <h1 class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">Template Surat Pemberitahuan</h1>
+                <p class="text-slate-500 mt-2 font-medium text-sm sm:text-base">Sesuaikan format surat pemberitahuan pemungutan suara.</p>
             </div>
 
-            <div class="flex flex-wrap items-center gap-2 md:gap-3">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                 <form method="POST" action="{{ route('admin.settings.letters.notification.clear-cache') }}"
                     onsubmit="return confirm('Reset semua cache PDF surat pemberitahuan? PDF akan digenerate ulang saat download berikutnya.')"
-                    class="flex-1 md:flex-none">
+                    class="flex-1 sm:flex-none">
                     @csrf
                     <button type="submit"
-                        class="w-full inline-flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-orange-100 text-orange-700 font-bold rounded-2xl hover:bg-orange-200 transition-all hover:-translate-y-1 text-xs md:text-sm tracking-wide border border-orange-200">
-                        <svg class="w-4 md:w-5 h-4 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-orange-100 text-orange-700 font-bold rounded-2xl hover:bg-orange-200 transition-all active:scale-95 text-xs tracking-wide border border-orange-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
                         Reset Cache
                     </button>
                 </form>
+
                 <a href="{{ route('admin.settings.letters.notification.sample') }}" target="_blank"
-                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-slate-100 text-slate-700 font-bold rounded-2xl hover:bg-slate-200 transition-all hover:-translate-y-1 text-xs md:text-sm tracking-wide">
-                    <svg class="w-4 md:w-5 h-4 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 bg-slate-100 text-slate-700 font-bold rounded-2xl hover:bg-slate-200 transition-all active:scale-95 text-xs tracking-wide border border-slate-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                     </svg>
                     Sampel
                 </a>
+
                 <button type="submit" form="settings-form"
-                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 hover:-translate-y-1 text-xs md:text-sm tracking-wide">
-                    <svg class="w-4 md:w-5 h-4 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 active:scale-95 text-xs md:text-sm tracking-wide">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
                     </svg>
-                    Simpan
+                    Simpan Perubahan
                 </button>
             </div>
         </div>
