@@ -1,5 +1,6 @@
 <x-layouts.panitia :title="$title">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        @if($kandidats->isNotEmpty())
         <!-- New Candidate Action -->
         <a href="{{ route('panitia.kandidat.create') }}"
             class="group relative flex flex-col items-center justify-center p-8 rounded-3xl border-2 border-dashed border-slate-300 hover:border-blue-500 bg-white hover:bg-blue-50/50 transition-all duration-300 h-full min-h-[400px]">
@@ -13,6 +14,7 @@
             <h3 class="text-lg font-bold text-slate-700 group-hover:text-blue-700">Tambah Paslon Baru</h3>
             <p class="text-sm text-slate-500 mt-2 text-center font-medium">Buat profil kandidat Ketua & Wakil</p>
         </a>
+        @endif
 
         @forelse($kandidats as $kandidat)
             <!-- Candidate Card -->

@@ -1,6 +1,7 @@
 <x-layouts.admin :title="$title">
-    
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        @if($kandidats->isNotEmpty())
         <!-- New Candidate Action -->
         <a href="{{ route('admin.kandidat.create') }}"
             class="group relative flex flex-col items-center justify-center p-8 rounded-[2rem] border-2 border-dashed border-slate-200 hover:border-blue-400 bg-slate-50/50 hover:bg-blue-50/50 transition-all duration-300 h-full min-h-[420px]">
@@ -12,6 +13,7 @@
             <h3 class="text-xl font-bold text-slate-700 group-hover:text-blue-700 transition-colors">Tambah Paslon Baru</h3>
             <p class="text-sm text-slate-500 mt-2 text-center font-medium max-w-[200px]">Buat profil kandidat Ketua & Wakil untuk periode ini</p>
         </a>
+        @endif
 
         @forelse($kandidats as $kandidat)
             <!-- Candidate Card -->
@@ -34,7 +36,7 @@
                             <svg class="w-32 h-32 text-slate-300 mb-8" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                         </div>
                     @endif
-                    
+
                     <div class="absolute bottom-6 left-6 z-20 text-white">
                         <div class="text-6xl font-black tracking-tighter opacity-90 drop-shadow-lg leading-none mb-1">
                             {{ sprintf('%02d', $kandidat->no_urut) }}
@@ -64,17 +66,17 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                             <span>{{ $kandidat->votes->count() }} Votes</span>
                         </div>
-                        
+
                         <div class="flex gap-2">
                             <a href="{{ route('admin.kandidat.edit', $kandidat->id) }}"
                                 class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 transition-all shadow-sm hover:shadow-blue-500/30"
                                 title="Edit kandidat">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </a>
-                            
+
                             {{-- ✅ FORM HAPUS — Menggunakan data-confirm agar ditangkap oleh SweetAlert2 interceptor --}}
-                            <form 
-                                action="{{ route('admin.kandidat.destroy', $kandidat->id) }}" 
+                            <form
+                                action="{{ route('admin.kandidat.destroy', $kandidat->id) }}"
                                 method="POST"
                                 data-confirm="Kandidat '{{ $kandidat->nama_ketua }} & {{ $kandidat->nama_wakil }}' akan dihapus secara permanen beserta semua foto. Tindakan ini tidak dapat dibatalkan.">
                                 @csrf
