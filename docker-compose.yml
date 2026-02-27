@@ -104,6 +104,7 @@ services:
     image: mysql:8.0
     container_name: kpum-db
     restart: unless-stopped
+    command: --max_connections=1000 --innodb_buffer_pool_size=4G --innodb_log_file_size=512M
     environment:
       MYSQL_DATABASE: ${DB_DATABASE:-kpum}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
