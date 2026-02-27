@@ -29,7 +29,7 @@ class CheckDptController extends Controller
     {
         // 1. Strict Validation
         $request->validate([
-            'nim' => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z0-9]+$/'], 
+            'nim' => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z0-9]+$/'],
         ], [
             'nim.required' => 'NIM wajib diisi.',
             'nim.max' => 'Format NIM tidak valid.',
@@ -40,25 +40,26 @@ class CheckDptController extends Controller
 
         // 2. Secure Query (Eloquent uses PDO binding automatically)
         // Rate limiting is handled by middleware in routes/web.php
-        
+
+        // ARTIFICIAL DELAY: Prevent rapid scanning bots
+        usleep(500000); // 0.5 sec delay on every request to frustrate brute-forcers
+
         $mahasiswa = Mahasiswa::where('nim', $nim)->first();
 
         if ($mahasiswa) {
-            // 3. Return sanitized data (Avoid exposing sensitive fields)
+            // 3. SECURE DATA RETURN: Only confirm registration, do NOT expose Name or Prodi.
             return response()->json([
                 'status' => 'found',
                 'data' => [
-                    'name' => $this->maskName($mahasiswa->name), // Masked for privacy
-                    'prodi' => $mahasiswa->prodi,
-                    'nim' => $mahasiswa->nim,
-                    'status' => 'Terdaftar dalam DPT',
-
+                    'nim' => substr($mahasiswa->nim, 0, 4) . '******', // Mask NIM in response
+                    'status' => 'TERDAFTAR DALAM DPT',
+                    // name and prodi are intentionally OMITTED to prevent data harvesting
                 ]
             ]);
         } else {
             return response()->json([
                 'status' => 'not_found',
-                'message' => 'Data tidak ditemukan. Pastikan NIM yang Anda masukkan benar.'
+                'message' => 'NIM tersebut belum terdaftar dalam DPT.'
             ], 404);
         }
     }
@@ -66,7 +67,7 @@ class CheckDptController extends Controller
     /**
      * Mask name for privacy (e.g., "John Doe" -> "Jo** D**")
      * Enhance this if user wants full name shown. For public DPT check, masking is safer.
-     * But usually internal DPT lists are public. I'll just show full name if user wants, 
+     * But usually internal DPT lists are public. I'll just show full name if user wants,
      * but strictly masking is better for "anti-hacker" request to prevent scraping names.
      * Let's do partial hiding.
      */
@@ -74,7 +75,7 @@ class CheckDptController extends Controller
     {
         $parts = explode(' ', $name);
         $maskedParts = [];
-        
+
         foreach ($parts as $part) {
             if (strlen($part) > 2) {
                 $maskedParts[] = substr($part, 0, 2) . str_repeat('*', strlen($part) - 2);
@@ -82,7 +83,7 @@ class CheckDptController extends Controller
                 $maskedParts[] = $part;
             }
         }
-        
+
         return implode(' ', $maskedParts);
     }
 }

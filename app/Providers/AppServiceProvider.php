@@ -46,47 +46,47 @@ class AppServiceProvider extends ServiceProvider
             $view->with('settings', $settings);
         });
     }
-    
+
     /**
      * Register Authorization Policies
-     * 
+     *
      * CRITICAL SECURITY: This prevents IDOR attacks on all resources
      */
     protected function registerPolicies(): void
     {
         Gate::policy(
-            \App\Models\Mahasiswa::class, 
+            \App\Models\Mahasiswa::class,
             \App\Policies\MahasiswaPolicy::class
         );
-        
+
         Gate::policy(
-            \App\Models\User::class, 
+            \App\Models\User::class,
             \App\Policies\UserPolicy::class
         );
-        
+
         Gate::policy(
-            \App\Models\Kandidat::class, 
+            \App\Models\Kandidat::class,
             \App\Policies\KandidatPolicy::class
         );
-        
+
         Gate::policy(
-            \App\Models\Asset::class, 
+            \App\Models\Asset::class,
             \App\Policies\AssetPolicy::class
         );
-        
+
         Gate::policy(
-            \App\Models\Vote::class, 
+            \App\Models\Vote::class,
             \App\Policies\VotePolicy::class
         );
-        
+
         // Also register for DpmVote (same policy as Vote)
         if (class_exists(\App\Models\DpmVote::class)) {
             Gate::policy(
-                \App\Models\DpmVote::class, 
+                \App\Models\DpmVote::class,
                 \App\Policies\VotePolicy::class
             );
         }
-        
+
         // Log for debugging
         if (config('app.debug')) {
             Log::info('✅ Authorization Policies registered successfully');
@@ -136,14 +136,14 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(100)->by('login'.$request->ip());
         });
 
-        // 4. CHECK DPT (Prevent Scraping)
+        // 4. CHECK DPT (Prevent Scraping & Brute Force)
         RateLimiter::for('check-dpt', function (Request $request) {
             // BYPASS IN TESTING MODE
             if (\App\Models\Setting::get('app_environment_mode') === 'testing') {
                 return Limit::none();
             }
-            // Production Mode: 60 requests per minute
-            return Limit::perMinute(60)->by($request->ip());
+            // Strict Mode: Max 5 requests per minute per IP to prevent NIM scraping
+            return Limit::perMinute(5)->by($request->ip());
         });
 
         // 5. VOTE SUBMISSION (Critical Security)
