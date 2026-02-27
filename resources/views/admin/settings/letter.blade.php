@@ -1,18 +1,19 @@
 <x-layouts.admin title="Pengaturan Surat">
     <div class="space-y-8">
         <!-- Page Header -->
-        <div class="flex items-center justify-between mb-2">
+        <!-- Page Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-2">
             <div>
                 <h1 class="text-3xl font-black text-slate-800 tracking-tight">Pengaturan Surat</h1>
                 <p class="text-slate-500 mt-2 font-medium">Sesuaikan template surat bukti pemilihan yang akan diunduh mahasiswa.</p>
             </div>
 
             <button type="submit" form="settings-form"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 hover:-translate-y-1 text-sm tracking-wide">
+                class="w-full lg:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 active:scale-95 text-sm tracking-wide">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                 </svg>
-                Simpan Perubahan
+                <span>Simpan Perubahan</span>
             </button>
         </div>
 
@@ -30,7 +31,7 @@
         <form id="settings-form" method="POST" action="{{ route('admin.settings.letter.update') }}"
                 enctype="multipart/form-data" data-turbo="false" class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden">
             @csrf
-            
+
             <div class="flex items-center gap-4 mb-8 pb-8 border-b border-slate-100">
                 <div class="w-14 h-14 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center shadow-sm">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,7 +43,7 @@
                      <p class="text-slate-500 text-sm font-medium">Atur konten dinamis untuk surat keterangan memilih.</p>
                 </div>
             </div>
-            
+
             <div class="grid md:grid-cols-2 gap-10">
                 <!-- Left Column: Content -->
                 <div class="space-y-6">
@@ -73,7 +74,7 @@
                             class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-medium text-slate-700 resize-none leading-relaxed">{{ $settings['letter_body_bottom'] ?? 'Telah menggunakan hak suaranya pada Pemilihan Umum Raya Mahasiswa tahun ini. Surat ini adalah dokumen sah dan dapat digunakan sebagai bukti partisipasi.' }}</textarea>
                     </div>
                 </div>
-                
+
                 <!-- Right Column: Footer & Signature -->
                 <div class="space-y-6">
                     <div>
@@ -81,19 +82,19 @@
                         <input type="text" name="letter_footer" value="{{ $settings['letter_footer'] ?? 'Dokumen ini dibuat secara otomatis oleh sistem e-voting.' }}"
                             class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-medium text-slate-600 text-sm">
                     </div>
-                    
+
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Penanda Tangan</label>
                         <input type="text" name="letter_signature_name" value="{{ $settings['letter_signature_name'] ?? 'Ketua KPUM' }}"
                             class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-bold text-slate-800">
                     </div>
 
-                    <div x-data="{ 
-                        sigName: null, 
-                        sigPreview: {{ isset($settings['letter_signature_path']) && $settings['letter_signature_path'] ? "'" . asset((string) $settings['letter_signature_path']) . "'" : 'null' }} 
+                    <div x-data="{
+                        sigName: null,
+                        sigPreview: {{ isset($settings['letter_signature_path']) && $settings['letter_signature_path'] ? "'" . asset((string) $settings['letter_signature_path']) . "'" : 'null' }}
                     }">
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Scan Tanda Tangan (PNG/JPG)</label>
-                        
+
                         <!-- File Input (Hidden) -->
                         <input type="file" name="letter_signature_path" class="hidden" x-ref="sig" accept="image/*" x-on:change="
                                 sigName = $refs.sig.files[0].name;
@@ -121,9 +122,9 @@
                             x-show="sigPreview" style="display: none;">
                             <!-- Checkered background for transparency -->
                             <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 10px 10px;"></div>
-                            
+
                             <img :src="sigPreview" class="absolute inset-0 w-full h-full object-contain p-4 z-10">
-                            
+
                             <!-- Overlay Action -->
                             <div class="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 backdrop-blur-sm">
                                 <button type="button" @click="$refs.sig.click()" class="bg-white text-slate-800 text-xs font-bold py-2 px-4 rounded-xl shadow-lg hover:bg-slate-50 transition-colors">Ganti Tanda Tangan</button>

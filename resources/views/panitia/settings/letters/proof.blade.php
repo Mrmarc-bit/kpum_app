@@ -1,24 +1,25 @@
 <x-layouts.panitia title="Pengaturan Surat">
     <div class="space-y-6">
         <!-- Page Header -->
-        <div class="flex items-center justify-between">
+        <!-- Page Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-2">
             <div>
-                <h1 class="text-2xl font-bold text-slate-800">Pengaturan Surat Bukti Pilih</h1>
-                <p class="text-slate-500 mt-1">Sesuaikan template surat bukti pemilihan yang akan diunduh mahasiswa.</p>
+                <h1 class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">Pengaturan Surat Bukti Pilih</h1>
+                <p class="text-slate-500 mt-2 font-medium">Sesuaikan template surat bukti pemilihan yang akan diunduh mahasiswa.</p>
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                 <a href="{{ route('panitia.settings.letters.proof.sample') }}" target="_blank"
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-200 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 font-bold rounded-2xl hover:bg-slate-200 transition-all active:scale-95 text-xs tracking-wide border border-slate-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                     </svg>
-                    Unduh Sampel
+                    Sampel
                 </a>
                 <button type="submit" form="settings-form"
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-xl hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/30">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 bg-purple-600 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all shadow-lg shadow-purple-500/30 active:scale-95 text-xs md:text-sm tracking-wide">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                     </svg>
                     Simpan Perubahan
                 </button>
@@ -47,7 +48,7 @@
                 </span>
                 Template Surat Bukti Pilih
             </h2>
-            
+
             <div class="grid md:grid-cols-2 gap-8">
                     <!-- Left Column: Content -->
                 <div class="space-y-4">
@@ -72,7 +73,7 @@
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all text-slate-800 resize-none">{{ $settings['letter_body_bottom'] ?? 'Telah menggunakan hak suaranya pada Pemilihan Umum Raya Mahasiswa tahun ini. Surat ini adalah dokumen sah dan dapat digunakan sebagai bukti partisipasi.' }}</textarea>
                     </div>
                 </div>
-                
+
                 <!-- Right Column: Footer & Signature -->
                 <div class="space-y-4">
                         <div>
@@ -80,7 +81,7 @@
                         <input type="text" name="letter_footer" value="{{ $settings['letter_footer'] ?? 'Dokumen ini dibuat secara otomatis oleh sistem e-voting.' }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all text-sm text-slate-600">
                     </div>
-                    
+
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Tempat & Tanggal Surat</label>
@@ -111,9 +112,9 @@
                         </div>
                     </div>
 
-                        <div x-data="{ 
-                        sigName: null, 
-                        sigPreview: {{ isset($settings['letter_signature_path']) && $settings['letter_signature_path'] ? "'" . asset((string) $settings['letter_signature_path']) . "'" : 'null' }} 
+                        <div x-data="{
+                        sigName: null,
+                        sigPreview: {{ isset($settings['letter_signature_path']) && $settings['letter_signature_path'] ? "'" . asset((string) $settings['letter_signature_path']) . "'" : 'null' }}
                     }">
                             <label class="block text-sm font-bold text-slate-700 mb-2">Scan Tanda Tangan</label>
                         <!-- File Input (Hidden) -->
@@ -148,9 +149,9 @@
                         </div>
                     </div>
 
-                    <div x-data="{ 
-                        stampName: null, 
-                        stampPreview: {{ isset($settings['letter_stamp_path']) && $settings['letter_stamp_path'] ? "'" . asset((string) $settings['letter_stamp_path']) . "'" : 'null' }} 
+                    <div x-data="{
+                        stampName: null,
+                        stampPreview: {{ isset($settings['letter_stamp_path']) && $settings['letter_stamp_path'] ? "'" . asset((string) $settings['letter_stamp_path']) . "'" : 'null' }}
                     }" class="mt-6">
                             <label class="block text-sm font-bold text-slate-700 mb-2">Scan Stempel</label>
                         <!-- File Input (Hidden) -->
