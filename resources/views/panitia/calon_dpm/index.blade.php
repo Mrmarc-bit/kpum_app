@@ -1,7 +1,8 @@
 <x-layouts.panitia :title="$title">
-    
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
 
+        @if($calons->isNotEmpty())
         <!-- New Candidate Action -->
         <a href="{{ route('panitia.calon_dpm.create') }}"
             class="group relative flex flex-col items-center justify-center p-8 rounded-[2rem] border-3 border-dashed border-slate-200 hover:border-purple-400 bg-slate-50/50 hover:bg-purple-50/50 transition-all duration-300 h-full min-h-[420px]">
@@ -13,6 +14,7 @@
             <h3 class="text-xl font-bold text-slate-700 group-hover:text-purple-700 transition-colors">Tambah Calon DPM</h3>
             <p class="text-sm text-slate-500 mt-2 text-center font-medium max-w-[200px]">Buat profil calon anggota Dewan Perwakilan Mahasiswa</p>
         </a>
+        @endif
 
         @forelse($calons as $calon)
             <!-- Candidate Card -->
@@ -42,7 +44,7 @@
                             <svg class="w-32 h-32 text-slate-300 mb-8" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                         </div>
                     @endif
-                    
+
                     <div class="absolute bottom-6 left-6 z-20 text-white">
                         <div class="text-6xl font-black tracking-tighter opacity-90 drop-shadow-lg leading-none mb-1">
                             {{ sprintf('%02d', $calon->urutan_tampil ?? 0) }}
@@ -68,13 +70,13 @@
                          <div class="flex items-center gap-2 text-sm font-semibold text-slate-400">
                             <!-- Placeholder for stats if needed -->
                         </div>
-                        
+
                         <div class="flex gap-2">
                             <a href="{{ route('panitia.calon_dpm.edit', $calon->id) }}"
                                 class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-purple-600 transition-all shadow-sm hover:shadow-purple-500/30">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </a>
-                            
+
                             <form action="{{ route('panitia.calon_dpm.destroy', $calon->id) }}" method="POST"
                                 data-confirm="Apakah Anda yakin ingin menghapus calon ini?">
                                 @csrf
