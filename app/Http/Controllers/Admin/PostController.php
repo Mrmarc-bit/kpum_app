@@ -31,6 +31,10 @@ class PostController extends Controller
         ]);
 
         $post = new Post($validated);
+
+        // SECURITY: Sanitize rich text HTML to prevent XSS attacks
+        $post->content = strip_tags($request->content, '<p><br><b><strong><i><em><u><s><ul><ol><li><a><img><h1><h2><h3><h4><h5><h6><blockquote><code><pre>');
+
         $post->user_id = Auth::id();
 
         if ($request->is_published) {
@@ -56,6 +60,9 @@ class PostController extends Controller
             'content' => 'required|string',
             'is_published' => 'required|boolean',
         ]);
+
+        // SECURITY: Sanitize rich text HTML to prevent XSS attacks
+        $validated['content'] = strip_tags($validated['content'], '<p><br><b><strong><i><em><u><s><ul><ol><li><a><img><h1><h2><h3><h4><h5><h6><blockquote><code><pre>');
 
         // Handle published_at state change
         if ($request->is_published && !$post->is_published) {
