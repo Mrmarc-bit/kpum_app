@@ -1,5 +1,5 @@
 <x-layouts.admin :title="$title">
-    
+
     <div class="space-y-8 pb-20">
 
         <!-- Header & Mode Switcher -->
@@ -13,29 +13,29 @@
             </div>
 
             <!-- Global Mode Switcher -->
-            <div class="bg-white p-4 rounded-2xl shadow-lg border-2 {{ $mode == 'testing' ? 'border-amber-400 bg-amber-50' : 'border-green-400 bg-green-50' }}">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl {{ $mode == 'testing' ? 'bg-amber-100 text-amber-600' : 'bg-green-100 text-green-600' }} flex items-center justify-center">
+            <div class="w-full md:w-auto bg-white p-4 md:p-6 rounded-3xl shadow-lg border-2 {{ $mode == 'testing' ? 'border-amber-400 bg-amber-50' : 'border-green-400 bg-green-50' }}">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl {{ $mode == 'testing' ? 'bg-amber-100 text-amber-600' : 'bg-green-100 text-green-600' }} flex items-center justify-center shrink-0">
                         @if($mode == 'testing')
                             <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                         @else
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         @endif
                     </div>
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-wider {{ $mode == 'testing' ? 'text-amber-600' : 'text-green-600' }}">Status Sistem Saat Ini</p>
-                        <h3 class="text-xl font-black {{ $mode == 'testing' ? 'text-amber-800' : 'text-green-800' }}">
-                            {{ $mode == 'testing' ? 'MODE PENGUJIAN (UNSECURE)' : 'MODE PRODUCTION (SECURE)' }}
+                    <div class="flex-1">
+                        <p class="text-[10px] md:text-xs font-bold uppercase tracking-widest {{ $mode == 'testing' ? 'text-amber-600' : 'text-green-600' }}">Status Sistem</p>
+                        <h3 class="text-lg md:text-xl font-black {{ $mode == 'testing' ? 'text-amber-800' : 'text-green-800' }} leading-tight">
+                            {{ $mode == 'testing' ? 'MODE PENGUJIAN' : 'MODE PRODUCTION' }}
                         </h3>
                     </div>
-                    <button onclick="document.getElementById('switch-mode-modal').showModal()" 
-                        class="ml-4 px-4 py-2 rounded-lg font-bold text-sm shadow-sm transition-all {{ $mode == 'testing' ? 'bg-white text-amber-600 hover:bg-amber-100' : 'bg-white text-green-600 hover:bg-green-100' }}">
+                    <button onclick="document.getElementById('switch-mode-modal').showModal()"
+                        class="w-full sm:w-auto px-6 py-2.5 rounded-xl font-bold text-sm shadow-sm transition-all {{ $mode == 'testing' ? 'bg-white text-amber-600 hover:bg-amber-100 border border-amber-200' : 'bg-white text-green-600 hover:bg-green-100 border border-green-200' }}">
                         Ubah Mode
                     </button>
                 </div>
                 @if($mode == 'testing')
-                    <p class="mt-2 text-xs font-bold text-amber-700 bg-amber-200/50 px-3 py-1.5 rounded-lg border border-amber-300">
-                        ⚠️ PERINGATAN: Rate Limiting, IP Block, & Brute Force Protection DIMATIKAN! Gunakan hanya untuk testing OWASP.
+                    <p class="mt-4 text-[10px] md:text-xs font-bold text-amber-700 bg-amber-200/50 px-3 py-2 rounded-xl border border-amber-300">
+                        ⚠️ Proteksi DIMATIKAN! Hanya untuk testing.
                     </p>
                 @endif
             </div>
@@ -143,7 +143,7 @@
                 </form>
             </div>
 
-            <div class="w-full bg-slate-900 rounded-xl p-6 overflow-y-auto h-[500px] font-mono text-xs text-green-400 leading-relaxed whitespace-pre-wrap selection:bg-green-900 selection:text-white border border-slate-800 shadow-inner">
+            <div class="h-[400px] md:h-[500px] w-full bg-slate-900 rounded-2xl p-4 md:p-6 overflow-y-auto font-mono text-[10px] md:text-xs text-green-400 leading-relaxed whitespace-pre-wrap selection:bg-green-900 selection:text-white border border-slate-800 shadow-inner">
                 {{ $logs ? $logs : 'No logs found.' }}
             </div>
         </div>
@@ -153,14 +153,14 @@
     <dialog id="switch-mode-modal" class="backdrop:bg-slate-900/40 backdrop:backdrop-blur-sm bg-transparent p-0 w-full max-w-lg rounded-[2rem] shadow-2xl">
         <form method="POST" action="{{ route('admin.maintenance.mode.update') }}" class="bg-white rounded-[2rem] p-0 shadow-2xl border border-white/50 overflow-hidden">
             @csrf
-            
+
             <div class="px-8 py-6 border-b border-slate-100 bg-slate-50/50">
                 <h3 class="font-black text-xl text-slate-800 tracking-tight">Ubah Mode Lingkungan</h3>
                 <p class="text-sm text-slate-500 mt-1">Pilih mode operasi untuk sistem ini.</p>
             </div>
 
             <div class="p-8 space-y-6">
-                
+
                 <!-- Option Production -->
                 <label class="relative flex items-start p-4 border-2 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors {{ $mode == 'production' ? 'border-green-500 bg-green-50/30' : 'border-slate-200' }}">
                     <input type="radio" name="mode" value="production" class="mt-1 w-4 h-4 text-green-600 border-slate-300 focus:ring-green-500" {{ $mode == 'production' ? 'checked' : '' }}>
