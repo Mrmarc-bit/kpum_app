@@ -1,18 +1,19 @@
 <x-layouts.admin title="Pengaturan Sistem">
     <div class="space-y-6">
         <!-- Page Header -->
-        <div class="flex items-center justify-between">
+        <!-- Page Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div>
-                <h1 class="text-2xl font-bold text-slate-800">Pengaturan Sistem</h1>
-                <p class="text-slate-500 mt-1">Kelola konfigurasi global website KPUM.</p>
+                <h1 class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">Pengaturan Sistem</h1>
+                <p class="text-slate-500 mt-1 font-medium text-sm sm:text-base">Kelola konfigurasi global website KPUM.</p>
             </div>
 
             <button type="submit" form="settings-form"
-                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                class="w-full lg:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 active:scale-95 text-sm tracking-wide">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                 </svg>
-                Simpan Perubahan
+                <span>Simpan Perubahan</span>
             </button>
         </div>
 
@@ -29,7 +30,7 @@
 
         <!-- GRID CONTAINER FOR ALL SETTINGS -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
+
             <!-- FORM 1: GENERAL SETTINGS -->
             <form id="settings-form" method="POST" action="{{ route('admin.settings.update') }}"
                 enctype="multipart/form-data" data-turbo="false" class="md:col-span-3 contents">
@@ -63,7 +64,7 @@
                                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition-all font-medium text-slate-800 resize-none"
                                 placeholder="Deskripsi singkat tentang platform pemilihan ini...">{{ $settings['app_description'] ?? '' }}</textarea>
                         </div>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-bold text-slate-700 mb-2">Contact Person (WhatsApp)</label>
@@ -86,9 +87,9 @@
                                 placeholder="Alamat lengkap sekretariat KPUM...">{{ $settings['address'] ?? '' }}</textarea>
                         </div>
                     </div>
-                    <div x-data="{ 
-                        photoName: null, 
-                        photoPreview: {{ isset($settings['app_logo']) && $settings['app_logo'] ? "'" . asset((string) $settings['app_logo']) . "'" : 'null' }} 
+                    <div x-data="{
+                        photoName: null,
+                        photoPreview: {{ isset($settings['app_logo']) && $settings['app_logo'] ? "'" . asset((string) $settings['app_logo']) . "'" : 'null' }}
                     }" class="col-span-1">
                         <!-- File Input (Hidden) -->
                         <input type="file" name="app_logo" class="hidden" x-ref="photo" accept="image/*" x-on:change="
@@ -180,7 +181,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
                         Mode Simulasi (Uji Coba)
                     </h4>
-                    
+
                     <label class="block mb-4">
                         <span class="text-xs font-bold text-blue-200 uppercase tracking-wider mb-1 block">Mulai Simulasi</span>
                         <input type="datetime-local" name="simulation_start_time"
@@ -218,7 +219,7 @@
             <!-- ROW 2: FEATURE FLAGS (Quick Count & Candidates) -->
             <!-- Wrapped in col-span-3 to take full width, then split into 2 cols -->
             <div class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                
+
                 <!-- Quick Count -->
                 <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-lg relative group">
                     <div class="flex justify-between items-start mb-4">
@@ -297,9 +298,9 @@
 
 
             <!-- ENCRYPTION MANAGEMENT LINK CARD -->
-        <a href="{{ route('admin.security.encryption') }}" 
+        <a href="{{ route('admin.security.encryption') }}"
             class="md:col-span-3 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl shadow-indigo-500/30 hover:shadow-3xl transition-all transform hover:-translate-y-1 block group">
-            
+
             <!-- Decorative Patterns -->
             <div class="absolute inset-0 opacity-10">
                 <div class="absolute inset-0"
@@ -316,20 +317,20 @@
                 </svg>
             </div>
 
-            <div class="relative z-10 flex items-center justify-between">
-                <div>
-                    <h2 class="text-3xl font-black mb-2 flex items-center gap-3">
-                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div class="flex-1">
+                    <h2 class="text-2xl sm:text-3xl font-black mb-2 flex items-center gap-3">
+                        <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
                             </path>
                         </svg>
                         Manajemen Enkripsi Vote
                     </h2>
-                    <p class="text-indigo-100 max-w-2xl mb-4">
+                    <p class="text-indigo-100 max-w-2xl mb-4 text-sm sm:text-base">
                         Kontrol tingkat keamanan dan enkripsi data voting mahasiswa. Pilih antara Standard, High, atau Blockchain mode.
                     </p>
-                    
+
                     @php
                         $currentLevel = \App\Services\VoteEncryptionService::getCurrentLevel();
                         $levelLabels = [
@@ -343,26 +344,28 @@
                             'blockchain' => 'bg-orange-500'
                         ];
                     @endphp
-                    
+
                     <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-lg">
                         <div class="w-3 h-3 rounded-full {{ $levelColors[$currentLevel] ?? 'bg-slate-500' }} animate-pulse"></div>
                         <span class="text-sm font-bold">Mode Aktif: {{ $levelLabels[$currentLevel] ?? 'Unknown' }}</span>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3">
-                    <span class="text-sm font-bold">Kelola →</span>
-                    <svg class="w-8 h-8 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                    </svg>
+                <div class="flex items-center gap-4 self-end md:self-center">
+                    <span class="text-sm font-bold">Kelola</span>
+                    <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center transform group-hover:translate-x-2 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </a>
 
         <!-- MAINTENANCE MODE LINK CARD -->
-        <a href="{{ route('admin.settings.maintenance') }}" 
+        <a href="{{ route('admin.settings.maintenance') }}"
             class="md:col-span-3 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl shadow-orange-500/30 hover:shadow-3xl transition-all transform hover:-translate-y-1 block group">
-            
+
             <!-- Decorative Patterns -->
             <div class="absolute inset-0 opacity-10">
                 <div class="absolute inset-0"
@@ -379,10 +382,10 @@
                 </svg>
             </div>
 
-            <div class="relative z-10 flex items-center justify-between">
-                <div>
-                    <h2 class="text-3xl font-black mb-2 flex items-center gap-3">
-                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div class="flex-1">
+                    <h2 class="text-2xl sm:text-3xl font-black mb-2 flex items-center gap-3">
+                        <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
                             </path>
@@ -391,29 +394,31 @@
                         </svg>
                         Mode Maintenance
                     </h2>
-                    <p class="text-orange-100 max-w-2xl mb-4">
+                    <p class="text-orange-100 max-w-2xl mb-4 text-sm sm:text-base">
                         Kontrol akses website untuk pemeliharaan sistem. Aktifkan/nonaktifkan maintenance mode.
                     </p>
-                    
+
                     @php
                         $isMaintenanceActive = \App\Models\Setting::isMaintenanceMode();
                     @endphp
-                    
+
                     <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-lg">
                         <div class="w-3 h-3 rounded-full {{ $isMaintenanceActive ? 'bg-red-500 animate-pulse' : 'bg-green-500' }}"></div>
                         <span class="text-sm font-bold">Status: {{ $isMaintenanceActive ? 'AKTIF' : 'NONAKTIF' }}</span>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3">
-                    <span class="text-sm font-bold">Kelola →</span>
-                    <svg class="w-8 h-8 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                    </svg>
+                <div class="flex items-center gap-4 self-end md:self-center">
+                    <span class="text-sm font-bold">Kelola</span>
+                    <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center transform group-hover:translate-x-2 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </a>
-        
+
         </div> <!-- Close grid container -->
     </div>
 </x-layouts.admin>
