@@ -13,39 +13,40 @@
         signature_name: '{!! addslashes($settings['notification_signature_name'] ?? 'Ma\'rufatul Khouro') !!}',
         signature_nim: '{!! addslashes($settings['notification_signature_nim'] ?? '22AF13003') !!}'
     }" class="space-y-8">
-        
+
         <!-- Page Header -->
-        <div class="flex items-center justify-between mb-2">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
             <div>
-                <h1 class="text-3xl font-black text-slate-800 tracking-tight">Template Surat Pemberitahuan</h1>
-                <p class="text-slate-500 mt-2 font-medium">Sesuaikan format surat pemberitahuan pemungutan suara.</p>
+                <h1 class="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">Template Surat Pemberitahuan</h1>
+                <p class="text-slate-500 mt-2 font-medium text-sm md:text-base">Sesuaikan format surat pemberitahuan pemungutan suara.</p>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-2 md:gap-3">
                 <form method="POST" action="{{ route('admin.settings.letters.notification.clear-cache') }}"
-                    onsubmit="return confirm('Reset semua cache PDF surat pemberitahuan? PDF akan digenerate ulang saat download berikutnya.')">
+                    onsubmit="return confirm('Reset semua cache PDF surat pemberitahuan? PDF akan digenerate ulang saat download berikutnya.')"
+                    class="flex-1 md:flex-none">
                     @csrf
                     <button type="submit"
-                        class="inline-flex items-center gap-2 px-6 py-3 bg-orange-100 text-orange-700 font-bold rounded-2xl hover:bg-orange-200 transition-all hover:-translate-y-1 text-sm tracking-wide border border-orange-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-full inline-flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-orange-100 text-orange-700 font-bold rounded-2xl hover:bg-orange-200 transition-all hover:-translate-y-1 text-xs md:text-sm tracking-wide border border-orange-200">
+                        <svg class="w-4 md:w-5 h-4 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
-                        Reset Cache PDF
+                        Reset Cache
                     </button>
                 </form>
                 <a href="{{ route('admin.settings.letters.notification.sample') }}" target="_blank"
-                    class="inline-flex items-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 font-bold rounded-2xl hover:bg-slate-200 transition-all hover:-translate-y-1 text-sm tracking-wide">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-slate-100 text-slate-700 font-bold rounded-2xl hover:bg-slate-200 transition-all hover:-translate-y-1 text-xs md:text-sm tracking-wide">
+                    <svg class="w-4 md:w-5 h-4 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                     </svg>
-                    Unduh Sampel
+                    Sampel
                 </a>
                 <button type="submit" form="settings-form"
-                    class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 hover:-translate-y-1 text-sm tracking-wide">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 hover:-translate-y-1 text-xs md:text-sm tracking-wide">
+                    <svg class="w-4 md:w-5 h-4 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
-                    Simpan Perubahan
+                    Simpan
                 </button>
             </div>
         </div>
@@ -62,12 +63,12 @@
         @endif
 
         <div class="max-w-4xl mx-auto">
-            
+
             <!-- FORM EDITOR -->
             <form id="settings-form" method="POST" action="{{ route('admin.settings.letters.notification.update') }}"
                 class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/40 space-y-6 relative overflow-hidden">
                 @csrf
-                
+
                 <div class="border-b border-slate-100 pb-6 mb-6">
                     <h2 class="text-xl font-black text-slate-800 flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
@@ -102,7 +103,7 @@
                             class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all font-medium text-slate-700 resize-none leading-relaxed"></textarea>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                          <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Hari, Tanggal</label>
                             <input type="text" name="notification_date" x-model="schedule_date"
@@ -127,7 +128,7 @@
                             class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all font-medium text-slate-700 resize-none leading-relaxed"></textarea>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Tempat & Tanggal Surat</label>
                             <input type="text" name="notification_signature_place_date" x-model="signature_place_date"
@@ -140,7 +141,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                          <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Penanda Tangan</label>
                             <input type="text" name="notification_signature_name" x-model="signature_name"

@@ -13,24 +13,24 @@
         signature_name: '{!! addslashes($settings['notification_signature_name'] ?? 'Ma\'rufatul Khouro') !!}',
         signature_nim: '{!! addslashes($settings['notification_signature_nim'] ?? '22AF13003') !!}'
     }" class="space-y-6">
-        
+
         <!-- Page Header -->
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-slate-800">Template Surat Pemberitahuan</h1>
-                <p class="text-slate-500 mt-1">Sesuaikan format surat pemberitahuan pemungutan suara.</p>
+                <h1 class="text-xl md:text-2xl font-bold text-slate-800">Template Surat Pemberitahuan</h1>
+                <p class="text-slate-500 mt-1 text-sm md:text-base">Sesuaikan format surat pemberitahuan pemungutan suara.</p>
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
                 <a href="{{ route('panitia.settings.letters.notification.sample') }}" target="_blank"
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-200 transition-colors">
+                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-200 transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
                     Unduh Sampel
                 </a>
                 <button type="submit" form="settings-form"
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-xl hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/30">
+                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-xl hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/30">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
@@ -51,12 +51,12 @@
         @endif
 
         <div class="max-w-4xl mx-auto">
-            
+
             <!-- FORM EDITOR -->
             <form id="settings-form" method="POST" action="{{ route('panitia.settings.letters.notification.update') }}"
                 class="bg-white rounded-3xl p-6 border border-slate-100 shadow-xl shadow-slate-200/50 space-y-6 relative overflow-hidden">
                 @csrf
-                
+
                 <div class="border-b border-slate-100 pb-4 mb-4">
                     <h2 class="text-lg font-bold text-slate-800 flex items-center gap-3">
                         <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center">
@@ -91,7 +91,7 @@
                             class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-medium text-slate-700 resize-none leading-relaxed text-sm"></textarea>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                          <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Hari, Tanggal</label>
                             <input type="text" name="notification_date" x-model="schedule_date"
@@ -116,7 +116,7 @@
                             class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all font-medium text-slate-700 resize-none leading-relaxed text-sm"></textarea>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Tempat & Tanggal Surat</label>
                             <input type="text" name="notification_signature_place_date" x-model="signature_place_date"
@@ -129,7 +129,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                          <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Penanda Tangan</label>
                             <input type="text" name="notification_signature_name" x-model="signature_name"
