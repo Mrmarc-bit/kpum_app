@@ -138,30 +138,48 @@
     </style>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var quill = new Quill('#editor-container', {
-                theme: 'snow',
-                placeholder: 'Start writing your post...',
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        ['blockquote', 'code-block'],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                        [{ 'align': [] }],
-                        ['link', 'image'],
-                        ['clean']
-                    ]
-                }
-            });
+        function initializeQuill() {
+            var editorContainer = document.querySelector('#editor-container');
+            if (editorContainer && !editorContainer.classList.contains('ql-container')) {
+                var quill = new Quill('#editor-container', {
+                    theme: 'snow',
+                    placeholder: 'Start writing your post...',
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'align': [] }],
+                            ['link', 'image'],
+                            ['clean']
+                        ]
+                    }
+                });
 
-            // Sinkronkan HTML dari Quill ke dalam input tersembunyi saat form di submit
-            var form = document.querySelector('#post-form');
-            form.onsubmit = function() {
-                var contentInput = document.querySelector('#hidden-content');
-                // get semantic HTML
-                contentInput.value = quill.root.innerHTML;
-            };
-        });
+                // Sinkronkan HTML dari Quill ke dalam input tersembunyi saat form di submit
+                var form = document.querySelector('#post-form');
+                if (form) {
+                    form.onsubmit = function() {
+                        var contentInput = document.querySelector('#hidden-content');
+                        // get semantic HTML
+                        contentInput.value = quill.root.innerHTML;
+                    };
+                }
+            }
+        }
+
+        // Jika script dimuat normal (sinkron), Quill sudah tersedia:
+        if (typeof Quill !== 'undefined') {
+            initializeQuill();
+        } else {
+            // Berjaga-jaga jika script CDN dimuat asynchronous
+            window.addEventListener('load', initializeQuill);
+        }
+
+        // Untuk menanggulangi masalah navigasi SPA (Livewire / Turbo)
+        document.addEventListener('livewire:navigated', initializeQuill);
+        document.addEventListener('turbo:load', initializeQuill);
+        document.addEventListener('DOMContentLoaded', initializeQuill);
     </script>
 </x-layouts.admin>
