@@ -145,7 +145,7 @@
                         Demokrasi Mahasiswa 2026
                     </div>
 
-                    <h1 class="text-4xl sm:text-5xl tracking-tighter font-black text-slate-900 md:text-8xl mb-6 sm:mb-8 leading-[1.1] sm:leading-[0.9] min-h-[4.5em] sm:min-h-[2em] break-words"
+                    <h1 class="text-4xl sm:text-5xl tracking-tighter font-black text-slate-900 md:text-8xl mb-4 leading-[1.1] sm:leading-[0.9] min-h-[4.5em] sm:min-h-[2em] break-words"
                         x-data="{
                             text: '',
                             wordIndex: 0,
@@ -182,7 +182,7 @@
                             x-text="text">Masa Depan Kita</span><span class="text-blue-600 animate-[pulse_1s_infinite] ml-1">|</span>
                     </h1>
 
-                    <p class="mt-6 max-w-2xl mx-auto text-xl text-slate-600/90 leading-relaxed font-medium">
+                    <p class="mt-2 max-w-2xl mx-auto text-xl text-slate-600/90 leading-relaxed font-medium">
                         Platform pemilihan elektronik modern yang <span
                             class="text-slate-900 font-bold decoration-blue-300/50 underline decoration-4 underline-offset-4">Transparan</span>,
                         <span
