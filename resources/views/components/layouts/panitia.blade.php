@@ -351,80 +351,103 @@
 
     <!-- Main Content -->
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10 bg-transparent">
+        <!-- Modern Premium Navbar (Panitia) -->
         <header
-            class="h-16 bg-white/70 backdrop-blur-xl border-b border-white/60 shadow-sm flex items-center justify-between px-4 sm:px-6 lg:px-8 sticky top-0 z-20">
-            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden text-slate-500 hover:text-slate-700">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
-                    </path>
-                </svg>
-            </button>
-            <div class="flex-1 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-slate-800 tracking-tight">{{ $title ?? 'Dashboard' }}</h2>
-                <div class="flex items-center gap-4">
+            class="h-16 lg:h-20 bg-white/70 backdrop-blur-xl border-b border-white/60 sticky top-0 z-30 transition-all duration-300">
+            <div class="h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between max-w-[1600px] mx-auto">
 
-                    <!-- User Menu -->
+                <!-- Left Section -->
+                <div class="flex items-center gap-4">
+                    <button @click="sidebarOpen = !sidebarOpen"
+                        class="lg:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-all active:scale-95">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+
+                    <div class="hidden lg:flex flex-col">
+                        <p class="text-[10px] font-bold text-purple-600 uppercase tracking-[0.2em] mb-0.5">Panitia Pemilihan</p>
+                        <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">{{ $title ?? 'Dashboard' }}</h2>
+                    </div>
+                </div>
+
+                <!-- Center Section: Mobile Title -->
+                <div class="lg:hidden absolute left-1/2 -translate-x-1/2 flex flex-col items-center max-w-[180px] sm:max-w-xs">
+                    <h2 class="text-sm font-bold text-slate-900 tracking-tight truncate w-full text-center">{{ $title ?? 'Dashboard' }}</h2>
+                    <div class="h-0.5 w-4 bg-purple-500 rounded-full mt-0.5"></div>
+                </div>
+
+                <!-- Right Section -->
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <!-- Notifications -->
+                    <button class="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-all hidden sm:block">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Profile Dropdown -->
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open"
-                            class="flex items-center gap-3 hover:bg-slate-50 rounded-full py-1 pr-2 pl-1 transition-colors focus:outline-none focus:ring-0">
-                            @if(auth()->user()->avatar)
-                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" class="w-8 h-8 rounded-full object-cover shadow-sm ring-2 ring-white">
-                            @else
-                                <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-sm ring-2 ring-white">
-                                    {{ substr(auth()->user()->name ?? 'P', 0, 1) }}
-                                </div>
-                            @endif
-                            <div class="hidden md:block text-left">
-                                <p class="text-sm font-semibold text-slate-700 leading-none">
-                                    {{ auth()->user()->name ?? 'Panitia' }}
-                                </p>
-                                <p class="text-[10px] text-slate-500 font-medium leading-none mt-1">Panitia Pemilihan
-                                </p>
+                            class="group flex items-center gap-2 sm:gap-3 p-1 rounded-full sm:rounded-2xl hover:bg-slate-100 transition-all focus:outline-none">
+                            <div class="relative">
+                                @if(auth()->user()->avatar)
+                                    <img src="{{ asset('storage/' . auth()->user()->avatar) }}"
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full sm:rounded-xl object-cover shadow-sm ring-2 ring-white group-hover:ring-purple-100 transition-all">
+                                @else
+                                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full sm:rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-md ring-2 ring-white group-hover:ring-purple-100 transition-all">
+                                        {{ substr(auth()->user()->name ?? 'P', 0, 1) }}
+                                    </div>
+                                @endif
+                                <div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
                             </div>
+
+                            <div class="hidden md:block text-left mr-1">
+                                <p class="text-sm font-bold text-slate-900 leading-none mb-1">
+                                    {{ Str::words(auth()->user()->name ?? 'Panitia', 2, '') }}
+                                </p>
+                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider leading-none">Panitia Akses</p>
+                            </div>
+
                             <svg :class="open ? 'rotate-180' : ''"
-                                class="w-4 h-4 text-slate-400 transition-transform duration-200" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7"></path>
+                                class="hidden sm:block w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-transform duration-300"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
 
+                        <!-- Profile Dropdown Menu -->
                         <div x-show="open" @click.outside="open = false"
                             x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-75"
-                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                            class="absolute right-0 mt-2 w-48 bg-white/90 backdrop-blur-xl border border-white/50 rounded-2xl shadow-lg ring-1 ring-slate-900/5 origin-top-right py-1 z-50 focus:outline-none"
-                            style="display: none;">
+                            x-transition:enter-start="opacity-0 translate-y-4 scale-95"
+                            x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                            class="absolute right-0 mt-3 w-64 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-[1.5rem] shadow-2xl overflow-hidden z-50 focus:outline-none">
 
-                            <div class="px-4 py-3 border-b border-slate-100/50">
-                                <p class="text-sm font-semibold text-slate-900 truncate">
-                                    {{ auth()->user()->name ?? 'Panitia' }}
-                                </p>
-                                <p class="text-xs text-slate-500 truncate">{{ auth()->user()->email ??
-                                    'panitia@kpum.com'
-                                    }}</p>
+                            <div class="px-6 py-5 bg-gradient-to-br from-slate-50 to-white border-b border-slate-100">
+                                <p class="text-sm font-bold text-slate-900 truncate mb-0.5">{{ auth()->user()->name ?? 'Panitia' }}</p>
+                                <p class="text-xs text-slate-500 font-medium truncate">{{ auth()->user()->email ?? 'panitia@kpum.com' }}</p>
                             </div>
 
-                            <div class="p-1">
+                            <div class="p-2">
                                 <a href="{{ route('panitia.profile.index') }}"
-                                    class="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-xl transition-colors text-left mb-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
-                                        </path>
-                                    </svg>
+                                    class="group flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 hover:bg-purple-50 hover:text-purple-700 rounded-[1rem] transition-all">
+                                    <div class="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-purple-100 flex items-center justify-center transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
+                                    </div>
                                     Profil Saya
                                 </a>
+
                                 <form method="POST" action="{{ route('logout') }}" data-turbo="false">
                                     @csrf
                                     <button type="submit"
-                                        class="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-colors text-left">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                            </path>
-                                        </svg>
+                                        class="group w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 rounded-[1rem] transition-all text-left">
+                                        <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                            </svg>
+                                        </div>
                                         Log Out
                                     </button>
                                 </form>
@@ -434,6 +457,7 @@
                 </div>
             </div>
         </header>
+
 
         <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 scroll-smooth">
             {{ $slot }}
