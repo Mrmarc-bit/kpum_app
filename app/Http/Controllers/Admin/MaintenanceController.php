@@ -60,10 +60,11 @@ class MaintenanceController extends Controller
 
         // Clear specific cache keys instead of flush to avoid session issues
         Cache::forget('global_settings');
-        Cache::forget('app_settings'); // If used elsewhere
+        Cache::forget('app_settings');
+        Cache::forget('maintenance_dashboard_data');
 
-        $message = $request->mode === 'testing' 
-            ? '⚠️ MODE TESTING AKTIF! Semua fitur keamanan dimatikan untuk pengujian OWASP.' 
+        $message = $request->mode === 'testing'
+            ? '⚠️ MODE TESTING AKTIF! Semua fitur keamanan dimatikan untuk pengujian OWASP.'
             : '✅ MODE PRODUCTION AKTIF! Sistem kembali aman sepenuhnya.';
 
         return back()->with('success', $message);
@@ -72,12 +73,15 @@ class MaintenanceController extends Controller
     public function clearLogs()
     {
         file_put_contents(storage_path('logs/laravel.log'), '');
+        Cache::forget('maintenance_dashboard_data');
         return back()->with('success', 'System Logs berhasil dibersihkan.');
     }
+
 
     public function optimize()
     {
         \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        Cache::forget('maintenance_dashboard_data');
         return back()->with('success', 'Cache sistem berhasil dibersihkan.');
     }
 
@@ -144,7 +148,7 @@ class MaintenanceController extends Controller
         // Use tail command for much faster reading (reads last 50 lines instantly)
         $output = [];
         exec("tail -n 50 " . escapeshellarg($path) . " 2>&1", $output);
-        
+
         return implode("\n", $output);
     }
 }
