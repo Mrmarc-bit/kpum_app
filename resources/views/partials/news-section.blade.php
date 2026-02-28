@@ -8,13 +8,13 @@
         <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-20 items-start">
 
             <!-- Headline Column -->
-            <div class="w-full lg:w-[38%] xl:w-[35%] lg:sticky lg:top-32 space-y-8 flex-shrink-0">
+            <div class="w-full lg:w-[35%] xl:w-[32%] lg:sticky lg:top-32 space-y-8 flex-shrink-0">
                 <div class="space-y-6">
-                    <h2 class="text-4xl sm:text-6xl lg:text-6xl font-black text-[#111111] leading-[1.1] tracking-tighter break-words">
-                        Berita<br>KPUM UNUGHA.
+                    <h2 class="text-4xl sm:text-6xl lg:text-7xl font-black text-[#111111] leading-[0.9] tracking-tighter break-words">
+                        Warta<br>Demokrasi.
                     </h2>
                     <p class="text-lg text-slate-500 font-medium leading-relaxed max-w-sm">
-                        Ruang di mana mahasiswa menemukan edukasi politik, pengumuman resmi, dan perkembangan Pemilwa UNUGHA secara transparan dan informatif.
+                        Ruang di mana mahasiswa menemukan edukasi politik, pengumuman resmi, dan perkembangan Pemilwa secara transparan dan informatif.
                     </p>
                 </div>
 
@@ -29,7 +29,7 @@
             </div>
 
             {{-- News Cards Slider --}}
-            <div class="w-full lg:w-[62%] xl:w-[65%] min-w-0">
+            <div class="w-full lg:w-[65%] xl:w-[68%] min-w-0">
 
                 {{-- Minimalist Scrollbar Style --}}
                 <style>
