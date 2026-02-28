@@ -1,4 +1,4 @@
-<x-layouts.guest title="KPUM UNUGHA - Pemilwa & E-Voting Universitas Nahdlatul Ulama Al Ghazali">
+<x-layouts.guest title="KPUM - Universitas Nahdlatul Ulama Al Ghazali Cilacap">
     @push('head')
     <script type="application/ld+json">
     {
@@ -31,7 +31,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center gap-3">
                     @if(isset($settings['app_logo']) && $settings['app_logo'])
-                        <img src="{{ asset((string) $settings['app_logo']) }}" alt="Logo KPUM UNUGHA - Pemilwa & E-Voting UNUGHA"
+                        <img src="{{ asset((string) $settings['app_logo']) }}" alt="Logo"
                             class="w-9 h-9 rounded-full object-contain bg-white shadow-sm ring-2 ring-white/50">
                     @else
                         <div
@@ -175,7 +175,7 @@
                                 setTimeout(() => this.type(), typeSpeed);
                             }
                         }">
-                        <span class="text-sm font-bold text-blue-600 block mb-2 uppercase tracking-widest">E-Voting KPUM UNUGHA & Pemilwa UNUGHA</span>
+                        <span class="text-sm font-bold text-blue-600 block mb-2 uppercase tracking-widest">E-Voting KPUM UNUGHA</span>
                         Suara Anda<span class="text-blue-600">.</span><br>
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 animate-gradient-x"
@@ -423,7 +423,7 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
             @if(isset($settings['app_logo']) && $settings['app_logo'])
-                <img src="{{ asset((string) $settings['app_logo']) }}" alt="Logo KPUM UNUGHA Cilacap" class="block mx-auto
+                <img src="{{ asset((string) $settings['app_logo']) }}" alt="Logo" class="block mx-auto
                                         w-24 h-24
                                         object-contain
                                         bg-white

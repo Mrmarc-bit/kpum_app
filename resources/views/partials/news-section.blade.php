@@ -46,7 +46,7 @@
                         $colorIndex = $index % count($bgColors);
                     @endphp
                     <!-- Card Item -->
-                    <div class="w-[85%] sm:w-[calc(50%-1rem)] xl:w-[calc(50%-1.25rem)] flex-shrink-0 snap-start group relative flex flex-col bg-[#F9FAFB] rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 hover:-translate-y-1 border border-slate-100 min-h-[460px]">
+                    <div class="w-[85%] sm:w-[calc(50%-12px)] xl:w-[calc(50%-16px)] flex-shrink-0 snap-center group relative flex flex-col bg-[#F9FAFB] rounded-[2.5rem] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 hover:-translate-y-1 border border-slate-100 min-h-[460px]">
 
                         <!-- Top Info & Text Content -->
                         <div class="px-7 pt-7 pb-5 flex-1 flex flex-col">
@@ -72,14 +72,8 @@
                             </p>
                         </div>
 
-                        <!-- Decorative Footer Block or Image -->
+                        <!-- Decorative Footer Block -->
                         <div class="px-3 pb-3 mt-auto w-full">
-                            @if($item->featured_image)
-                            <div class="h-[260px] md:h-[280px] w-full rounded-[2rem] overflow-hidden group-hover:scale-[0.98] transition-transform duration-500 relative">
-                                <img src="{{ asset('storage/' . $item->featured_image) }}" alt="{{ $item->title }}" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                            </div>
-                            @else
                             <div class="h-[260px] md:h-[280px] w-full rounded-[2rem] {{ $bgColors[$colorIndex] }} flex items-center justify-center relative overflow-hidden group-hover:scale-[0.98] transition-transform duration-500">
                                 <!-- Illustrations based on index -->
                                 @if($index % 3 == 0)
@@ -110,8 +104,6 @@
                                     </svg>
                                 @endif
                             </div>
-                            @endif
-                        </div>
                         </div>
                     </div>
                     @endforeach
