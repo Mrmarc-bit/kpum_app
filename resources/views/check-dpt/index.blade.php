@@ -1,4 +1,4 @@
-<x-layouts.guest title="Cek Daftar Pemilih Tetap (DPT)">
+<x-layouts.guest title="Cek DPT Pemilwa - KPUM UNUGHA Cilacap">
     <!-- Floating Navbar (Similar to Welcome but simplified or same include) -->
     <!-- We can reuse the same layout if it supports navbar slots, but for now I'll just copy the simple navbar structure or better yet, assume guest layout might not have it and add a back button.
          Wait, guest layout usually wraps content. Let's look at it if needed.
